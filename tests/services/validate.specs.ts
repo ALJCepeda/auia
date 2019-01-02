@@ -1,6 +1,59 @@
 import 'should';
-import { Test, ConfigModel } from '~models';
+import { Test, ConfigModel, Validator } from '~models';
 import { validateModel } from '~services';
+
+describe.only('Validator', () => {
+  it('should validate any object by adding an array of specs', () => {
+    const validator = new Validator([
+      (model:any) => model.name.length > 0,
+      (model:any) => model.userId > 0,
+      new Test((model) => model.age > 18, 'Must be 18 or older'),
+      new Test((model) => model.occupation.length > 0, 'Must have an occupation')
+    ]);
+
+    const obj = {
+      name:'',
+      age:0,
+      occupation:'',
+      userId:0
+    };
+    const result = validator.validate(obj);
+
+    result.should.have.properties({
+      model:obj,
+      errored:validator.getSpecs(),
+      erroredIndexes:[0, 1, 2, 3]
+    });
+    result.getErrorMessages().should.eql([ 'Must be 18 or older', 'Must have an occupation' ]);
+    result.isValid().should.be.false();
+  });
+
+  it('should validate any type by adding specs', () => {
+    class TestModel {
+      name = '';
+      age = 5;
+      occupation = 'student';
+      userId = 1234;
+    }
+    const test = new TestModel();
+    const validator = new Validator<TestModel>([
+      (model) => model.name.length > 0,
+      (model) => model.userId > 0,
+      new Test((model) => model.age > 18, 'Must be 18 or older'),
+      new Test((model) => model.occupation.length > 0, 'Must have an occupation')
+    ]);
+
+    const result = validator.validate(test);
+
+    result.should.have.properties({
+      model:test,
+      errored:[ validator.getSpecs()[0], validator.getSpecs()[2] ],
+      erroredIndexes:[0, 2]
+    });
+    result.getErrorMessages().should.eql([ 'Must be 18 or older' ]);
+    result.isValid().should.be.false();
+  });
+});
 
 describe('ConfigModel', () => {
   class TestModel extends ConfigModel {
@@ -52,54 +105,4 @@ describe('ConfigModel', () => {
     result.getErrorMessages().should.eql([ 'Must be 18 or older' ]);
     result.isValid().should.be.false();
   });
-/*
-  it('should validate by adding an array of specs', () => {
-    const validator = [
-      (model:any) => model.name.length > 0,
-      (model:any) => model.userId > 0,
-      new Test((model) => model.age > 18, 'Must be 18 or older'),
-      new Test((model) => model.occupation.length > 0, 'Must have an occupation')
-    ];
-
-    const test = new TestModel();
-    test.addSpecs(validator);
-
-    const result = validateModel(test);
-
-    result.should.have.properties({
-      model:test,
-      messages:[ 'Must be 18 or older' ],
-      errored:[ test.specs[0], test.specs[2] ],
-      erroredIndexes:[0, 2]
-    });
-
-    result.isValid().should.be.false();
-  });
-
-  it.only('should validate true for valid models', () => {
-    const test = new TestModel({
-      name:'Alfred',
-      age:30,
-      occupation:'Web Developer',
-      userId:123
-    });
-
-    test.addSpecs([
-      () => test.name.length > 0,
-      () => test.userId > 0,
-      new Test(() => test.age > 18, 'Must be 18 or older'),
-      new Test(() => test.occupation.length > 0, 'Must have an occupation')
-    ]);
-
-    const result = validateModel(test);
-
-    result.should.have.properties({
-      model:test,
-      messages:[],
-      errored:[],
-      erroredIndexes:[]
-    });
-
-    result.isValid().should.be.true();
-  });*/
 });

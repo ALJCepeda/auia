@@ -3,10 +3,11 @@ import { validate } from "~services";
 import { Spec } from "./Test";
 import { ValidateResult } from "./ValidateResult";
 
-export class Validator implements Validatable {
-	constructor(public model:any, public specs:Spec[] = []) {
-		if(isValidatable(model)) {
-			this.addSpecs(model.getSpecs());
+
+export class Validator<T> implements Validatable {
+	constructor(private specs:Spec[] = [], validator?:Validator<T>) {
+		if(validator) {
+			this.addSpecs(validator.getSpecs());
 		}
 	}
 
@@ -24,7 +25,7 @@ export class Validator implements Validatable {
 		return this.specs;
 	}
 
-	validate():ValidateResult<any> {
-		return validate(this.model, this.getSpecs());
+	validate(model:T):ValidateResult<T> {
+		return validate<T>(model, this.getSpecs());
 	}
 }

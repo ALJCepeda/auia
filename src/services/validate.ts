@@ -13,9 +13,9 @@ export function validate<T>(model:T, specs:Spec[]): ValidateResult<T> {
 	return specs.reduce((result, spec:Spec, index) => {
 		let isValid = true;
 		if(isTest(spec)) {
-			isValid = spec.valid(model as any);
+			isValid = spec.valid(model);
 		} else if(isAssertion(spec)) {
-			isValid = spec(model as any);
+			isValid = spec(model);
 
 			if(typeof(isValid) !== 'boolean') {
 				throw new Error('Invalid assertion provided, must return a boolean');
