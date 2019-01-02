@@ -1,27 +1,27 @@
 import { Validatable, isValidatable } from "~interfaces";
 import { validate } from "~services";
-import { Spec } from "./Test";
+import { Spec, Specs } from "./Test";
 import { ValidateResult } from "./ValidateResult";
 
 
 export class Validator<T> implements Validatable {
-	constructor(private specs:Spec[] = [], validator?:Validator<T>) {
+	constructor(private specs:Specs<T> = [], validator?:Validator<T>) {
 		if(validator) {
 			this.addSpecs(validator.getSpecs());
 		}
 	}
 
-	addSpec(spec:Spec) {
+	addSpec(spec:Spec<T>) {
 		this.specs.push(spec);
 		return this;
 	}
 
-	addSpecs(specs:Spec[]) {
+	addSpecs(specs:Specs<T>) {
 		specs.forEach((spec) => this.addSpec(spec));
 		return this;
 	}
 
-	getSpecs():Spec[] {
+	getSpecs():Specs<T> {
 		return this.specs;
 	}
 

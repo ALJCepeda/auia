@@ -1,16 +1,16 @@
 import { Validatable } from "~interfaces";
 import { Test, ValidateResult, Spec, isTest, isAssertion } from "~models";
 
-export function validateModels<T>(models:(T & Validatable)[]): ValidateResult<T>[] {
+export function validateModels<T extends Validatable>(models:T[]): ValidateResult<T>[] {
 	return models.map(validateModel);
 }
 
-export function validateModel<T>(model:T & Validatable): ValidateResult<T> {
+export function validateModel<T extends Validatable>(model:T): ValidateResult<T> {
 	return validate(model, model.getSpecs());
 }
 
-export function validate<T>(model:T, specs:Spec[]): ValidateResult<T> {
-	return specs.reduce((result, spec:Spec, index) => {
+export function validate<T>(model:T, specs:Spec<T>[]): ValidateResult<T> {
+	return specs.reduce((result, spec:Spec<T>, index) => {
 		let isValid = true;
 		if(isTest(spec)) {
 			isValid = spec.valid(model);

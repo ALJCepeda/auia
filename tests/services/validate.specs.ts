@@ -1,12 +1,13 @@
 import 'should';
 import { Test, ConfigModel, Validator } from '~models';
 import { validateModel } from '~services';
+import { anyobject } from '~interfaces';
 
-describe.only('Validator', () => {
+describe('Validator', () => {
   it('should validate any object by adding an array of specs', () => {
-    const validator = new Validator([
-      (model:any) => model.name.length > 0,
-      (model:any) => model.userId > 0,
+    const validator = new Validator<anyobject>([
+      (model) => model.name.length > 0,
+      (model) => model.userId > 0,
       new Test((model) => model.age > 18, 'Must be 18 or older'),
       new Test((model) => model.occupation.length > 0, 'Must have an occupation')
     ]);

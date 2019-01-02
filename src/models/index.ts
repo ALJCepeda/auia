@@ -1,4 +1,4 @@
-import { Test, Assertion, Spec, isTest, isAssertion, isSpec } from './Test';
+import { Test, Assertion, Spec, isTest, isAssertion, isSpec, Specs } from './Test';
 import { Validator } from "./Validator";
 import { Configuration } from "./Configuration";
 import { Group } from "./Group";
@@ -11,7 +11,7 @@ import { ConfigModel } from './ConfigModel';
 import { Dictionary } from "./Dictionary";
 
 export {
-	Test, Assertion, Spec, isTest, isAssertion, isSpec,
+	Test, Assertion, Spec, Specs, isTest, isAssertion, isSpec,
 	ConfigModel,
 	Validator,
 	Configuration,
