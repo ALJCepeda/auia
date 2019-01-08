@@ -1,11 +1,7 @@
-import { ConfigFactory } from './ConfigFactory';
-import { Validatable, isValidatable } from "./Validatable";
-
-type anyobject = { [key:string]:any };
-type anyarray = { [key:number]:any };
+import { Validatable, isValidatable } from './Validatable';
+import { anyobject, anyarray } from './types';
 
 export {
 	anyobject, anyarray,
-	ConfigFactory,
 	Validatable, isValidatable
 };

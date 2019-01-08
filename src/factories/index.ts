@@ -1,10 +1,16 @@
+import { ConfigFactory } from './ConfigFactory';
 import RepositoryFactory from './RepositoryFactory';
-import { ConfigFactory } from '~interfaces';
-import { Dictionary } from '~models';
+import UserFactory from './UserFactory';
 
-export const dictionary = new Dictionary<string, ConfigFactory>();
-dictionary.setKeys(['repositories', 'repository', 'repos', 'repo', 'git', 'gits'], RepositoryFactory);
+import { Dictionary, ConfigModel } from '~models';
+
+const dictionary = new Dictionary<string, ConfigFactory<string, ConfigModel>>();
+dictionary.setKeys(RepositoryFactory.getKeys(), RepositoryFactory);
+dictionary.setKeys(UserFactory.getKeys(), UserFactory);
 
 export {
-	RepositoryFactory
+	dictionary,
+	ConfigFactory,
+	RepositoryFactory,
+	UserFactory
 };

@@ -1,8 +1,8 @@
 import { Validatable } from "~interfaces";
-import { Spec } from "./Test";
+import { Specs } from "./Test";
 
 export class ConfigModel implements Validatable {
-	getSpecs():Spec[] {
+	getSpecs():Specs<ConfigModel> {
 		return [];
 	}
 }

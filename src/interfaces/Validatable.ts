@@ -1,7 +1,7 @@
 import { Spec, isSpec, Specs } from "~models";
 import { anyobject } from "~interfaces";
 
-export interface Validatable {
+export interface Validatable extends anyobject{
 	getSpecs:() => Specs<any>;
 }
 

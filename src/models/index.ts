@@ -5,7 +5,7 @@ import { Group } from "./Group";
 import { Repository, GitRepository } from "./Repository";
 import { User } from "./User";
 import { RepositoryInstance } from "./RepositoryInstance";
-import { RDBMS, Database } from "./RDBMS";
+import { RDBMS, Postgres, Database, DatabaseUser, DatabasePermission } from "./RDBMS";
 import { ValidateResult } from "./ValidateResult";
 import { ConfigModel } from './ConfigModel';
 import { Dictionary } from "./Dictionary";
@@ -16,7 +16,7 @@ export {
 	Validator,
 	Configuration,
 	Group,
-	RDBMS, Database,
+	RDBMS, Postgres, Database, DatabaseUser, DatabasePermission,
 	Repository, GitRepository,
 	RepositoryInstance,
 	User,

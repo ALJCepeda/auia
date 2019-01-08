@@ -1,10 +1,13 @@
 import { RepositoryInstance } from "./RepositoryInstance";
+import { Group } from "./Group";
+import { ConfigModel } from "./ConfigModel";
 
 
-export class User{
+export class User extends ConfigModel{
   public repositories:RepositoryInstance[] = [];
+  public groups:Group[] = [];
 
-  constructor(public name:string, public password:string) {
-    this.name = name;
+  constructor(public name:string) {
+    super();
   }
 }

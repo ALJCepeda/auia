@@ -1,10 +1,14 @@
+import * as path from 'path';
+
 import { Repository } from "./Repository";
 
 export class RepositoryInstance {
-	public path:string = '';
 	constructor(
 		public repository:Repository,
-		public branch:string = 'master') {
-		this.path = `~/repos/${this.repository.name}`;
+		public basePath:string = '~/repos',
+		public branch:string = 'master') {}
+
+	public getPath():string {
+		return path.normalize(`${this.basePath}/${this.repository.name}`);
 	}
 }
