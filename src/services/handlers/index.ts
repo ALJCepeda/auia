@@ -1,4 +1,4 @@
-import {ValidateResult} from "~models";
+import {ValidateResult} from "models";
 import { handleValidateResult } from './validateResult';
 
 function _handle(obj:any) {

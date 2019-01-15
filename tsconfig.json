@@ -2,15 +2,10 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "lib":["es6"],
-    "baseUrl": ".",
+    "lib":[ "es5", "es6" ],
+    "baseUrl": "./src",
     "outDir": "dist",
     "strict": true,
-    "paths": {
-      "~interfaces": [ "src/interfaces" ],
-      "~factories": [ "src/factories" ],
-      "~models": [ "src/models" ],
-      "~services": [ "src/services" ]
-    }
+    "sourceMap": true
   }
 }

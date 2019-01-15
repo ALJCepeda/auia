@@ -1,4 +1,4 @@
-import { Dictionary } from "~models";
+import { Dictionary } from "models";
 
 export class ConfigFactory<K, V> {
   constructor(private dictionary:Dictionary<K, (entry:string) => V>){}

@@ -7,7 +7,7 @@ export class Repository extends ConfigModel {
 	public branch:string = 'master';
 	public initCommands:string[] = [];
 
-	constructor(data:Partial<Repository>) {
+	constructor(data:Partial<Repository> = {}) {
 		super();
 		Object.assign(this, data);
 	}
@@ -15,7 +15,7 @@ export class Repository extends ConfigModel {
 	getSpecs() {
 		return [
 			...super.getSpecs(),
-			new Test(() => this.name.length >= 1, 'Repository needs a name in order to be created')
+			new Test(() => this.name.length >= 1, 'Repository needs a name in order to be registerd')
 		]
 	}
 }

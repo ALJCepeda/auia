@@ -1,10 +1,8 @@
-import { Validatable, isValidatable, anyobject } from "~interfaces";
-import { validate } from "~services";
-import { Spec, Specs } from "./Test";
-import { ValidateResult } from "./ValidateResult";
+import { validate } from 'services';
+import { Spec, Specs } from './Test';
+import { ValidateResult } from './ValidateResult';
 
-
-export class Validator<T extends anyobject> implements Validatable {
+export class Validator<T> {
 	constructor(private specs:Specs<T> = [], validator?:Validator<T>) {
 		if(validator) {
 			this.addSpecs(validator.getSpecs());
@@ -25,7 +23,7 @@ export class Validator<T extends anyobject> implements Validatable {
 		return this.specs;
 	}
 
-	validate(model:T):ValidateResult<T> {
-		return validate<T>(model, this.getSpecs());
+	validate(obj:T): ValidateResult {
+		return validate(obj, this.getSpecs());
 	}
 }

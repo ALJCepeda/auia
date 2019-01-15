@@ -1,8 +1,10 @@
 import "should";
+/*
+import { RepositoryFactory } from "factories";
+import { GitRepository, Repository } from "models";
 
-import { RepositoryFactory } from "~factories";
-import { GitRepository, Repository } from "~models";
 
+/*
 describe('RepositoryFactory', () => {
 	it('should throw error when creating repository with no type', () => {
 		(() => {
@@ -15,3 +17,4 @@ describe('RepositoryFactory', () => {
 		repo.should.be.instanceOf(GitRepository);
 	});
 });
+*/

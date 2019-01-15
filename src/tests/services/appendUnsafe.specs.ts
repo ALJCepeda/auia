@@ -1,6 +1,6 @@
 import 'should';
 
-import { appendUnsafe } from "~services";
+import { appendUnsafe } from "services";
 
 describe('appendUnsafe', () => {
 	class TestModel {

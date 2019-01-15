@@ -1,5 +1,5 @@
-import { ConfigModel, Configuration } from "~models";
-import { dictionary } from "~factories";
+import { ConfigModel, Configuration } from "models";
+import { dictionary } from "factories";
 import { handle } from "./handlers";
 import { validateModels } from "./validate";
 
