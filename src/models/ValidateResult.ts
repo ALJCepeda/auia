@@ -1,37 +1,23 @@
-import { Specs, isTest } from "./Test";
-import { Validatable } from "interfaces";
-
 export class ValidateResult {
-	model:any = null ;
-	errored:Specs = [];
 	erroredIndexes:number[] = [];
+	errorMessages:string[] = [];
 
-	constructor(data:Partial<ValidateResult>) {
-		Object.assign(this, data);
-	}
+	constructor(public model?:any) {}
 
 	isValid():boolean {
-		return this.errored.length === 0;
+		return this.erroredIndexes.length === 0;
 	}
 
-	getErrorMessages():string[] {
-		return this.errored.reduce((result, error) => {
-			if(isTest(error) && error.message) {
-				result.push(error.message);
-			}
-
+	protected static _merge(source:ValidateResult, others:ValidateResult[]):ValidateResult {
+		return others.reduce((result, current) => {
+			result.erroredIndexes = result.erroredIndexes.concat(current.erroredIndexes);
+			result.errorMessages = result.errorMessages.concat(current.errorMessages);
 			return result;
-		}, <string[]>[]);
-	}
+		}, source);
+	};
 
 	static merge(source:ValidateResult, ...others:ValidateResult[]):ValidateResult {
-		const result = others.reduce((newResult, result) => {
-			newResult.errored = newResult.errored.concat(result.errored);
-			newResult.erroredIndexes = newResult.erroredIndexes.concat(result.erroredIndexes);
-			return newResult;
-		}, new ValidateResult(source));
-
-		return result;
+		return this._merge(new ValidateResult(source.model), [ source, ...others ]);
 	}
 }
 

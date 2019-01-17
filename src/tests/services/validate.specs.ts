@@ -1,5 +1,5 @@
 import 'should';
-import { Test, Validator, Specs } from 'models';
+import { Test, Validator, Spec } from 'models';
 import { validateModel } from 'services';
 import { Validatable, anyobject } from 'interfaces';
 
@@ -22,10 +22,9 @@ describe('Validator', () => {
 
     result.should.have.properties({
       model:obj,
-      errored:validator.getSpecs(),
-      erroredIndexes:[0, 1, 2, 3]
+      erroredIndexes:[0, 1, 2, 3],
+      errorMessages:[ 'Must be 18 or older', 'Must have an occupation' ]
     });
-    result.getErrorMessages().should.eql([ 'Must be 18 or older', 'Must have an occupation' ]);
     result.isValid().should.be.false();
   });
 
@@ -49,10 +48,9 @@ describe('Validator', () => {
 
     result.should.have.properties({
       model:test,
-      errored:[ validator.getSpecs()[0], validator.getSpecs()[2] ],
-      erroredIndexes:[0, 2]
+      erroredIndexes:[0, 2],
+      errorMessages:[ 'Must be 18 or older' ]
     });
-    result.getErrorMessages().should.eql([ 'Must be 18 or older' ]);
     result.isValid().should.be.false();
   });
 });
@@ -69,7 +67,7 @@ describe('Validate<ConfigModel>', () => {
       Object.assign(this, data);
     }
 
-    getSpecs():Specs<UserModel> {
+    getSpecs():Spec<UserModel>[] {
       return [];
     }
   }
@@ -81,15 +79,14 @@ describe('Validate<ConfigModel>', () => {
 
     result.should.have.properties({
       model:test,
-      errored:[],
-      erroredIndexes:[]
+      erroredIndexes:[],
+      errorMessages:[]
     });
-    result.getErrorMessages().should.eql([]);
     result.isValid().should.be.true();
   });
 
   class UserModelWithSpecs extends UserModel {
-    getSpecs():Specs<UserModelWithSpecs> {
+    getSpecs():Spec<UserModelWithSpecs>[] {
       return [
         () => this.name.length > 0,
         model => model.userId > 0,
@@ -98,17 +95,16 @@ describe('Validate<ConfigModel>', () => {
       ];
     }
   }
-  
+
   it('should validate from tests defined in class', () => {
     const user = new UserModelWithSpecs();
     const result = validateModel(user);
 
     result.should.have.properties({
       model:user,
-      errored:[ user.getSpecs()[0], user.getSpecs()[2] ],
-      erroredIndexes:[0, 2]
+      erroredIndexes:[0, 2],
+      errorMessages:['Must be 18 or older']
     });
-    result.getErrorMessages().should.eql([ 'Must be 18 or older' ]);
     result.isValid().should.be.false();
   });
 
@@ -116,18 +112,11 @@ describe('Validate<ConfigModel>', () => {
     user:UserModelWithSpecs = new UserModelWithSpecs();
     name:string = '';
 
-    getSpecs():Specs<Group> {
+    getSpecs():Spec<Group>[] {
   		return [
         new Test((model) => validateModel(model.user), 'Must include a valid user for group'),
         new Test((model) => model.name.length > 0, 'Must include a name for the group')
       ];
   	}
   }
-
-  it.only('should validate tests that return a validation result', () => {
-    const group = new Group();
-    const result = validateModel(group);
-
-    console.log(result.getErrorMessages());
-  });
 });

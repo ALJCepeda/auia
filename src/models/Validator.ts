@@ -1,9 +1,9 @@
 import { validate } from 'services';
-import { Spec, Specs } from './Test';
+import { Spec } from './Test';
 import { ValidateResult } from './ValidateResult';
 
 export class Validator<T> {
-	constructor(private specs:Specs<T> = [], validator?:Validator<T>) {
+	constructor(private specs:Spec<T>[] = [], validator?:Validator<T>) {
 		if(validator) {
 			this.addSpecs(validator.getSpecs());
 		}
@@ -14,12 +14,12 @@ export class Validator<T> {
 		return this;
 	}
 
-	addSpecs(specs:Specs<T>) {
+	addSpecs(specs:Spec<T>[]) {
 		specs.forEach((spec) => this.addSpec(spec));
 		return this;
 	}
 
-	getSpecs():Specs<T> {
+	getSpecs():Spec<T>[] {
 		return this.specs;
 	}
 
