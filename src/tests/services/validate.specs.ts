@@ -89,7 +89,7 @@ describe('Validate<ConfigModel>', () => {
     result.isValid().should.be.true();
   });
 
-  const userModelWithSpecsSpecs:Spec<UserModelWithSpecs>[] = [
+  const userSpecs:Spec<UserModelWithSpecs>[] = [
     model => model.name.length > 0,
     model => model.userId > 0,
     new Test(model => model.age > 18, 'Must be 18 or older'),
@@ -98,7 +98,7 @@ describe('Validate<ConfigModel>', () => {
 
   class UserModelWithSpecs extends UserModel {
     getSpecs():Spec<UserModelWithSpecs>[] {
-      return userModelWithSpecsSpecs;
+      return userSpecs;
     }
   }
 
@@ -110,40 +110,69 @@ describe('Validate<ConfigModel>', () => {
     result.model.should.equal(user);
     result.errorIndexes().should.eql([0, 2]);
     result.errorMessages().should.eql(['Must be 18 or older']);
-    result.errors[0].should.have.properties({ model:user, spec:userModelWithSpecsSpecs[0], index:0 });
-    result.errors[1].should.have.properties({ model:user, spec:(userModelWithSpecsSpecs[2] as Test<UserModelWithSpecs>).valid, index:2, test:userModelWithSpecsSpecs[2] as Test<UserModelWithSpecs>, message:'Must be 18 or older' });
+    result.errors[0].should.have.properties({ model:user, spec:userSpecs[0], index:0 });
+    result.errors[1].should.have.properties({ model:user, spec:(userSpecs[2] as Test<UserModelWithSpecs>).valid, index:2, test:userSpecs[2] as Test<UserModelWithSpecs>, message:'Must be 18 or older' });
     result.isValid().should.be.false();
   });
+
+  const groupSpecs:Spec<Group>[] =  [
+    new Test(model => validateModel(model.user), 'Must include a valid user for group'),
+    new Test(model => model.name.length > 0, 'Must include a name for the group')
+  ];
 
   class Group implements Validatable {
     user:UserModelWithSpecs = new UserModelWithSpecs();
     name:string = '';
 
     getSpecs():Spec<Group>[] {
-  		return [
-        new Test((model) => validateModel(model.user), 'Must include a valid user for group'),
-        new Test((model) => model.name.length > 0, 'Must include a name for the group')
-      ];
+  		return groupSpecs;
   	}
   }
+
+  const systemSpecs:Spec<System>[] = [
+    new Test(model => validateModel(model.group), 'Must include a valid group for system'),
+    new Test(model => model.type.length > 0, 'Must include a type for the system')
+  ];
 
   class System implements Validatable {
     group:Group = new Group();
     type:string = '';
 
     getSpecs():Spec<System>[] {
-      return [
-        new Test(model => validateModel(model.group), 'Must include a valid group for system'),
-        new Test(model => model.type.length > 0, 'Must include a type for the system')
-      ];
+      return systemSpecs;
     }
   }
 
-  it.only('should test and report on nested validations', () => {
+  it('should test and report on nested validations', () => {
     const system = new System();
 
     const result = validateModel(system);
 
-    console.log(result);
+    result.errors[0].should.have.properties({ model:system, spec:(systemSpecs[0] as Test<System>).valid, test:systemSpecs[0], message:'Must include a valid group for system', index:0 });
+    result.errors[1].should.have.properties({ model:system.group, spec:(groupSpecs[0] as Test<Group>).valid, test:groupSpecs[0], message:'Must include a valid user for group', index:0 });
+    result.errors[2].should.have.properties({ model:system.group.user, spec:userSpecs[0], index:0 });
+    result.errors[3].should.have.properties({ model:system.group.user, spec:(userSpecs[2] as Test<UserModelWithSpecs>).valid, test:userSpecs[2], message:'Must be 18 or older', index:2 });
+    result.errors[4].should.have.properties({ model:system.group, spec:(groupSpecs[1] as Test<Group>).valid, test:groupSpecs[1], message:'Must include a name for the group', index:1 });
+    result.errors[5].should.have.properties({ model:system, spec:(systemSpecs[1] as Test<System>).valid, test:systemSpecs[1], message:'Must include a type for the system', index:1 });
+    result.errorMessages().should.eql([
+      'Must include a valid group for system',
+      'Must include a valid user for group',
+      'Must be 18 or older',
+      'Must include a name for the group',
+      'Must include a type for the system'
+    ]);
+    result.errorIndexes().should.eql([0, 0, 0, 2, 1, 1]);
+    result.errorMessages(system).should.eql([
+      'Must include a valid group for system',
+      'Must include a type for the system'
+    ]);
+    result.errorIndexes(system).should.eql([0, 1]);
+    result.errorMessages(system.group).should.eql([
+      'Must include a valid user for group',
+      'Must include a name for the group',
+    ]);
+    result.errorIndexes(system.group).should.eql([0, 1]);
+    result.errorMessages(system.group.user).should.eql(['Must be 18 or older']);
+    result.errorIndexes(system.group.user).should.eql([0, 2]);
   });
 });

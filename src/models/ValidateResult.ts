@@ -9,18 +9,24 @@ export class ValidateResult {
 		return this.errors.length === 0;
 	}
 
-	errorMessages():string[] {
-		return this.errors.reduce<string[]>((result, cur) => {
-			if(cur.message) {
-				result.push(cur.message);
-			}
-
-			return result;
-		}, []);
+	getErrors(model?:any):ValidateError<any>[] {
+		return this.errors.reduce<ValidateError<any>[]>((result, error) => !model || (model && error.model === model) ? result.concat(error) : result, []);
 	}
 
-	errorIndexes():number[] {
-		return this.errors.reduce<number[]>((result, cur) => result.concat(cur.index), []);
+	errorMessages(model?:any):string[] {
+		return this.getErrors(model).reduce<string[]>((result, cur) => cur.message ? result.concat(cur.message) : result, []);
+	}
+
+	errorIndexes(model?:any):number[] {
+		return this.getErrors(model).reduce<number[]>((result, cur) => result.concat(cur.index), []);
+	}
+
+	echoedBy(result:ValidateResult):boolean {
+		return this.model === result.model && this.errors.find(error => {
+			return result.errors.find(resultError =>
+				error.model === resultError.model && error.spec === resultError.spec && error.index === resultError.index
+			) !== undefined;
+		}) !== undefined;
 	}
 
 	protected static _merge(source:ValidateResult, others:ValidateResult[]):ValidateResult {

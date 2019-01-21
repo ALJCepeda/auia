@@ -3,39 +3,57 @@ import { ValidateResult, isAssertion, Spec, Test } from "models";
 import {ValidateError} from "../models/ValidateError";
 
 export function validateModels<T extends Validatable>(models:T[]): ValidateResult[] {
-	return models.map(validateModel);
+	return models.map(model => validateModel(model));
 }
 
 export function validateModel<T extends Validatable>(model:T): ValidateResult {
 	return validate(model, model.getSpecs());
 }
 
-function runSpec<T>(model:T, spec:Spec<T>, index:number): ValidateResult {
-	let result = new ValidateResult(model);
+function validateTest<T>(model:T, test:Test<T>, index:number):ValidateResult {
+	const result = new ValidateResult(model);
+	const nestedResult = runSpec(model, test.valid, index);
 
-	if(spec instanceof Test) {
-		const nestedResult = runSpec(model, spec.valid, index);
+	if(nestedResult.isValid() === false) {
+		result.errors.push(new ValidateError<T>(model, test.valid, index, test));
+	}
 
-		if(nestedResult.isValid() === false) {
-			result.errors.push(new ValidateError<T>(model, spec.valid, index, spec));
-		}
-	} else if(isAssertion(spec)) {
+	if(result.echoedBy(nestedResult)) {
+		return result;
+	}
+
+	return ValidateResult.merge(result, nestedResult);
+}
+
+function validateAssertion<T>(model:T, spec:Spec<T>, index:number): ValidateResult {
+	if(isAssertion(spec)) {
+		const result = new ValidateResult(model);
 		const specResult = spec(model);
 
 		if(specResult instanceof ValidateResult) {
-			result = ValidateResult.merge(result, specResult);
+			return ValidateResult.merge(result, specResult);
 		}
 
 		if(typeof specResult === 'boolean') {
 			if(specResult === false) {
 				result.errors.push(new ValidateError<T>(model, spec, index));
 			}
+
+			return result;
 		}
-	} else {
-		throw new Error('Invalid spec provided, is neither a Test or Assertion');
 	}
 
-	return result;
+	throw new Error('Unable to validate, spec is not an assertion');
+}
+
+function runSpec<T>(model:T, spec:Spec<T>, index:number): ValidateResult {
+	if(spec instanceof Test) {
+		return validateTest(model, spec, index);
+	} else if(isAssertion(spec)) {
+		return validateAssertion(model, spec, index);
+	}
+
+	throw new Error('Invalid spec provided, is neither a Test or Assertion');
 }
 
 export function validate<T>(model:T, specs:Spec<T>[]): ValidateResult {
