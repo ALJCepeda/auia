@@ -1,5 +1,6 @@
 import { Validatable } from "interfaces";
 import { ValidateResult, isAssertion, Spec, Test } from "models";
+import {ValidateError} from "../models/ValidateError";
 
 export function validateModels<T extends Validatable>(models:T[]): ValidateResult[] {
 	return models.map(validateModel);
@@ -16,27 +17,25 @@ function runSpec<T>(model:T, spec:Spec<T>, index:number): ValidateResult {
 		const nestedResult = runSpec(model, spec.valid, index);
 
 		if(nestedResult.isValid() === false) {
-			nestedResult.errorMessages.push(spec.message);
+			result.errors.push(new ValidateError<T>(model, spec.valid, index, spec));
 		}
-
-		return ValidateResult.merge(result, nestedResult);
 	} else if(isAssertion(spec)) {
 		const specResult = spec(model);
 
 		if(specResult instanceof ValidateResult) {
-			return ValidateResult.merge(result, specResult);
+			result = ValidateResult.merge(result, specResult);
 		}
 
 		if(typeof specResult === 'boolean') {
 			if(specResult === false) {
-				result.erroredIndexes.push(index);
+				result.errors.push(new ValidateError<T>(model, spec, index));
 			}
-
-			return result;
 		}
+	} else {
+		throw new Error('Invalid spec provided, is neither a Test or Assertion');
 	}
 
-	throw new Error('Invalid spec provided, is neither a Test or Assertion');
+	return result;
 }
 
 export function validate<T>(model:T, specs:Spec<T>[]): ValidateResult {

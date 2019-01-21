@@ -1,17 +1,31 @@
+import { ValidateError } from "./ValidateError";
+
 export class ValidateResult {
-	erroredIndexes:number[] = [];
-	errorMessages:string[] = [];
+	errors:ValidateError<any>[] = [];
 
 	constructor(public model?:any) {}
 
 	isValid():boolean {
-		return this.erroredIndexes.length === 0;
+		return this.errors.length === 0;
+	}
+
+	errorMessages():string[] {
+		return this.errors.reduce<string[]>((result, cur) => {
+			if(cur.message) {
+				result.push(cur.message);
+			}
+
+			return result;
+		}, []);
+	}
+
+	errorIndexes():number[] {
+		return this.errors.reduce<number[]>((result, cur) => result.concat(cur.index), []);
 	}
 
 	protected static _merge(source:ValidateResult, others:ValidateResult[]):ValidateResult {
 		return others.reduce((result, current) => {
-			result.erroredIndexes = result.erroredIndexes.concat(current.erroredIndexes);
-			result.errorMessages = result.errorMessages.concat(current.errorMessages);
+			result.errors = result.errors.concat(current.errors);
 			return result;
 		}, source);
 	};
