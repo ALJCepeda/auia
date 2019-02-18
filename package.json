@@ -1,41 +1,42 @@
 {
   "name": "auia",
+  "author": "Alfred J Cepeda",
+  "license": "ISC",
   "version": "1.0.0",
   "description": "Environment Provisioner using Ansible",
   "bin": {
     "auia": "bin/auia"
   },
+  "nodemonConfig": {
+    "watch": [
+      "src/"
+    ]
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "./bin/auia",
+    "dev": "node $NODE_DEBUG_OPTION ./node_modules/.bin/ts-node -r tsconfig-paths/register src/index.ts src/tests/config.yaml",
+    "dev:watch": "nodemon --exec npm run dev",
+    "test": "node $NODE_DEBUG_OPTION ./node_modules/.bin/ts-mocha -p tsconfig.json -r tsconfig-paths/register **/*.specs.*",
+    "test:watch": "nodemon --exec npm run test"
+  },
   "dependencies": {
     "@types/core-js": "^2.5.0",
     "@types/es6-shim": "^0.31.39",
-    "class-validator": "^0.9.1",
-    "install": "^0.12.2",
-    "js-yaml": "^3.12.0",
-    "npm": "^6.5.0",
-    "rxjs": "^6.3.3"
+    "@types/js-yaml": "^3.12.0",
+    "@types/node": "^10.12.18",
+    "ajv": "^6.9.1",
+    "js-yaml": "^3.12.1"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.119",
     "@types/mocha": "^5.2.5",
-    "@types/node": "^10.12.18",
-    "lodash": "^4.17.11",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.9",
     "should": "^13.2.3",
     "ts-mocha": "^2.0.0",
     "ts-node": "^7.0.1",
-    "tsconfig-paths": "^3.7.0",
     "tslint": "^5.11.0",
     "typescript": "^3.2.2"
-  },
-  "scripts": {
-    "build": "tsc",
-    "start": "./bin/auia",
-    "dev": "ts-node -r tsconfig-paths/register src/index.ts",
-    "dev:watch": "nodemon --exec npm start",
-    "test": "ts-mocha $NODE_DEBUG_OPTION -p tsconfig.json -r tsconfig-paths/register **/*.specs.*",
-    "test:watch": "nodemon --exec npm run test"
-  },
-  "author": "Alfred J Cepeda",
-  "license": "ISC"
+  }
 }
