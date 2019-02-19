@@ -7,5 +7,5 @@ export * from './User';
 export * from './RepositoryInstance';
 export * from './RDBMS';
 export * from './ValidateResult';
-export * from './ConfigModel';
+export * from './ValidateError';
 export * from './Dictionary';

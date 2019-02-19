@@ -1,7 +1,8 @@
-import { ConfigModel, Configuration } from "models";
-import { dictionary } from "factories";
-import { handle } from "./handlers";
-import { validateModels } from "./validate";
+import { dictionary } from 'factories';
+import { ConfigModel } from 'interfaces';
+import { Configuration } from 'models';
+import { handle } from './handlers';
+import { validateModels } from './validate';
 
 export function generateModels(payload:any):Configuration {
 	const config = new Configuration();

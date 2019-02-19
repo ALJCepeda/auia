@@ -1,22 +1,26 @@
 import { Test } from "./Test";
-import { ConfigModel } from "./ConfigModel";
+import { Configuration } from "./Configuration";
+import { ConfigModel } from "interfaces";
 
-export class Repository extends ConfigModel {
-	public name:string = '';
+export class Repository implements ConfigModel {
+	public id:string = '';
 	public origin:string = '';
 	public branch:string = 'master';
 	public initCommands:string[] = [];
 
-	constructor(data:Partial<Repository> = {}) {
-		super();
-		Object.assign(this, data);
+	class() {
+		return 'Repository';
 	}
 
 	getSpecs() {
 		return [
-			...super.getSpecs(),
-			new Test(() => this.name.length >= 1, 'Repository needs a name in order to be registerd')
-		]
+			new Test(() => this.id.length >= 1, 'Repository needs a name in order to be registerd')
+		];
+	}
+
+	buildFrom(configuration:Configuration): Repository {
+
+		return this;
 	}
 }
 

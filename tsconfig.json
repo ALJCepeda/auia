@@ -6,6 +6,9 @@
     "baseUrl": "./src",
     "outDir": "dist",
     "strict": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "types": [
+      "node", "js-yaml", "mocha", "ajv"
+    ]
   }
 }

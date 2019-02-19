@@ -1,9 +1,9 @@
-import { isSpec, Specs } from "models";
+import { Spec } from "models";
 
-export interface Validatable{
-	getSpecs:() => Specs;
+export interface Validatable<T>{
+	getSpecs:() => Spec<T>[];
 }
 
-export function isValidatable(obj:any): obj is Validatable {
-	return 'getSpecs' in obj && obj.specs.filter((spec:any) => !isSpec(spec)).length === 0;
+export function isValidatable<T>(obj:any): obj is Validatable<T> {
+	return 'getSpecs' in obj;
 }

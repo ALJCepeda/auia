@@ -1,14 +1,16 @@
-import * as fs from "fs";
-import { User } from "@models";
+import { loadConfig, loadSchema } from './utils';
+import * as AJV from 'ajv';
+import { parseConfig } from 'services';
 
-const user = new User('Alfred');
+const config = loadConfig();
+const schema = loadSchema();
 
-const configFile = process.argv[2];
+const ajv = new AJV();
+const validate = ajv.compile(schema);
 
-if(!fs.existsSync(configFile)) {
-    console.log(`Unable to find configuration file: ${configFile}`);
-    process.exit();
+if (!validate(config)) {
+  throw validate.errors;
 }
 
-const configJSON = fs.readFileSync(configFile).toString();
-const config = JSON.parse(configJSON);
+const configuration = parseConfig(config);
+console.log(configuration);

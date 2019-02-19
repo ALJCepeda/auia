@@ -1,10 +1,23 @@
 import { User } from "./User";
+import { Configuration } from "./Configuration";
+import { ConfigModel } from "interfaces";
 
-export class Group{
+export class Group implements ConfigModel{
 	public sudoer:boolean = false;
 	public users:User[] = [];
 
-	constructor(public name:string) {
-		this.name = name;
+	constructor(public id:string) {}
+
+	class() {
+		return 'Group';
+	}
+
+	getSpecs() {
+		return [];
+	}
+
+	buildFrom(configuration:Configuration): Group{
+
+		return this;
 	}
 }

@@ -9,8 +9,8 @@ export class Dictionary<K, V> {
 
 	keysForEntry(entry:V):K[] {
 		const keys:K[] = [];
-		this.entries.forEach((entry, key) => {
-			if (entry === entry) {
+		this.entries.forEach((e, key) => {
+			if (e === entry) {
 				keys.push(key);
 			}
 		});

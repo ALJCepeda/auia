@@ -1,4 +1,6 @@
 import { User } from './User';
+import { Configuration } from './Configuration';
+import { ConfigModel } from "interfaces";
 
 export enum DatabasePermission {
 	READ,
@@ -8,9 +10,7 @@ export enum DatabasePermission {
 };
 
 export class DatabaseUser extends User {
-	constructor(public name:string, public database:Database, public permission:DatabasePermission) {
-		super(name);
-	}
+
 }
 
 export class Database {
@@ -20,11 +20,24 @@ export class Database {
 	constructor(public name:string) {}
 }
 
-export class RDBMS {
+export class RDBMS implements ConfigModel {
 	public users:User[] = [];
 	public databases:Database[] = [];
 
-	constructor() {}
+	constructor(public id:string) {}
+
+	class() {
+		return 'RDBMS';
+	}
+
+	getSpecs() {
+		return [];
+	}
+
+	buildFrom(configuration:Configuration): RDBMS {
+
+		return this;
+	}
 }
 
 export class Postgres extends RDBMS {}
