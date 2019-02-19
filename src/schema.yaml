@@ -1,0 +1,95 @@
+$schema: http://json-schema.org/draft-07/schema
+$id: http://ajcepeda.com/schemas/auia.jso
+title: Auia Schema
+description:  Schema for Auia config
+type: object
+$defs:
+  path:
+    type: object
+    definition: Configuration for a path on the system
+    required:
+      - url
+    properties:
+      url:
+        type: string
+        definition: URL on system
+        default: ~/repos
+      chmod:
+        type: string
+        definition: Permissions for the path, default is whatever the software chooses
+      owner:
+        type: string
+        definition: Must be the name of a user defined in this config or root, default is wahtever the software chooses
+properties:
+  defaults:
+    type: object
+    properties:
+      users:
+        type: object
+        definition: Default configuration for all users
+        properties:
+          password:
+            type: string
+            definition: Initial password used to create user accounts
+            default: password
+          repositories:
+            type: object
+            definition: Default configuration for repositories belonging to user
+            properties:
+              path:
+                oneof:
+                  - type: string
+                    definition: URL on system
+                    default: ~/repos
+                  - $ref: #/$defs/path
+  repositories:
+    type: array
+    items:
+      type: object
+      definition: Schema for system repositories
+      required:
+        - name
+        - url
+      properties:
+        name:
+          type: string
+          definition: Identifier for repository, needs to be unique
+        type:
+          type: string
+          default: git
+          enum:
+            - git
+        url:
+          definition: Location of repository to be cloned
+          oneof:
+            - type: string
+              definition: External or system URL
+            - $ref: #/defs/path
+        init:
+          type: string
+          definition: Command to be run once when repository is cloned
+  users:
+    type: array
+    items:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          definition: Name of the user
+        password:
+          type: string
+          definition: Initial password used to create user
+        path:
+          definition: Location of user's home folder
+          oneof:
+            - type: string
+              definition: URL on system
+              default: ~/
+            - $ref: #/$defs/path
+        repositories:
+          type: array
+          description: Name identifiers of repositories defined in root { key:repositories }
+          items:
+            - type: string

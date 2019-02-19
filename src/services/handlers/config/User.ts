@@ -8,12 +8,13 @@ function _build(model:ConfigModel, config:Configuration):ConfigModel {
   }
 
   const user:User = model as User;
+  const { repositories, groups } = user.data;
 
-  if(user.config.repositories) {
-    if (!Array.isArray(user.config.repositories)) {
+  if(repositories) {
+    if (!Array.isArray(repositories)) {
       throw new Error(`Repositories for user (${user.id} must be an array of repository ids or UserRepository objects`);
     } else {
-      user.config.repositories.forEach((repositoryID: string) => {
+      repositories.forEach((repositoryID: string) => {
         const repository = config.repositories.get(repositoryID);
         if (!repository) {
           console.warn(`Undefined repository encountered (${repositoryID}) for user (${user.id})`);
@@ -25,11 +26,11 @@ function _build(model:ConfigModel, config:Configuration):ConfigModel {
     }
   }
 
-  if(user.config.groups) {
-    if(!Array.isArray(user.config.groups)) {
+  if(groups) {
+    if(!Array.isArray(groups)) {
       throw new Error(`Groups for user (${user.id}) must be an array of repository ids or UserGroup objects`);
     } else {
-      user.config.groups.forEach((groupID:string) => {
+     groups.forEach((groupID:string) => {
         const group = config.groups.get(groupID);
         if(!group) {
           console.warn(`Undefined group encountered (${groupID}) for user(${user.id})`);
