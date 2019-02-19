@@ -1,23 +1,22 @@
-import { User } from "./User";
-import { Configuration } from "./Configuration";
-import { ConfigModel } from "interfaces";
+import { ConfigModel } from 'interfaces';
+import { Spec } from './Test';
+import { User } from './User';
 
-export class Group implements ConfigModel{
-	public sudoer:boolean = false;
-	public users:User[] = [];
+export class Group implements ConfigModel {
+  public static classOf(model:ConfigModel) {
+    return model.class() === Group;
+  }
 
-	constructor(public id:string) {}
+  public users:User[] = [];
+  public config:any[] = [];
 
-	class() {
-		return 'Group';
-	}
+  constructor(public id:string) {}
 
-	getSpecs() {
-		return [];
-	}
+  public class() {
+    return Group;
+  }
 
-	buildFrom(configuration:Configuration): Group{
-
-		return this;
-	}
+  public getSpecs():Array<Spec<ConfigModel>> {
+    return [];
+  }
 }

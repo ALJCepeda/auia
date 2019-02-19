@@ -1,35 +1,37 @@
 import { ConfigModel } from 'interfaces';
 import { Group } from './Group';
-import { RDBMS } from './RDBMS';
 import { Repository } from './Repository';
 import { User } from './User';
 
 export class Configuration {
-  public users:Map<string, User> = new Map();
-  public groups:Map<string, Group> = new Map();
-  public rdbms:Map<string, RDBMS> = new Map();
-  public repositories:Map<string, Repository> = new Map();
+  public get users() {
+    return this.maps.get(User) as Map<string, User>;
+  }
 
-  private classToMap:{ [index:string]:Map<string, ConfigModel> } = {
-    Group: this.groups,
-    RDBMS: this.rdbms,
-    Repository: this.repositories,
-    User: this.users
-  };
+  public get groups() {
+    return this.maps.get(Group) as Map<string, Group>;
+  }
 
-  public models() {
-    let result = new Map();
-    for(const key in this) {
-      if(this.hasOwnProperty(key)) {
-        const prop = this[key];
+  public get repositories() {
+    return this.maps.get(Repository) as Map<string, Repository>;
+  }
 
-        if(prop instanceof Map) {
-          result = new Map([ ...result, ...prop]);
-        }
-      }
-    }
+  private maps:Map<Function, Map<string, ConfigModel>> = new Map<Function, Map<string, ConfigModel>>([
+    [ Group, new Map<string, Group>() ],
+    [ Repository, new Map<string, Repository>() ],
+    [ User, new Map<string, User>() ]
+  ]);
 
-    return Array.from(result.values());
+  public models():ConfigModel[] {
+    const result:ConfigModel[] = [];
+
+    this.maps.forEach((map) => {
+      map.forEach((model) => {
+        result.push(model);
+      });
+    });
+
+    return result;
   }
 
   public add(models: ConfigModel[]): Configuration {
@@ -38,17 +40,22 @@ export class Configuration {
   }
 
   protected _add(model: ConfigModel): void {
-    const className = model.class();
-    const map = this.classToMap[className];
+    const classConstructor = model.class();
 
-    if(!map) {
-      throw new Error(`Invalid class provided to configuration: ${className}`);
+    if(!this.maps.has(classConstructor)) {
+      throw new Error(`THere is no map for class: ${classConstructor}`);
+    } else {
+      const map = this.maps.get(classConstructor);
+
+      if(!map) {
+        throw new Error(`Invalid class provided to configuration: ${classConstructor}`);
+      }
+
+      if(map.has(model.id)) {
+        throw new Error(`Duplicate model (${classConstructor}) encountered for: ${model.id}`);
+      }
+
+      map.set(model.id, model);
     }
-
-    if(map.has(model.id)) {
-      throw new Error(`Duplicate model (${className}) encountered for: ${model.id}`);
-    }
-
-    map.set(model.id, model);
   }
 }

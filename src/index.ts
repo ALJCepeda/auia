@@ -13,4 +13,4 @@ if (!validate(config)) {
 }
 
 const configuration = parseConfig(config);
-console.log(configuration);
+console.log(configuration.users.get('alfred'));

@@ -1,27 +1,25 @@
-import { Test } from "./Test";
-import { Configuration } from "./Configuration";
-import { ConfigModel } from "interfaces";
+import { ConfigModel } from 'interfaces';
+import { Spec, Test } from './Test';
 
 export class Repository implements ConfigModel {
-	public id:string = '';
-	public origin:string = '';
-	public branch:string = 'master';
-	public initCommands:string[] = [];
+  public static classOf(model:ConfigModel) {
+    return model.class() === Repository;
+  }
 
-	class() {
-		return 'Repository';
-	}
+  public branch:string = 'master';
+  public config:any = {};
 
-	getSpecs() {
-		return [
-			new Test(() => this.id.length >= 1, 'Repository needs a name in order to be registerd')
-		];
-	}
+  constructor(public id:string) {}
 
-	buildFrom(configuration:Configuration): Repository {
+  public class() {
+    return Repository;
+  }
 
-		return this;
-	}
+  public getSpecs():Array<Spec<ConfigModel>> {
+    return [
+      new Test(() => this.id.length >= 1, 'Repository needs a name in order to be registerd')
+    ];
+  }
 }
 
 export class GitRepository extends Repository {}

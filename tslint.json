@@ -5,12 +5,14 @@
   ],
   "jsRules": {},
   "rules": {
+    "ban-types": false,
     "interface-name": [false],
     "no-console": [false],
     "quotemark": [true, "single"],
     "typedef-whitespace": [false],
     "trailing-comma": false,
     "max-line-length": false,
+    "max-classes-per-file": false,
     "whitespace": [true, "check-decl", "check-module", "check-operator", "check-preblock", "check-rest-spread", "check-separator", "check-type-operator", "check-typecast"]
   },
   "rulesDirectory": []

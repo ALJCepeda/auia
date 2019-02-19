@@ -1,7 +1,7 @@
 import { dictionary } from 'factories';
 import { ConfigModel } from 'interfaces';
 import { Configuration } from 'models';
-import { handle } from './handlers';
+import { handle } from './handlers/standard';
 import { validateModels } from './validate';
 
 export function generateModels(payload:any):Configuration {
