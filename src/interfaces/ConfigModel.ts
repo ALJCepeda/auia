@@ -6,6 +6,6 @@ export interface ConfigModel extends Validatable<ConfigModel> {
   class():Function;
 }
 
-export function isConfigModel(model:ConfigModel):model is ConfigModel {
+export function isConfigModel(model:any):model is ConfigModel {
   return typeof model.id !== 'undefined' && typeof model.data !== 'undefined' && typeof model.class !== 'undefined';
 }

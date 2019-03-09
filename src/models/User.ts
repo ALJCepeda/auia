@@ -1,4 +1,5 @@
 import { ConfigModel } from 'interfaces';
+import {Column, Entity, ManyToMany, OneToMany, OneToOne, PrimaryColumn} from 'typeorm';
 import { Group } from './Group';
 import { RepositoryInstance } from './RepositoryInstance';
 
@@ -8,11 +9,28 @@ export interface UserData {
   groups:string[];
 }
 
+@Entity('users')
 export class User implements ConfigModel {
-  public repositories:Map<string, RepositoryInstance> = new Map();
-  public groups:Map<string, Group> = new Map();
+  @OneToMany(() => RepositoryInstance)
+  public repositoryInstances:RepositoryInstance[] = [];
+  public repositoryInstanceMap:Map<string, RepositoryInstance> = new Map();
 
-  constructor(public id: string, public data:UserData) {}
+  @OneToMany(() => GroupMembership)
+  public groupMemberships:GroupMembership[] = [];
+  public groupMembershipMap:Map<string, GroupMembership> = new Map();
+
+  @PrimaryColumn()
+  public id:string;
+
+  @Column()
+  public isActive:boolean = false;
+
+  constructor(
+    id: string,
+    public data:UserData
+  ) {
+    this.id = id;
+  }
 
   public class() {
     return User;

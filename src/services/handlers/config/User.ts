@@ -49,7 +49,7 @@ export const UserConfig:ConfigHandler = {
     return models.map((model) => _build(model, config));
   },
 
-  create:(datas:any[]): ConfigModel[] => {
-    return datas.map((data) => new User(data.name, data));
+  create:(datum:any[]): ConfigModel[] => {
+    return datum.map((data) => new User(data.name, data));
   }
 };
