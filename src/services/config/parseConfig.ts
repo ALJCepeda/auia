@@ -1,5 +1,5 @@
 import { Configuration } from 'models';
-import { getConfigHandler } from './handlers/config';
+import { getConfigHandler } from '../handlers/config';
 
 function addData(key:string, data:any,  configuration:Configuration):void {
   const handler = getConfigHandler(key);

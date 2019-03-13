@@ -1,34 +1,11 @@
-import * as AJV from 'ajv';
-import { Group, GroupMembership, Repository, RepositoryInstance, User } from 'models';
-import 'reflect-metadata';
-import { parseConfig } from 'services';
-import { ConnectionOptions, createConnection } from 'typeorm';
-import { loadConfig, loadSchema } from './utils';
+import { User } from 'models';
+import { AppConfig, configure } from './config';
+import { generateConfiguration } from './services/config/generateConfiguration';
 
-const options: ConnectionOptions = {
-  database: `${__dirname}/../.auia/auia.db`,
-  entities: [ User, Group, GroupMembership, Repository, RepositoryInstance ],
-  logging: true,
-  synchronize: true,
-  type: 'sqlite'
-};
-
-createConnection(options).then((connection) => {
-  const userRepository = connection.getRepository(User);
-  console.log('Got it!');
+console.log('Before Config');
+configure().then(({ dbConnection }:AppConfig) => {
+  const userRepository = dbConnection.getRepository(User);
+  const configuration = generateConfiguration();
+  console.log(configuration.users.get('alfred'));
+  console.log('done');
 });
-
-/*
-const config = loadConfig();
-const schema = loadSchema();
-
-const ajv = new AJV();
-const validate = ajv.compile(schema);
-
-if (!validate(config)) {
-  throw validate.errors;
-}
-
-const configuration = parseConfig(config);
-
-console.log(configuration.users.get('alfred'));*/

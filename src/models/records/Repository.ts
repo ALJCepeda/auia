@@ -18,8 +18,8 @@ export class Repository implements ConfigModel {
     this.id = id;
   }
 
-  public class() {
-    return Repository;
+  public class(): string {
+    return 'Repository';
   }
 
   public getSpecs():Array<Spec<ConfigModel>> {

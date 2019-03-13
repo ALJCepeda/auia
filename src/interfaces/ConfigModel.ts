@@ -1,9 +1,9 @@
 import { Validatable } from './Validatable';
 
 export interface ConfigModel extends Validatable<ConfigModel> {
-  id:string;
-  data:any;
-  class():Function;
+  id: string;
+  data: any;
+  class(): string;
 }
 
 export function isConfigModel(model:any):model is ConfigModel {

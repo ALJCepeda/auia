@@ -32,8 +32,8 @@ export class User implements ConfigModel {
     this.id = id;
   }
 
-  public class() {
-    return User;
+  public class(): string {
+    return 'User';
   }
 
   public getSpecs() {

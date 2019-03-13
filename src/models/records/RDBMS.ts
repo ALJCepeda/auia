@@ -27,8 +27,8 @@ export class RDBMS implements ConfigModel {
 
   constructor(public id:string) {}
 
-  public class() {
-    return RDBMS;
+  public class(): string {
+    return 'RDBMS';
   }
 
   public getSpecs() {

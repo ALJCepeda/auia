@@ -1,13 +1,16 @@
 import { ConfigModel } from 'interfaces';
-import { Configuration, RepositoryInstance, User } from 'models';
+import { Configuration, GroupMembership, RepositoryInstance, User } from 'models';
 import { ConfigHandler } from './ConfigHandler';
 
 function _build(model:ConfigModel, config:Configuration):ConfigModel {
-  if(model.class() !== User) {
+  if(model.class() !== 'User') {
     throw new Error(`Model is not instance of User: ${model}`);
   }
 
   const user:User = model as User;
+  user.repositoryInstances = [];
+  user.groupMemberships = [];
+
   const { repositories, groups } = user.data;
 
   if(repositories) {
@@ -19,8 +22,11 @@ function _build(model:ConfigModel, config:Configuration):ConfigModel {
         if (!repository) {
           console.warn(`Undefined repository encountered (${repositoryID}) for user (${user.id})`);
         } else {
-          const repositoryInstance = new RepositoryInstance(repository);
-          user.repositories.set(repositoryID, repositoryInstance);
+          const repositoryInstance = new RepositoryInstance(user, repository, {});
+
+          // @ts-ignore
+          user.repositoryInstances.push(repositoryInstance);
+          user.repositoryInstanceMap.set(repositoryID, repositoryInstance);
         }
       });
     }
@@ -35,7 +41,11 @@ function _build(model:ConfigModel, config:Configuration):ConfigModel {
         if(!group) {
           console.warn(`Undefined group encountered (${groupID}) for user(${user.id})`);
         } else {
-          user.groups.set(groupID, group);
+          const groupMembership = new GroupMembership(user, group, {});
+
+          // @ts-ignore
+          user.groupMemberships.push(groupMembership);
+          user.groupMembershipMap.set(groupID, groupMembership);
         }
       });
     }

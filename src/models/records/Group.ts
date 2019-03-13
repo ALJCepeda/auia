@@ -21,8 +21,8 @@ export class Group implements ConfigModel {
     this.id = id;
   }
 
-  public class() {
-    return Group;
+  public class(): string {
+    return 'Group';
   }
 
   public getSpecs():Array<Spec<ConfigModel>> {

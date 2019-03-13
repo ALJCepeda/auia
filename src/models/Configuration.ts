@@ -1,25 +1,23 @@
 import { ConfigModel } from 'interfaces';
-import { Group } from './records/Group';
-import { Repository } from './records/Repository';
-import { User } from './records/User';
+import { Group, Repository, User } from './records';
 
 export class Configuration {
   public get users() {
-    return this.maps.get(User) as Map<string, User>;
+    return this.maps.get('User') as Map<string, User>;
   }
 
   public get groups() {
-    return this.maps.get(Group) as Map<string, Group>;
+    return this.maps.get('Group') as Map<string, Group>;
   }
 
   public get repositories() {
-    return this.maps.get(Repository) as Map<string, Repository>;
+    return this.maps.get('Repository') as Map<string, Repository>;
   }
 
-  private maps:Map<Function, Map<string, ConfigModel>> = new Map<Function, Map<string, ConfigModel>>([
-    [ Group, new Map<string, Group>() ],
-    [ Repository, new Map<string, Repository>() ],
-    [ User, new Map<string, User>() ]
+  private maps:Map<string, Map<string, ConfigModel>> = new Map<string, Map<string, ConfigModel>>([
+    [ 'Group', new Map<string, Group>() ],
+    [ 'Repository', new Map<string, Repository>() ],
+    [ 'User', new Map<string, User>() ]
   ]);
 
   public models():ConfigModel[] {
@@ -40,19 +38,19 @@ export class Configuration {
   }
 
   protected _add(model: ConfigModel): void {
-    const classConstructor = model.class();
+    const className = model.class();
 
-    if(!this.maps.has(classConstructor)) {
-      throw new Error(`THere is no map for class: ${classConstructor}`);
+    if(!this.maps.has(className)) {
+      throw new Error(`There is no map for class: ${className}`);
     } else {
-      const map = this.maps.get(classConstructor);
+      const map = this.maps.get(className);
 
       if(!map) {
-        throw new Error(`Invalid class provided to configuration: ${classConstructor}`);
+        throw new Error(`Invalid class provided to configuration: ${className}`);
       }
 
       if(map.has(model.id)) {
-        throw new Error(`Duplicate model (${classConstructor}) encountered for: ${model.id}`);
+        throw new Error(`Duplicate model (${className}) encountered for: ${model.id}`);
       }
 
       map.set(model.id, model);

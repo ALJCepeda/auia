@@ -26,8 +26,8 @@ export class GroupMembership implements ConfigModel {
     this.group = group;
   }
 
-  public class() {
-    return GroupMembership;
+  public class():string {
+    return 'GroupMembership';
   }
 
   public getSpecs():Array<Spec<ConfigModel>> {

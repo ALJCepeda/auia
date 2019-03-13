@@ -31,8 +31,8 @@ export class RepositoryInstance implements ConfigModel {
     this.repository = repository;
   }
 
-  public class() {
-    return RepositoryInstance;
+  public class(): string {
+    return 'RepositoryInstance';
   }
 
   public getSpecs(): Array<Spec<ConfigModel>> {
