@@ -14,7 +14,8 @@
     "max-line-length": false,
     "max-classes-per-file": false,
     "whitespace": [true, "check-decl", "check-module", "check-operator", "check-preblock", "check-rest-spread", "check-separator", "check-type-operator", "check-typecast"],
-    "variable-name": false
+    "variable-name": false,
+    "no-shadowed-variable": false
   },
   "rulesDirectory": []
 }

@@ -1,6 +1,6 @@
 import { ConfigModel } from 'interfaces';
-import {Column, Entity, ManyToMany, OneToMany, OneToOne, PrimaryColumn} from 'typeorm';
-import { Group } from './Group';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { GroupMembership } from './GroupMembership';
 import { RepositoryInstance } from './RepositoryInstance';
 
 export interface UserData {
@@ -11,16 +11,16 @@ export interface UserData {
 
 @Entity('users')
 export class User implements ConfigModel {
-  @OneToMany(() => RepositoryInstance)
-  public repositoryInstances:RepositoryInstance[] = [];
+  @PrimaryColumn()
+  public id: string;
+
+  @OneToMany(() => RepositoryInstance, (repositoryInstance) => repositoryInstance.id)
+  public repositoryInstances?:RepositoryInstance[];
   public repositoryInstanceMap:Map<string, RepositoryInstance> = new Map();
 
-  @OneToMany(() => GroupMembership)
-  public groupMemberships:GroupMembership[] = [];
+  @OneToMany(() => GroupMembership, (groupMembership) => groupMembership.id)
+  public groupMemberships?:GroupMembership[];
   public groupMembershipMap:Map<string, GroupMembership> = new Map();
-
-  @PrimaryColumn()
-  public id:string;
 
   @Column()
   public isActive:boolean = false;

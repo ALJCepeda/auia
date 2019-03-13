@@ -1,13 +1,13 @@
 import * as AJV from 'ajv';
+import { Group, GroupMembership, Repository, RepositoryInstance, User } from 'models';
 import 'reflect-metadata';
 import { parseConfig } from 'services';
 import { ConnectionOptions, createConnection } from 'typeorm';
-import { User } from './models';
 import { loadConfig, loadSchema } from './utils';
 
 const options: ConnectionOptions = {
   database: `${__dirname}/../.auia/auia.db`,
-  entities: [ User ],
+  entities: [ User, Group, GroupMembership, Repository, RepositoryInstance ],
   logging: true,
   synchronize: true,
   type: 'sqlite'

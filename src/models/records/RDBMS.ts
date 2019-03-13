@@ -1,5 +1,5 @@
 import { User } from './User';
-import { Configuration } from './Configuration';
+import { Configuration } from '../Configuration';
 import { ConfigModel } from "interfaces";
 
 export enum DatabasePermission {

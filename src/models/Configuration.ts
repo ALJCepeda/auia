@@ -1,7 +1,7 @@
 import { ConfigModel } from 'interfaces';
-import { Group } from './Group';
-import { Repository } from './Repository';
-import { User } from './User';
+import { Group } from './records/Group';
+import { Repository } from './records/Repository';
+import { User } from './records/User';
 
 export class Configuration {
   public get users() {

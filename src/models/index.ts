@@ -1,11 +1,8 @@
 export * from './Test';
 export * from './Validator';
 export * from './Configuration';
-export * from './Group';
-export * from './Repository';
-export * from './User';
-export * from './RepositoryInstance';
-export * from './RDBMS';
 export * from './ValidateResult';
 export * from './ValidateError';
 export * from './Dictionary';
+
+export * from './records';
