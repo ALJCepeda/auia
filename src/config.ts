@@ -1,6 +1,6 @@
+import { Group, GroupMembership, Repository, RepositoryInstance, User } from 'models';
 import 'reflect-metadata';
-import {Connection, ConnectionOptions, createConnection} from 'typeorm';
-import { Group, GroupMembership, Repository, RepositoryInstance, User } from './models/records';
+import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 
 const connectionOptions: ConnectionOptions = {
   database: `${__dirname}/../.auia/auia.db`,

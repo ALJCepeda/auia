@@ -1,6 +1,5 @@
-import { ConfigModel } from 'interfaces';
+import { ConfigHandler, ConfigModel } from 'interfaces';
 import { Configuration, GroupMembership, RepositoryInstance, User } from 'models';
-import { ConfigHandler } from './ConfigHandler';
 
 function _build(model:ConfigModel, config:Configuration):ConfigModel {
   if(model.class() !== 'User') {

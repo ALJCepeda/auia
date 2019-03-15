@@ -1,11 +1,12 @@
 import { User } from 'models';
 import { AppConfig, configure } from './config';
+import { generateActions } from './services/config/diffDB';
 import { generateConfiguration } from './services/config/generateConfiguration';
 
-console.log('Before Config');
-configure().then(({ dbConnection }:AppConfig) => {
-  const userRepository = dbConnection.getRepository(User);
+configure().then(async ({ dbConnection }:AppConfig) => {
   const configuration = generateConfiguration();
-  console.log(configuration.users.get('alfred'));
+  const pendingActions = await generateActions(configuration, dbConnection);
+
+  console.log(pendingActions);
   console.log('done');
 });

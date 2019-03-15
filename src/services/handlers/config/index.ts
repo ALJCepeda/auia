@@ -1,9 +1,9 @@
 import { ConfigModel, isConfigModel } from 'interfaces';
 import { User } from 'models';
-import { ConfigHandler } from './ConfigHandler';
+import { ConfigHandler } from '../../../interfaces/ConfigHandler';
 import { UserConfig } from './User';
 
-export * from './ConfigHandler';
+export * from '../../../interfaces/ConfigHandler';
 export * from './User';
 
 const handlers:Map<string | Function, ConfigHandler> = new Map<string | Function, ConfigHandler>([
