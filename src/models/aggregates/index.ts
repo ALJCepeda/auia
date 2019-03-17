@@ -1,1 +1,2 @@
-export * from './User';
+export * from './Aggregate';
+export * from './UserAggregate';

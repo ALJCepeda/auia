@@ -1,19 +1,33 @@
 import * as path from 'path';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
-import { ConfigModel } from 'interfaces';
 import { validateModel } from 'services';
-import { Column, Entity, ManyToOne, OneToOne, PrimaryColumn } from 'typeorm';
+import { assign } from '../../services/assign';
 import { Spec, Test } from '../Test';
+import { ConfigModel } from './ConfigModel';
 import { Repository } from './Repository';
 import { User } from './User';
 
 @Entity('user-repositories')
 export class UserRepository extends ConfigModel {
+  public static from(model:Partial<UserRepository>): UserRepository {
+    if(!model.user) {
+      throw new Error(`Cannot construct UserRepository, object is missing User`);
+    }
+
+    if(!model.repository) {
+      throw new Error(`Cannot construct UserRepository, object is missing Repository`);
+    }
+
+    return assign(new UserRepository(model.user, model.repository), model);
+  }
+
   public get id(): string {
     return path.normalize(`${this.basePath}/${this.repository.id}`);
   }
 
-  public set id(value:string) { }
+  // @ts-ignore
+  public set id() { }
 
   @Column()
   public basePath:string = `~/repos`;
@@ -27,7 +41,7 @@ export class UserRepository extends ConfigModel {
   @ManyToOne(() => Repository, (repository) => repository.id)
   public repository:Repository;
 
-  constructor(user:User, repository:Repository, data:any) {
+  constructor(user:User, repository:Repository, data?:any) {
     super(undefined, data);
     this.user = user;
     this.repository = repository;

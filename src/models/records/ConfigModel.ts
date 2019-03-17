@@ -1,22 +1,29 @@
-import { Validatable } from 'interfaces';
 import { Column, PrimaryColumn } from 'typeorm';
+
+import { Validatable } from 'interfaces';
 import { Spec } from '../Test';
 
 export abstract class ConfigModel implements Validatable<ConfigModel> {
+  public static from(model:Partial<ConfigModel>): ConfigModel {
+    throw new Error(`ConfigModel.from needs to be implemented by subclass ${model}`);
+  }
+
   @PrimaryColumn()
   public id: string = 'N/A';
 
   @Column()
-  public created:Date = new Date();
+  public createdAt:Date = new Date();
 
   @Column()
-  public lastModified:Date = new Date();
+  public lastModifiedAt:Date = new Date();
 
-  public data: any;
+  public created:boolean = false;
+  public deleted:boolean = false;
+  public data?: any;
 
   constructor(
-    id:string | undefined,
-    data:any
+    id?:string,
+    data?:any
   ) {
     if(id) {
       this.id = id;
@@ -27,8 +34,4 @@ export abstract class ConfigModel implements Validatable<ConfigModel> {
 
   public abstract class(): string;
   public abstract getSpecs(): Array<Spec<ConfigModel>>;
-}
-
-export function isConfigModel(model:any):model is ConfigModel {
-  return typeof model.id !== 'undefined' && typeof model.data !== 'undefined' && typeof model.class !== 'undefined';
 }
