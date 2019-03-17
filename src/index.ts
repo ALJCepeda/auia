@@ -1,12 +1,15 @@
-import { User } from 'models';
+import { ConfigModel, ModelChanges } from 'interfaces';
+import { Configuration } from 'models';
+import { checkChanges, generateConfiguration } from 'services';
 import { AppConfig, configure } from './config';
-import { generateActions } from './services/config/diffDB';
-import { generateConfiguration } from './services/config/generateConfiguration';
 
 configure().then(async ({ dbConnection }:AppConfig) => {
-  const configuration = generateConfiguration();
-  const pendingActions = await generateActions(configuration, dbConnection);
+  const config:Configuration = generateConfiguration();
 
-  console.log(pendingActions);
-  console.log('done');
+  const changes:Array<ModelChanges<ConfigModel>> = await checkChanges(config, dbConnection);
+
+  changes.forEach((change) => {
+    const pendingChanges = change.getPendingChanges();
+    console.log(pendingChanges);
+  });
 });
