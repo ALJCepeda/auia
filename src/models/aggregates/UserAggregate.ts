@@ -1,8 +1,8 @@
 import { ChangeConstructor } from 'interfaces';
 import { UserChangeMap } from 'services';
 import { Connection } from 'typeorm';
-import { User } from '../records';
-import { UserChanges } from '../records/changes';
+import { User } from '../entities';
+import { UserChanges } from '../entities/changes';
 import { Aggregate } from './Aggregate';
 
 export class UserAggregate extends Aggregate<User> {
@@ -10,9 +10,7 @@ export class UserAggregate extends Aggregate<User> {
     id: string,
     dbConnection: Connection
   ) {
-    super(id, {
-      model: dbConnection.getRepository(UserChanges)
-    });
+    super(id, dbConnection.getRepository(UserChanges));
   }
 
   public replay(changes:UserChanges[]): User {

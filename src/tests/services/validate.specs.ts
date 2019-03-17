@@ -1,11 +1,12 @@
 import 'should';
-import { Test, Validator, Spec } from 'models';
+
+import { anyobject, Validatable } from 'interfaces';
+import { Spec, Test, Validator } from 'models';
 import { validateModel } from 'services';
-import { Validatable, anyobject } from 'interfaces';
 
 describe('Validator', () => {
   it('should validate any object by adding an array of specs', () => {
-    const specs:Spec<anyobject>[] = [
+    const specs:Array<Spec<anyobject>> = [
       (model) => model.name.length > 0,
       (model) => model.userId > 0,
       new Test((model) => model.age > 18, 'Must be 18 or older'),
@@ -14,8 +15,8 @@ describe('Validator', () => {
     const validator = new Validator<anyobject>(specs);
 
     const obj = {
-      name:'',
       age:0,
+      name:'',
       occupation:'',
       userId:0
     };
@@ -34,13 +35,13 @@ describe('Validator', () => {
 
   it('should validate any type by adding specs', () => {
     class TestModel {
-      name = '';
-      age = 5;
-      occupation = 'student';
-      userId = 1234;
+      public name = '';
+      public age = 5;
+      public occupation = 'student';
+      public userId = 1234;
     }
     const test = new TestModel();
-    const specs:Spec<TestModel>[] = [
+    const specs:Array<Spec<TestModel>> = [
       (model) => model.name.length > 0,
       (model) => model.userId > 0,
       new Test((model) => model.age > 18, 'Must be 18 or older'),
@@ -60,19 +61,18 @@ describe('Validator', () => {
   });
 });
 
-describe('Validate<ConfigModel>', () => {
+describe('Validate<EntityModel>', () => {
   class UserModel implements Validatable {
-    [key: string]: any;
-    name = '';
-    age = 5;
-    occupation = 'student';
-    userId = 1234;
+    public name = '';
+    public age = 5;
+    public occupation = 'student';
+    public userId = 1234;
 
     constructor(data:Partial<UserModel> = {}) {
       Object.assign(this, data);
     }
 
-    getSpecs():Spec<UserModel>[] {
+    public getSpecs():Array<Spec<UserModel>> {
       return [];
     }
   }
@@ -89,15 +89,15 @@ describe('Validate<ConfigModel>', () => {
     result.isValid().should.be.true();
   });
 
-  const userSpecs:Spec<UserModelWithSpecs>[] = [
-    model => model.name.length > 0,
-    model => model.userId > 0,
-    new Test(model => model.age > 18, 'Must be 18 or older'),
-    new Test(model => model.occupation.length > 0, 'Must have an occupation')
+  const userSpecs:Array<Spec<UserModelWithSpecs>> = [
+    (model) => model.name.length > 0,
+    (model) => model.userId > 0,
+    new Test((model) => model.age > 18, 'Must be 18 or older'),
+    new Test((model) => model.occupation.length > 0, 'Must have an occupation')
   ];
 
   class UserModelWithSpecs extends UserModel {
-    getSpecs():Spec<UserModelWithSpecs>[] {
+    public getSpecs():Array<Spec<UserModelWithSpecs>> {
       return userSpecs;
     }
   }
@@ -115,30 +115,30 @@ describe('Validate<ConfigModel>', () => {
     result.isValid().should.be.false();
   });
 
-  const groupSpecs:Spec<Group>[] =  [
-    new Test(model => validateModel(model.user), 'Must include a valid user for group'),
-    new Test(model => model.name.length > 0, 'Must include a name for the group')
+  const groupSpecs:Array<Spec<Group>> =  [
+    new Test((model) => validateModel(model.user), 'Must include a valid user for group'),
+    new Test((model) => model.name.length > 0, 'Must include a name for the group')
   ];
 
   class Group implements Validatable {
-    user:UserModelWithSpecs = new UserModelWithSpecs();
-    name:string = '';
+    public user:UserModelWithSpecs = new UserModelWithSpecs();
+    public name:string = '';
 
-    getSpecs():Spec<Group>[] {
-  		return groupSpecs;
-  	}
+    public getSpecs():Array<Spec<Group>> {
+      return groupSpecs;
+    }
   }
 
-  const systemSpecs:Spec<System>[] = [
-    new Test(model => validateModel(model.group), 'Must include a valid group for system'),
-    new Test(model => model.type.length > 0, 'Must include a type for the system')
+  const systemSpecs:Array<Spec<System>> = [
+    new Test((model) => validateModel(model.group), 'Must include a valid group for system'),
+    new Test((model) => model.type.length > 0, 'Must include a type for the system')
   ];
 
   class System implements Validatable {
-    group:Group = new Group();
-    type:string = '';
+    public group:Group = new Group();
+    public type:string = '';
 
-    getSpecs():Spec<System>[] {
+    public getSpecs():Array<Spec<System>> {
       return systemSpecs;
     }
   }

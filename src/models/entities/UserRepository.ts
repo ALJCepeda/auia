@@ -3,13 +3,13 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { validateModel } from 'services';
 import { assign } from '../../services/assign';
+import { EntityModel } from '../abstract';
 import { Spec, Test } from '../Test';
-import { ConfigModel } from './ConfigModel';
 import { Repository } from './Repository';
 import { User } from './User';
 
 @Entity('user-repositories')
-export class UserRepository extends ConfigModel {
+export class UserRepository extends EntityModel {
   public static from(model:Partial<UserRepository>): UserRepository {
     if(!model.user) {
       throw new Error(`Cannot construct UserRepository, object is missing User`);
@@ -25,9 +25,6 @@ export class UserRepository extends ConfigModel {
   public get id(): string {
     return path.normalize(`${this.basePath}/${this.repository.id}`);
   }
-
-  // @ts-ignore
-  public set id() { }
 
   @Column()
   public basePath:string = `~/repos`;
@@ -51,7 +48,7 @@ export class UserRepository extends ConfigModel {
     return 'UserRepository';
   }
 
-  public getSpecs(): Array<Spec<ConfigModel>> {
+  public getSpecs(): Array<Spec<EntityModel>> {
     return [
       new Test(() => validateModel(this.repository), 'Invalid repository provided to repository instance'),
       new Test(() => this.basePath.length > 0, 'Must provide a valid base path'),

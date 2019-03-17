@@ -1,2 +1,2 @@
+export * from './EntityModel';
 export * from './ModelChanges';
-export * from './UserChanges';

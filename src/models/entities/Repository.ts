@@ -1,12 +1,12 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 
 import { assign } from '../../services/assign';
+import { EntityModel } from '../abstract';
 import { Spec, Test } from '../Test';
-import { ConfigModel } from './ConfigModel';
 import { UserRepository } from './UserRepository';
 
 @Entity('repositories')
-export class Repository extends ConfigModel {
+export class Repository extends EntityModel {
   public static from(model:Partial<Repository>): Repository {
     if(!model.id) {
       throw new Error(`Cannot construct Repository, object is missing id`);
@@ -25,7 +25,7 @@ export class Repository extends ConfigModel {
     return 'Repository';
   }
 
-  public getSpecs():Array<Spec<ConfigModel>> {
+  public getSpecs():Array<Spec<EntityModel>> {
     return [
       new Test(() => this.id.length >= 1, 'Repository needs a name in order to be registered')
     ];

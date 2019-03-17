@@ -1,7 +1,6 @@
-import { ConfigModel } from 'interfaces';
-import { Configuration } from 'models';
+import { Configuration, EntityModel } from 'models';
 
 export interface ConfigHandler {
-  create:(data:any[]) => ConfigModel[];
-  build:(models:ConfigModel[], config:Configuration) => ConfigModel[];
+  create:(data:any[]) => EntityModel[];
+  build:(models:EntityModel[], config:Configuration) => EntityModel[];
 }

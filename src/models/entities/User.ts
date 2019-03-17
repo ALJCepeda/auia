@@ -1,13 +1,13 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 
 import { assign } from '../../services/assign';
+import { EntityModel } from '../abstract';
 import { Spec } from '../Test';
-import { ConfigModel } from './ConfigModel';
 import { GroupUser } from './GroupUser';
 import { UserRepository } from './UserRepository';
 
 @Entity('users')
-export class User extends ConfigModel {
+export class User extends EntityModel {
   public static from(model:Partial<User>): User {
     if(!model.id) {
       throw new Error(`Cannot construct User, object is missing id`);
@@ -17,12 +17,12 @@ export class User extends ConfigModel {
   }
 
   @OneToMany(() => UserRepository, (repositoryInstance) => repositoryInstance.id)
-  public repositoryInstances?:UserRepository[];
-  public repositoryInstanceMap:Map<string, UserRepository> = new Map();
+  public repositories?:UserRepository[];
+  public repositoryMap:Map<string, UserRepository> = new Map();
 
   @OneToMany(() => GroupUser, (groupMembership) => groupMembership.id)
-  public groupMemberships?:GroupUser[];
-  public groupMembershipMap:Map<string, GroupUser> = new Map();
+  public groups?:GroupUser[];
+  public groupMap:Map<string, GroupUser> = new Map();
 
   @Column()
   public isActive:boolean = false;
@@ -31,7 +31,7 @@ export class User extends ConfigModel {
     return 'User';
   }
 
-  public getSpecs(): Array<Spec<ConfigModel>> {
+  public getSpecs(): Array<Spec<EntityModel>> {
     return [];
   }
 }

@@ -1,5 +1,5 @@
-import { ConfigHandler, ConfigModel, isConfigModel } from 'interfaces';
-import { User } from 'models';
+import { ConfigHandler } from 'interfaces';
+import { EntityModel, isEntityModel, User } from 'models';
 import { UserConfig } from './User';
 
 export * from '../../../interfaces/ConfigHandler';
@@ -10,14 +10,14 @@ const handlers:Map<string | Function, ConfigHandler> = new Map<string | Function
   [ 'User', UserConfig ]
 ]);
 
-export function getConfigHandler(key:string | ConfigModel): ConfigHandler {
+export function getConfigHandler(key:string | EntityModel): ConfigHandler {
   let _key:string | Function;
-  if(isConfigModel(key)) {
+  if(isEntityModel(key)) {
     _key = key.class();
   } else if(typeof key === 'string') {
     _key = key;
   } else {
-    throw new Error(`Unable to handle type: ${key}`);
+    throw new Error(`Unable to handle type: ${JSON.stringify(key)}`);
   }
 
   if(!handlers.has(_key)) {

@@ -1,12 +1,12 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 
 import { assign } from '../../services/assign';
+import { EntityModel } from '../abstract';
 import { Spec } from '../Test';
-import { ConfigModel } from './ConfigModel';
 import { GroupUser } from './GroupUser';
 
 @Entity('group')
-export class Group extends ConfigModel {
+export class Group extends EntityModel {
   public static from(model:Partial<Group>): Group {
     if(!model.id) {
       throw new Error(`Cannot construct Group, model is missing id`);
@@ -25,7 +25,7 @@ export class Group extends ConfigModel {
     return 'Group';
   }
 
-  public getSpecs():Array<Spec<ConfigModel>> {
+  public getSpecs():Array<Spec<EntityModel>> {
     return [];
   }
 }

@@ -1,5 +1,5 @@
-import { ConfigModel } from 'interfaces';
-import { Group, Repository, User } from './records';
+import { EntityModel } from './abstract';
+import { Group, Repository, User } from './entities';
 
 export class Configuration {
   public get users() {
@@ -14,14 +14,14 @@ export class Configuration {
     return this.maps.get('Repository') as Map<string, Repository>;
   }
 
-  private maps:Map<string, Map<string, ConfigModel>> = new Map<string, Map<string, ConfigModel>>([
+  private maps:Map<string, Map<string, EntityModel>> = new Map<string, Map<string, EntityModel>>([
     [ 'Group', new Map<string, Group>() ],
     [ 'Repository', new Map<string, Repository>() ],
     [ 'User', new Map<string, User>() ]
   ]);
 
-  public models():ConfigModel[] {
-    const result:ConfigModel[] = [];
+  public models():EntityModel[] {
+    const result:EntityModel[] = [];
 
     this.maps.forEach((map) => {
       map.forEach((model) => {
@@ -32,12 +32,12 @@ export class Configuration {
     return result;
   }
 
-  public add(models: ConfigModel[]): Configuration {
+  public add(models: EntityModel[]): Configuration {
     models.forEach((model) => this._add(model));
     return this;
   }
 
-  protected _add(model: ConfigModel): void {
+  protected _add(model: EntityModel): void {
     const className = model.class();
 
     if(!this.maps.has(className)) {

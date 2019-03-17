@@ -1,14 +1,14 @@
-import { ConfigHandler, ConfigModel } from 'interfaces';
-import { Configuration, GroupUser, UserRepository, User } from 'models';
+import { ConfigHandler } from 'interfaces';
+import { Configuration, EntityModel, GroupUser, User, UserRepository } from 'models';
 
-function _build(model:ConfigModel, config:Configuration):ConfigModel {
+function _build(model:EntityModel, config:Configuration):EntityModel {
   if(model.class() !== 'User') {
     throw new Error(`Model is not instance of User: ${model}`);
   }
 
   const user:User = model as User;
-  user.repositoryInstances = [];
-  user.groupMemberships = [];
+  user.repositories = [];
+  user.groups = [];
 
   const { repositories, groups } = user.data;
 
@@ -24,8 +24,8 @@ function _build(model:ConfigModel, config:Configuration):ConfigModel {
           const repositoryInstance = new UserRepository(user, repository, {});
 
           // @ts-ignore
-          user.repositoryInstances.push(repositoryInstance);
-          user.repositoryInstanceMap.set(repositoryID, repositoryInstance);
+          user.repositories.push(repositoryInstance);
+          user.repositoryMap.set(repositoryID, repositoryInstance);
         }
       });
     }
@@ -43,8 +43,8 @@ function _build(model:ConfigModel, config:Configuration):ConfigModel {
           const groupMembership = new GroupUser(user, group, {});
 
           // @ts-ignore
-          user.groupMemberships.push(groupMembership);
-          user.groupMembershipMap.set(groupID, groupMembership);
+          user.groups.push(groupMembership);
+          user.groupMap.set(groupID, groupMembership);
         }
       });
     }
@@ -54,11 +54,11 @@ function _build(model:ConfigModel, config:Configuration):ConfigModel {
 }
 
 export const UserConfig:ConfigHandler = {
-  build:(models:ConfigModel[], config:Configuration): ConfigModel[] => {
+  build:(models:EntityModel[], config:Configuration): EntityModel[] => {
     return models.map((model) => _build(model, config));
   },
 
-  create:(datum:any[]): ConfigModel[] => {
+  create:(datum:any[]): EntityModel[] => {
     return datum.map((data) => new User(data.name, data));
   }
 };

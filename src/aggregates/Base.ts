@@ -1,6 +1,6 @@
-import { ConfigModel } from 'interfaces';
+import { EntityModel } from 'models';
 
-export class Aggregate<T extends ConfigModel> {
+export class Aggregate<T extends EntityModel> {
   public constructor(public model:T, public events:Array<AggregateEvent<T>>) { }
 
   public runEvents() {
@@ -12,6 +12,6 @@ export class Aggregate<T extends ConfigModel> {
   }
 }
 
-export abstract class AggregateEvent<T extends ConfigModel> {
+export abstract class AggregateEvent<T extends EntityModel> {
   public constructor(public action:(model:T) => T) { }
 }

@@ -1,8 +1,7 @@
-import { Change } from 'interfaces';
 import { Column, PrimaryColumn } from 'typeorm';
-import { ConfigModel } from '../ConfigModel';
+import { EntityModel } from './EntityModel';
 
-export abstract class ModelChanges<Model extends ConfigModel> {
+export abstract class ModelChanges<Model extends EntityModel> {
   @PrimaryColumn()
   public id:string;
 
@@ -16,11 +15,12 @@ export abstract class ModelChanges<Model extends ConfigModel> {
   public payload:string;
 
   constructor(
-    id: string,
-    change:Change<Model>
+    id:string,
+    change:string,
+    payload:string
   ) {
     this.id = id;
-    this.change = change.id;
-    this.payload = change.payload;
+    this.change = change;
+    this.payload = payload;
   }
 }
