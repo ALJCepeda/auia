@@ -1,6 +1,5 @@
-import { ConfigModel, isConfigModel } from 'interfaces';
+import { ConfigHandler, ConfigModel, isConfigModel } from 'interfaces';
 import { User } from 'models';
-import { ConfigHandler } from '../../../interfaces/ConfigHandler';
 import { UserConfig } from './User';
 
 export * from '../../../interfaces/ConfigHandler';
@@ -21,7 +20,6 @@ export function getConfigHandler(key:string | ConfigModel): ConfigHandler {
     throw new Error(`Unable to handle type: ${key}`);
   }
 
-  debugger;
   if(!handlers.has(_key)) {
     throw new Error(`No handler found for key: ${key}`);
   } else {

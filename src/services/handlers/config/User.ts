@@ -1,5 +1,5 @@
 import { ConfigHandler, ConfigModel } from 'interfaces';
-import { Configuration, GroupMembership, RepositoryInstance, User } from 'models';
+import { Configuration, GroupUser, UserRepository, User } from 'models';
 
 function _build(model:ConfigModel, config:Configuration):ConfigModel {
   if(model.class() !== 'User') {
@@ -21,7 +21,7 @@ function _build(model:ConfigModel, config:Configuration):ConfigModel {
         if (!repository) {
           console.warn(`Undefined repository encountered (${repositoryID}) for user (${user.id})`);
         } else {
-          const repositoryInstance = new RepositoryInstance(user, repository, {});
+          const repositoryInstance = new UserRepository(user, repository, {});
 
           // @ts-ignore
           user.repositoryInstances.push(repositoryInstance);
@@ -40,7 +40,7 @@ function _build(model:ConfigModel, config:Configuration):ConfigModel {
         if(!group) {
           console.warn(`Undefined group encountered (${groupID}) for user(${user.id})`);
         } else {
-          const groupMembership = new GroupMembership(user, group, {});
+          const groupMembership = new GroupUser(user, group, {});
 
           // @ts-ignore
           user.groupMemberships.push(groupMembership);

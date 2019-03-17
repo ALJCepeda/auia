@@ -1,22 +1,15 @@
 import { ConfigModel } from 'interfaces';
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { Spec, Test } from '../Test';
-import { RepositoryInstance } from './RepositoryInstance';
+import { UserRepository } from './UserRepository';
 
 @Entity('repositories')
-export class Repository implements ConfigModel {
-  @PrimaryColumn()
-  public id: string;
-
+export class Repository extends ConfigModel {
   @Column()
   public branch:string = 'master';
 
-  @OneToMany(() => RepositoryInstance, (repositoryInstance) => repositoryInstance.id)
-  public repositoryInstances?:RepositoryInstance[];
-
-  constructor(id:string, public data:any) {
-    this.id = id;
-  }
+  @OneToMany(() => UserRepository, (repositoryInstance) => repositoryInstance.id)
+  public repositoryInstances?:UserRepository[];
 
   public class(): string {
     return 'Repository';
@@ -28,5 +21,3 @@ export class Repository implements ConfigModel {
     ];
   }
 }
-
-export class GitRepository extends Repository {}

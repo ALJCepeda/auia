@@ -1,13 +1,13 @@
+import { ConfigModel, ModelChanges } from 'interfaces';
 import { Configuration, User } from 'models';
 import { Connection } from 'typeorm';
-import { ConfigModel, ModelChanges } from '../interfaces';
-import { UserDiffer } from './changes/user';
+import { UserDiffer } from './differs';
 
 export async function checkChanges(config: Configuration, dbConnection: Connection): Promise<Array<ModelChanges<ConfigModel>>> {
-  const userDiffs = await checkUsers(config, dbConnection);
+  const userChanges = await checkUsers(config, dbConnection);
 
   return [
-    ...userDiffs
+    ...userChanges
   ];
 }
 

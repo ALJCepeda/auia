@@ -1,4 +1,4 @@
-import { ConfigModel } from './ConfigModel';
+import { ConfigModel } from '../models/records/ConfigModel';
 
 export interface ModelChangeConstructor<Payload, Model extends ConfigModel> {
   new (): ModelChange<Payload, Model>;

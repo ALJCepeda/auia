@@ -1,10 +1,10 @@
-import { Group, GroupMembership, Repository, RepositoryInstance, User } from 'models';
+import { Group, GroupUser, Repository, User, UserAggregate, UserRepository } from 'models';
 import 'reflect-metadata';
 import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 
 const connectionOptions: ConnectionOptions = {
   database: `${__dirname}/../.auia/auia.db`,
-  entities: [ User, Group, GroupMembership, Repository, RepositoryInstance ],
+  entities: [ User, UserAggregate, Group, GroupUser, Repository, UserRepository ],
   logging: true,
   synchronize: true,
   type: 'sqlite'

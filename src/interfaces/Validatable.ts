@@ -1,9 +1,9 @@
-import { Spec } from "models";
+import { Spec } from 'models';
 
-export interface Validatable<T>{
-	getSpecs:() => Spec<T>[];
+export interface Validatable<T> {
+  getSpecs:() => Array<Spec<T>>;
 }
 
 export function isValidatable<T>(obj:any): obj is Validatable<T> {
-	return 'getSpecs' in obj;
+  return 'getSpecs' in obj;
 }

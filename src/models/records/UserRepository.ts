@@ -7,12 +7,13 @@ import { Spec, Test } from '../Test';
 import { Repository } from './Repository';
 import { User } from './User';
 
-@Entity('repository-instances')
-export class RepositoryInstance implements ConfigModel {
-  @PrimaryColumn()
+@Entity('user-repositories')
+export class UserRepository extends ConfigModel {
   public get id(): string {
     return path.normalize(`${this.basePath}/${this.repository.id}`);
   }
+
+  public set id(value:string) { }
 
   @Column()
   public basePath:string = `~/repos`;
@@ -26,13 +27,14 @@ export class RepositoryInstance implements ConfigModel {
   @ManyToOne(() => Repository, (repository) => repository.id)
   public repository:Repository;
 
-  constructor(user:User, repository:Repository, public data:any) {
+  constructor(user:User, repository:Repository, data:any) {
+    super(undefined, data);
     this.user = user;
     this.repository = repository;
   }
 
   public class(): string {
-    return 'RepositoryInstance';
+    return 'UserRepository';
   }
 
   public getSpecs(): Array<Spec<ConfigModel>> {

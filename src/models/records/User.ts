@@ -1,42 +1,27 @@
 import { ConfigModel } from 'interfaces';
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
-import { GroupMembership } from './GroupMembership';
-import { RepositoryInstance } from './RepositoryInstance';
-
-export interface UserData {
-  name:string;
-  repositories:string[];
-  groups:string[];
-}
+import { Column, Entity, OneToMany } from 'typeorm';
+import { Spec } from '../Test';
+import { GroupUser } from './GroupUser';
+import { UserRepository } from './UserRepository';
 
 @Entity('users')
-export class User implements ConfigModel {
-  @PrimaryColumn()
-  public id: string;
+export class User extends ConfigModel {
+  @OneToMany(() => UserRepository, (repositoryInstance) => repositoryInstance.id)
+  public repositoryInstances?:UserRepository[];
+  public repositoryInstanceMap:Map<string, UserRepository> = new Map();
 
-  @OneToMany(() => RepositoryInstance, (repositoryInstance) => repositoryInstance.id)
-  public repositoryInstances?:RepositoryInstance[];
-  public repositoryInstanceMap:Map<string, RepositoryInstance> = new Map();
-
-  @OneToMany(() => GroupMembership, (groupMembership) => groupMembership.id)
-  public groupMemberships?:GroupMembership[];
-  public groupMembershipMap:Map<string, GroupMembership> = new Map();
+  @OneToMany(() => GroupUser, (groupMembership) => groupMembership.id)
+  public groupMemberships?:GroupUser[];
+  public groupMembershipMap:Map<string, GroupUser> = new Map();
 
   @Column()
   public isActive:boolean = false;
-
-  constructor(
-    id: string,
-    public data:UserData
-  ) {
-    this.id = id;
-  }
 
   public class(): string {
     return 'User';
   }
 
-  public getSpecs() {
+  public getSpecs(): Array<Spec<ConfigModel>> {
     return [];
   }
 }
