@@ -9,7 +9,7 @@ export abstract class Change<Model extends EntityModel> {
   public pending: Boolean = false;
   public payload:string = 'N/A';
 
-  public abstract check(EntityModel?:Model, dbModel?: Model): Promise<Change<Model>>;
+  public abstract check(configModel?:Model, entityModel?: Model): Promise<Change<Model>>;
   public abstract update(model:Model | undefined, payload:string): Model;
 }
 
