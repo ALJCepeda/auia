@@ -1,8 +1,8 @@
 import { ChangeConstructor } from 'interfaces';
 import { UserChangeMap } from 'services';
 import { Connection } from 'typeorm';
-import { User } from '../entities';
-import { UserChanges } from '../entities/changes';
+import { User } from '../models/entities';
+import { UserChanges } from '../models/entities/changes';
 import { Aggregate } from './Aggregate';
 
 export class UserAggregate extends Aggregate<User> {

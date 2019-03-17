@@ -5,5 +5,5 @@ export * from './ValidateResult';
 export * from './ValidateError';
 export * from './Dictionary';
 export * from './entities';
-export * from './aggregates';
-export * from './abstract';
+export * from '../aggregates';
+export * from '../abstract';

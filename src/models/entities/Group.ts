@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 
+import { EntityModel } from '../../abstract';
 import { assign } from '../../services/assign';
-import { EntityModel } from '../abstract';
 import { Spec } from '../Test';
 import { GroupUser } from './GroupUser';
 

@@ -1,7 +1,7 @@
 import { Column, PrimaryColumn } from 'typeorm';
 
 import { Validatable } from 'interfaces';
-import { Spec } from '../Test';
+import { Spec } from 'models';
 
 export abstract class EntityModel implements Validatable<EntityModel> {
   public static from(model:Partial<EntityModel>): EntityModel {

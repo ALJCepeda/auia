@@ -1,6 +1,6 @@
 import { Entity } from 'typeorm';
 
-import { ModelChanges } from '../../abstract';
+import { ModelChanges } from '../../../abstract';
 import { UserRepository } from '../UserRepository';
 
 @Entity('user-repository-changes')

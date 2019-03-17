@@ -1,4 +1,4 @@
-import { EntityModel } from './abstract';
+import { EntityModel } from '../abstract';
 import { Group, Repository, User } from './entities';
 
 export class Configuration {
