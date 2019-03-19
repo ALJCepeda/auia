@@ -4,13 +4,14 @@ import { BaseEntity } from 'abstract';
 import { checkChanges, generateConfiguration } from 'services';
 import { AppConfig, configure } from './config';
 
-configure().then(async ({ dbConnection }:AppConfig) => {
+async function run() {
+  const { dbConnection }:AppConfig = await configure();
   const config:Configuration = generateConfiguration();
 
-  const changes:Array<Changes<BaseEntity>> = await checkChanges(config, dbConnection);
+  const pendingChanges:Array<Changes<BaseEntity>> = await checkChanges(config, dbConnection);
+  console.log(JSON.stringify(pendingChanges));
+}
 
-  changes.forEach((change) => {
-    const pendingChanges = change.getPendingChanges();
-    console.log(pendingChanges);
-  });
+run().then(() => {
+  console.log('Completed');
 });

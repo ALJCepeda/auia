@@ -11,6 +11,16 @@ const connectionOptions: ConnectionOptions = {
   type: 'sqlite'
 };
 
+process.on('uncaughtException', function(error) {
+  console.error(error);
+  process.exit(1)
+});
+
+process.on('unhandledRejection', function(error){
+  console.error(error);
+  process.exit(1);
+});
+
 export interface AppConfig {
   dbConnection: Connection;
 }
@@ -18,5 +28,6 @@ export interface AppConfig {
 export async function configure(): Promise<AppConfig> {
   const dbConnection = await createConnection(connectionOptions);
 
+  console.debug('App Configured');
   return { dbConnection };
 }

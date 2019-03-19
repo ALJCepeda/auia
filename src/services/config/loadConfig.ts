@@ -8,6 +8,6 @@ export function loadConfig() {
     throw new Error('Must include a config file');
   }
 
-  console.log(`Using config file: ${configFile}`);
+  console.log(`Loaded config file: ${configFile}`);
   return yaml.load(fs.readFileSync(configFile, 'utf8'));
 }

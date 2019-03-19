@@ -21,6 +21,7 @@ function buildModels(configuration:Configuration): Configuration {
 }
 
 export function parseConfig(data:any): Configuration {
+  console.debug('Loading data from config');
   const configuration = new Configuration();
 
   for(const key in data) {
@@ -29,5 +30,8 @@ export function parseConfig(data:any): Configuration {
     }
   }
 
-  return buildModels(configuration);
+  console.debug('Building models from config');
+  buildModels(configuration);
+  console.log('Data built from config');
+  return configuration;
 }

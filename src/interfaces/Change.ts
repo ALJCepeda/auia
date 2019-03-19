@@ -5,7 +5,7 @@ export interface ChangeConstructor<Model extends BaseEntity> {
 }
 
 export abstract class Change<Model extends BaseEntity> {
-  public id: string = this.constructor.name;
+  public type: string = this.constructor.name;
   public pending: Boolean = false;
   public payload:string = 'N/A';
 
@@ -21,12 +21,17 @@ export interface ChangeDiffer<Model extends BaseEntity> {
 }
 
 export class Changes<Model extends BaseEntity> {
+  public get length():number {
+    return this.changes.length;
+  }
+
   constructor(
     public model:Model | undefined,
     public changes: Array<Change<Model>>
   ) {}
 
-  public getPendingChanges(): Array<Change<Model>> {
-    return this.changes.filter((change) => change.pending);
+  public getPendingChanges(): Changes<Model> {
+    const pendingChanges = this.changes.filter((change) => change.pending);
+    return new Changes(this.model, pendingChanges);
   }
 }

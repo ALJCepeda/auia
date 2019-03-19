@@ -1,7 +1,2 @@
-repositories:
-  - name: auia
-
 users:
   - name: alfred
-    repositories:
-      - auia

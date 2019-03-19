@@ -1,4 +1,4 @@
-import { Column, PrimaryColumn, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { Column, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 import { Validatable } from 'interfaces';
 import { Spec } from 'models';
@@ -44,12 +44,12 @@ export abstract class BaseEntity implements Validatable<BaseEntity> {
 }
 
 export function isEntityModel(model:any): model is BaseEntity {
-  return typeof model.id === 'number' &&
-         typeof model.name === 'string' &&
+  return typeof model._name === 'string' &&
          typeof model.class === 'function' &&
          typeof model.getSpecs === 'function' &&
          typeof model.created === 'boolean' &&
          typeof model.deleted === 'boolean' &&
+         typeof model.isActive === 'boolean' &&
          typeof model.lastModifiedAt === 'object' &&
          model.lastModifiedAt.constructor.name === 'Date' &&
          typeof model.createdAt === 'object' &&

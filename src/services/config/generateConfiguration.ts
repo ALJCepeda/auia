@@ -1,18 +1,13 @@
-import * as AJV from 'ajv';
+import { Configuration } from '../../models';
 import { loadConfig } from './loadConfig';
-import { loadSchema } from './loadSchema';
+import { validateConfig } from './validateConfig';
 import { parseConfig } from './parseConfig';
 
-export function generateConfiguration() {
+export function generateConfiguration(): Configuration {
   const config = loadConfig();
-  const schema = loadSchema();
+  validateConfig(config);
 
-  const ajv = new AJV();
-  const validate = ajv.compile(schema);
-
-  if (!validate(config)) {
-    throw validate.errors;
-  }
-
-  return parseConfig(config);
+  const configuration = parseConfig(config);
+  console.debug('Configuration formalized');
+  return configuration;
 }
