@@ -1,10 +1,10 @@
 import { Connection } from 'typeorm';
 
 import { Changes } from 'interfaces';
-import { Configuration, EntityModel, User } from 'models';
+import { Configuration, BaseEntity, User } from 'models';
 import { UserDiffer } from './differs';
 
-export async function checkChanges(config: Configuration, dbConnection: Connection): Promise<Array<Changes<EntityModel>>> {
+export async function checkChanges(config: Configuration, dbConnection: Connection): Promise<Array<Changes<BaseEntity>>> {
   const userChanges = await checkUsers(config, dbConnection);
 
   return [

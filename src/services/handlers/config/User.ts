@@ -1,7 +1,7 @@
 import { ConfigHandler } from 'interfaces';
-import { Configuration, EntityModel, GroupUser, User, UserRepository } from 'models';
+import { Configuration, BaseEntity, GroupUser, User, UserRepository } from 'models';
 
-function _build(model:EntityModel, config:Configuration):EntityModel {
+function _build(model:BaseEntity, config:Configuration):BaseEntity {
   if(model.class() !== 'User') {
     throw new Error(`Model is not instance of User: ${model}`);
   }
@@ -54,11 +54,11 @@ function _build(model:EntityModel, config:Configuration):EntityModel {
 }
 
 export const UserConfig:ConfigHandler = {
-  build:(models:EntityModel[], config:Configuration): EntityModel[] => {
+  build:(models:BaseEntity[], config:Configuration): BaseEntity[] => {
     return models.map((model) => _build(model, config));
   },
 
-  create:(datum:any[]): EntityModel[] => {
+  create:(datum:any[]): BaseEntity[] => {
     return datum.map((data) => new User(data.name, data));
   }
 };

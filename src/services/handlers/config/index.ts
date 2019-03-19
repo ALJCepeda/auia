@@ -1,5 +1,5 @@
 import { ConfigHandler } from 'interfaces';
-import { EntityModel, isEntityModel, User } from 'models';
+import { BaseEntity, isEntityModel, User } from 'models';
 import { UserConfig } from './User';
 
 export * from '../../../interfaces/ConfigHandler';
@@ -10,7 +10,7 @@ const handlers:Map<string | Function, ConfigHandler> = new Map<string | Function
   [ 'User', UserConfig ]
 ]);
 
-export function getConfigHandler(key:string | EntityModel): ConfigHandler {
+export function getConfigHandler(key:string | BaseEntity): ConfigHandler {
   let _key:string | Function;
   if(isEntityModel(key)) {
     _key = key.class();

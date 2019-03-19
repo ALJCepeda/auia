@@ -1,26 +1,26 @@
-import { EntityModel } from 'models';
+import { DBEntityChange, BaseEntity } from 'models';
 
-export interface ChangeConstructor<Model extends EntityModel> {
+export interface ChangeConstructor<Model extends BaseEntity> {
   new (): Change<Model>;
 }
 
-export abstract class Change<Model extends EntityModel> {
+export abstract class Change<Model extends BaseEntity> {
   public id: string = this.constructor.name;
   public pending: Boolean = false;
   public payload:string = 'N/A';
 
   public abstract check(configModel?:Model, entityModel?: Model): Promise<Change<Model>>;
-  public abstract update(model:Model | undefined, payload:string): Model;
+  public abstract update(model:Model | undefined, change:DBEntityChange): Model;
 }
 
-export interface ChangeDiffer<Model extends EntityModel> {
+export interface ChangeDiffer<Model extends BaseEntity> {
   configModel?: Model;
   entityModel?: Model;
 
   diff(): Promise<Changes<Model>>;
 }
 
-export class Changes<Model extends EntityModel> {
+export class Changes<Model extends BaseEntity> {
   constructor(
     public model:Model | undefined,
     public changes: Array<Change<Model>>

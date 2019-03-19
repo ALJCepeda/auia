@@ -1,4 +1,4 @@
-import { EntityModel } from '../abstract';
+import { BaseEntity } from '../abstract';
 import { Group, Repository, User } from './entities';
 
 export class Configuration {
@@ -14,14 +14,14 @@ export class Configuration {
     return this.maps.get('Repository') as Map<string, Repository>;
   }
 
-  private maps:Map<string, Map<string, EntityModel>> = new Map<string, Map<string, EntityModel>>([
+  private maps:Map<string, Map<string, BaseEntity>> = new Map<string, Map<string, BaseEntity>>([
     [ 'Group', new Map<string, Group>() ],
     [ 'Repository', new Map<string, Repository>() ],
     [ 'User', new Map<string, User>() ]
   ]);
 
-  public models():EntityModel[] {
-    const result:EntityModel[] = [];
+  public models():BaseEntity[] {
+    const result:BaseEntity[] = [];
 
     this.maps.forEach((map) => {
       map.forEach((model) => {
@@ -32,12 +32,12 @@ export class Configuration {
     return result;
   }
 
-  public add(models: EntityModel[]): Configuration {
+  public add(models: BaseEntity[]): Configuration {
     models.forEach((model) => this._add(model));
     return this;
   }
 
-  protected _add(model: EntityModel): void {
+  protected _add(model: BaseEntity): void {
     const className = model.class();
 
     if(!this.maps.has(className)) {

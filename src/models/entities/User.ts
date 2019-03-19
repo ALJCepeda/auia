@@ -1,21 +1,12 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 
-import { EntityModel } from '../../abstract';
-import { assign } from '../../services/assign';
+import { BaseEntity } from '../../abstract';
 import { Spec } from '../Test';
 import { GroupUser } from './GroupUser';
 import { UserRepository } from './UserRepository';
 
 @Entity('users')
-export class User extends EntityModel {
-  public static from(model:Partial<User>): User {
-    if(!model.id) {
-      throw new Error(`Cannot construct User, object is missing id`);
-    }
-
-    return assign(new User(model.id), model);
-  }
-
+export class User extends BaseEntity {
   @OneToMany(() => UserRepository, (repositoryInstance) => repositoryInstance.id)
   public repositories?:UserRepository[];
   public repositoryMap:Map<string, UserRepository> = new Map();
@@ -31,7 +22,7 @@ export class User extends EntityModel {
     return 'User';
   }
 
-  public getSpecs(): Array<Spec<EntityModel>> {
+  public getSpecs(): Array<Spec<BaseEntity>> {
     return [];
   }
 }

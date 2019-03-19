@@ -1,26 +1,13 @@
 import { Entity, ManyToOne } from 'typeorm';
 
-import { EntityModel } from '../../abstract';
-import { assign } from '../../services/assign';
+import { BaseEntity } from '../../abstract';
 import { Spec } from '../Test';
 import { Group } from './Group';
 import { User } from './User';
 
 @Entity('group-users')
-export class GroupUser extends EntityModel {
-  public static from(model:Partial<GroupUser>): GroupUser {
-    if(!model.group) {
-      throw new Error(`Cannot construct GroupUser, object is missing Group`);
-    }
-
-    if(!model.user) {
-      throw new Error(`Cannot construct GroupUser, object is missing User`);
-    }
-
-    return assign(new GroupUser(model.user, model.group), model);
-  }
-
-  public get id(): string {
+export class GroupUser extends BaseEntity {
+  public get name(): string {
     return `${this.group.id}::${this.user.id}`;
   }
 
@@ -44,7 +31,7 @@ export class GroupUser extends EntityModel {
     return 'GroupUser';
   }
 
-  public getSpecs():Array<Spec<EntityModel>> {
+  public getSpecs():Array<Spec<BaseEntity>> {
     return [];
   }
 }

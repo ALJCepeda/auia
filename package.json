@@ -3,7 +3,7 @@
   "author": "Alfred J Cepeda",
   "license": "ISC",
   "version": "1.0.0",
-  "description": "Environment Provisioner using Ansible",
+  "description": "Machine Provisioner built on Ansible",
   "bin": {
     "auia": "bin/auia"
   },
@@ -26,6 +26,7 @@
     "@types/es6-shim": "^0.31.39",
     "@types/js-yaml": "^3.12.0",
     "@types/node": "^10.12.18",
+    "@types/sinon": "^7.0.10",
     "ajv": "^6.9.1",
     "js-yaml": "^3.12.1",
     "sqlite3": "^4.0.6",
@@ -37,6 +38,8 @@
     "mocha": "^5.2.0",
     "nodemon": "^1.18.9",
     "should": "^13.2.3",
+    "should-sinon": "0.0.6",
+    "sinon": "^7.2.7",
     "ts-mocha": "^2.0.0",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",

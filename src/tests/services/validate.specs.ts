@@ -61,7 +61,7 @@ describe('Validator', () => {
   });
 });
 
-describe('Validate<EntityModel>', () => {
+describe('Validate<BaseEntity>', () => {
   class UserModel implements Validatable {
     public name = '';
     public age = 5;
@@ -117,7 +117,7 @@ describe('Validate<EntityModel>', () => {
 
   const groupSpecs:Array<Spec<Group>> =  [
     new Test((model) => validateModel(model.user), 'Must include a valid user for group'),
-    new Test((model) => model.name.length > 0, 'Must include a name for the group')
+    new Test((model) => model.name.length > 0, 'Must include a _id for the group')
   ];
 
   class Group implements Validatable {
@@ -152,13 +152,13 @@ describe('Validate<EntityModel>', () => {
     result.errors[1].should.have.properties({ model:system.group, spec:(groupSpecs[0] as Test<Group>).valid, test:groupSpecs[0], message:'Must include a valid user for group', index:0 });
     result.errors[2].should.have.properties({ model:system.group.user, spec:userSpecs[0], index:0 });
     result.errors[3].should.have.properties({ model:system.group.user, spec:(userSpecs[2] as Test<UserModelWithSpecs>).valid, test:userSpecs[2], message:'Must be 18 or older', index:2 });
-    result.errors[4].should.have.properties({ model:system.group, spec:(groupSpecs[1] as Test<Group>).valid, test:groupSpecs[1], message:'Must include a name for the group', index:1 });
+    result.errors[4].should.have.properties({ model:system.group, spec:(groupSpecs[1] as Test<Group>).valid, test:groupSpecs[1], message:'Must include a _id for the group', index:1 });
     result.errors[5].should.have.properties({ model:system, spec:(systemSpecs[1] as Test<System>).valid, test:systemSpecs[1], message:'Must include a type for the system', index:1 });
     result.errorMessages().should.eql([
       'Must include a valid group for system',
       'Must include a valid user for group',
       'Must be 18 or older',
-      'Must include a name for the group',
+      'Must include a _id for the group',
       'Must include a type for the system'
     ]);
     result.errorIndexes().should.eql([0, 0, 0, 2, 1, 1]);
@@ -169,7 +169,7 @@ describe('Validate<EntityModel>', () => {
     result.errorIndexes(system).should.eql([0, 1]);
     result.errorMessages(system.group).should.eql([
       'Must include a valid user for group',
-      'Must include a name for the group',
+      'Must include a _id for the group',
     ]);
     result.errorIndexes(system.group).should.eql([0, 1]);
     result.errorMessages(system.group.user).should.eql(['Must be 18 or older']);
