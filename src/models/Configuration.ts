@@ -1,5 +1,5 @@
-import { BaseEntity } from '../abstract';
-import { Group, Repository, User } from './entities';
+import { BaseEntity } from 'abstract';
+import { Group, Repository, User } from 'entities';
 
 export class Configuration {
   public get users() {
@@ -49,11 +49,11 @@ export class Configuration {
         throw new Error(`Invalid class provided to configuration: ${className}`);
       }
 
-      if(map.has(model.id)) {
-        throw new Error(`Duplicate model (${className}) encountered for: ${model.id}`);
+      if(map.has(model.name)) {
+        throw new Error(`Duplicate model (${className}) encountered for: ${model.name}`);
       }
 
-      map.set(model.id, model);
+      map.set(model.name, model);
     }
   }
 }

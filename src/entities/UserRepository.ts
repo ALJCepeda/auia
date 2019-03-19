@@ -2,8 +2,8 @@ import * as path from 'path';
 import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { validateModel } from 'services';
-import { BaseEntity } from '../../abstract';
-import { Spec, Test } from '../Test';
+import { BaseEntity } from 'abstract';
+import { Spec, Test } from 'models';
 import { Repository } from './Repository';
 import { User } from './User';
 

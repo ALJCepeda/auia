@@ -1,5 +1,5 @@
 import { ConfigHandler } from 'interfaces';
-import { BaseEntity, isEntityModel, User } from 'models';
+import { BaseEntity, isEntityModel } from 'abstract';
 import { UserConfig } from './User';
 
 export * from '../../../interfaces/ConfigHandler';

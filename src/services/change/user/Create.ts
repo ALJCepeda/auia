@@ -1,5 +1,6 @@
 import { Change } from 'interfaces';
-import { DBEntityChange, User } from 'models';
+import { User } from 'entities';
+import { DBEntityChange } from 'abstract';
 
 export class Create extends Change<User> {
   public async check(configUser?:User, dbUser?:User): Promise<Change<User>> {

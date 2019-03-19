@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 
-import { BaseEntity } from '../../abstract';
-import { Spec, Test } from '../Test';
+import { BaseEntity } from '../abstract';
+import { Spec, Test } from 'models';
 import { UserRepository } from './UserRepository';
 
 @Entity('repositories')

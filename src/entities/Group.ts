@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 
-import { BaseEntity } from '../../abstract';
-import { Spec } from '../Test';
+import { BaseEntity } from 'abstract';
+import { Spec } from 'models';
 import { GroupUser } from './GroupUser';
 
 @Entity('group')

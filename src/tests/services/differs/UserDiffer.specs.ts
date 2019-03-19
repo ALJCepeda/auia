@@ -1,6 +1,6 @@
 import 'tests/config';
 
-import { User } from 'models';
+import { User } from 'entities';
 import { UserDiffer } from 'services';
 
 async function getPendingChanges(configObj?:Partial<User>, entityObj?:Partial<User>) {

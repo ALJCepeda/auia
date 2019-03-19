@@ -1,3 +1,7 @@
+repositories:
+  - name: auia
+
 users:
   - name: alfred
-    moo: cow
+    repositories:
+      - auia

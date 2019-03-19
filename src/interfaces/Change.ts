@@ -1,4 +1,4 @@
-import { DBEntityChange, BaseEntity } from 'models';
+import { BaseEntity, DBEntityChange } from 'abstract';
 
 export interface ChangeConstructor<Model extends BaseEntity> {
   new (): Change<Model>;

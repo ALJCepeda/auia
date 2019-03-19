@@ -1,5 +1,5 @@
 import { ChangeConstructor } from 'interfaces';
-import { User } from 'models';
+import { User } from 'entities';
 import { Create } from './Create';
 import { Delete } from './Delete';
 

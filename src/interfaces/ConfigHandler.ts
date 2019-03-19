@@ -1,4 +1,5 @@
-import { Configuration, BaseEntity } from 'models';
+import { Configuration } from 'models';
+import { BaseEntity } from 'abstract';
 
 export interface ConfigHandler {
   create:(data:any[]) => BaseEntity[];

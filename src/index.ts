@@ -1,5 +1,6 @@
 import { Changes } from 'interfaces';
-import { Configuration, BaseEntity } from 'models';
+import { Configuration } from 'models';
+import { BaseEntity } from 'abstract';
 import { checkChanges, generateConfiguration } from 'services';
 import { AppConfig, configure } from './config';
 

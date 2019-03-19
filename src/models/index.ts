@@ -4,6 +4,4 @@ export * from './Configuration';
 export * from './ValidateResult';
 export * from './ValidateError';
 export * from './Dictionary';
-export * from './entities';
 export * from './Aggregate';
-export * from '../abstract';

@@ -1,5 +1,5 @@
 import { Change, ChangeDiffer, Changes } from 'interfaces';
-import { User } from 'models';
+import { User } from 'entities';
 import { UserChange } from '../change';
 
 const ChangeList = [

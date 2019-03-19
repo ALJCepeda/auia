@@ -1,7 +1,7 @@
 import { Entity, ManyToOne } from 'typeorm';
 
-import { BaseEntity } from '../../abstract';
-import { Spec } from '../Test';
+import { BaseEntity } from 'abstract';
+import { Spec } from 'models';
 import { Group } from './Group';
 import { User } from './User';
 

@@ -1,7 +1,4 @@
-import { Column, PrimaryColumn,
-                                                                                                                                     PrimaryGeneratedColumn
-                                                                                                                                   } from 'typeorm';
-                                                                                                                                   import { UserChange } from '../models/entities/changes';
+import { Column, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from './BaseEntity';
 
 export interface DBEntityChange {

@@ -1,5 +1,7 @@
 import { ConfigHandler } from 'interfaces';
-import { Configuration, BaseEntity, GroupUser, User, UserRepository } from 'models';
+import { BaseEntity } from 'abstract';
+import { GroupUser, User, UserRepository } from 'entities';
+import { Configuration } from 'models';
 
 function _build(model:BaseEntity, config:Configuration):BaseEntity {
   if(model.class() !== 'User') {

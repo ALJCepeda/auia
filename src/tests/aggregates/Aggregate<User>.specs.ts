@@ -2,8 +2,9 @@ import { Repository } from 'typeorm';
 
 import { sinon } from 'tests/config';
 import { DBEntityChange } from 'abstract';
-import { Aggregate, User, UserChange } from 'models';
 import { UserChangeMap } from 'services';
+import { User, UserChange } from 'entities';
+import { Aggregate } from 'models';
 
 describe('Aggregate<User>', () => {
   function buildFromChanges(changes: DBEntityChange[], before?: Date) {

@@ -1,5 +1,6 @@
 import { Change } from 'interfaces';
-import { DBEntityChange, User } from 'models';
+import { DBEntityChange } from 'abstract';
+import { User } from 'entities';
 
 export class Delete extends Change<User> {
   public async check(configUser?:User, dbUser?:User): Promise<Change<User>> {

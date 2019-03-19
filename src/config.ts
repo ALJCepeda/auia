@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 
-import * as entities from 'models/entities';
+import * as entities from 'entities';
 
 const connectionOptions: ConnectionOptions = {
   database: `${__dirname}/../.auia/auia.db`,
