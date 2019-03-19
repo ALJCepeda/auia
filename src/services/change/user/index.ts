@@ -9,3 +9,8 @@ export const UserChange = {
 };
 
 export const UserChangeMap:Map<string, ChangeConstructor<User>> = new Map(Object.entries(UserChange));
+
+export const UserChangeList = [
+  Create,
+  Delete
+];
