@@ -1,8 +1,7 @@
 import { LessThanOrEqual, Repository } from 'typeorm';
 
-import { ChangeConstructor } from '../interfaces';
-import { BaseEntity } from '../abstract/BaseEntity';
-import { EntityChange } from '../abstract/EntityChange';
+import { EntityChangeConstructor } from 'interfaces';
+import { BaseEntity, EntityChange } from 'abstract';
 
 export class Aggregate<TModel extends BaseEntity> {
   public model?: TModel;
@@ -11,7 +10,7 @@ export class Aggregate<TModel extends BaseEntity> {
   constructor(
     public target: string,
     public repository: Repository<EntityChange<TModel>>,
-    public changeMap: Map<string, ChangeConstructor<TModel>>
+    public changeMap: Map<string, EntityChangeConstructor<TModel>>
   ) { }
 
   public async getChanges(before:Date = new Date()): Promise<Array<EntityChange<TModel>>> {
@@ -25,14 +24,14 @@ export class Aggregate<TModel extends BaseEntity> {
   }
 
   public play(changes:EntityChange<TModel>[]): TModel | undefined {
-    let model: TModel | undefined;
+    let model: TModel | undefined = undefined;
 
     changes.forEach((change) => {
       if (!this.changeMap.has(change.type)) {
         throw new Error(`Encountered unresolved User change ${change.type}`);
       }
 
-      const ctr: ChangeConstructor<TModel> = this.changeMap.get(change.type) as ChangeConstructor<TModel>;
+      const ctr: EntityChangeConstructor<TModel> = this.changeMap.get(change.type) as EntityChangeConstructor<TModel>;
       const changeInst = new ctr();
       model = changeInst.update(model, change);
       this.changes.push(change);

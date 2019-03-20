@@ -1,9 +1,9 @@
-import { Change } from 'interfaces';
+import { EntityChange } from 'interfaces';
 import { DBEntityChange } from 'abstract';
 import { User } from 'entities';
 
-export class Delete extends Change<User> {
-  public async check(configUser?:User, dbUser?:User): Promise<Change<User>> {
+export class Delete extends EntityChange<User> {
+  public async check(configUser?:User, dbUser?:User): Promise<EntityChange<User>> {
     if(dbUser && !configUser) {
       this.payload = dbUser.name;
       this.pending = true;

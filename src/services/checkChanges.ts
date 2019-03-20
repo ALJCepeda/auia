@@ -1,11 +1,11 @@
 import { Connection, Repository } from 'typeorm';
 
-import { Change } from 'interfaces';
+import { EntityChange } from 'interfaces';
 import { Configuration } from 'models';
 import { BaseEntity } from 'abstract';
 import { User } from 'entities';
 import { UserChangeList } from './change/user';
-import { ChangeDiffer } from './ChangeDiffer';
+import { EntityDiffer } from './EntityDiffer';
 
 export interface ConfigChanges {
   users: Array<ChangesFor<User>>
@@ -13,7 +13,7 @@ export interface ConfigChanges {
 
 export interface ChangesFor<ModelT extends BaseEntity> {
   model:ModelT,
-  changes: Change<ModelT>[]
+  changes: EntityChange<ModelT>[]
 }
 
 export async function checkChanges(config: Configuration, dbConnection: Connection): Promise<ConfigChanges> {
@@ -29,7 +29,7 @@ export async function checkChanges(config: Configuration, dbConnection: Connecti
 async function checkUser(configUser:User, repository:Repository<User>): Promise<ChangesFor<User>> {
   console.debug(`Diffing user ${configUser.name}`);
   const dbUser:User | undefined = await repository.findOne(configUser.id);
-  const differ = new ChangeDiffer<User>(UserChangeList);
+  const differ = new EntityDiffer<User>(UserChangeList);
   const changes = await differ.diff(configUser, dbUser);
 
   const pendingChanges = changes.filter((change) => change.pending);
