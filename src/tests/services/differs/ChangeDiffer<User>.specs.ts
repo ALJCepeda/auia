@@ -17,13 +17,13 @@ describe('EntityDiffer<User>', () => {
     const changes = await getPendingChanges({ name:'alfred' }, undefined);
 
     changes.length.should.eql(1);
-    changes[0].should.have.properties({ name:'Create', pending:true, payload:'alfred' });
+    changes[0].should.have.properties({ name:'Create', target:'alfred', payload:'alfred', pending:true });
   });
 
   it('should generate delete change', async () => {
     const changes = await getPendingChanges(undefined, { name:'alfred' });
 
     changes.length.should.eql(1);
-    changes[0].should.have.properties({ name:'Delete', pending:true, payload:'alfred' });
+    changes[0].should.have.properties({ name:'Delete', target:'alfred', payload:'', pending:true });
   });
 });

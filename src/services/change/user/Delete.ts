@@ -4,7 +4,7 @@ import { User, UserChange } from 'entities';
 export class Delete extends UserChange {
   public async check(configUser?:User, dbUser?:User): Promise<UserChange> {
     if(dbUser && !configUser) {
-      this.payload = dbUser.name;
+      this.target = dbUser.name;
       this.pending = true;
     }
 
