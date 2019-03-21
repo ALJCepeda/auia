@@ -4,4 +4,4 @@ import { EntityChange } from '../../abstract';
 import { Group } from '../Group';
 
 @Entity('group-changes')
-export class GroupChange extends EntityChange<Group> { }
+export abstract class GroupChange extends EntityChange<Group> { }

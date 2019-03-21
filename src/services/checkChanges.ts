@@ -1,8 +1,7 @@
 import { Connection, Repository } from 'typeorm';
 
-import { EntityChange } from 'interfaces';
 import { Configuration } from 'models';
-import { BaseEntity } from 'abstract';
+import { BaseEntity, EntityChange } from 'abstract';
 import { User } from 'entities';
 import { UserChangeList } from './change/user';
 import { EntityDiffer } from './EntityDiffer';

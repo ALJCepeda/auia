@@ -1,37 +1,38 @@
 import { Column, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from './BaseEntity';
 
+export interface EntityChangeConstructor<ModelT extends BaseEntity> {
+  new (): EntityChange<ModelT>;
+}
+
 export interface DBEntityChange {
   id?:number;
-  type:string;
+  name:string;
   target:string;
   payload:string;
   createdAt:Date;
 }
 
-export abstract class EntityChange<Model extends BaseEntity> {
+export abstract class EntityChange<ModelT extends BaseEntity> {
   @PrimaryGeneratedColumn()
   public id?:number;
 
   @Column()
-  public type:string;
+  public get name(): string {
+    return this.constructor.name;
+  }
 
   @Column()
-  public target:string;
+  public target:string = '';
 
   @Column()
-  public payload:string;
+  public payload:string = '';
 
   @Column()
   public createdAt:Date = new Date();
 
-  constructor(
-    type:string,
-    target:string,
-    payload:string
-  ) {
-    this.type = type;
-    this.target = target;
-    this.payload = payload;
-  }
+  public pending: boolean = false;
+
+  public abstract check(configModel?:ModelT, entityModel?: ModelT): Promise<EntityChange<ModelT>>;
+  public abstract update(model:ModelT, change:DBEntityChange): ModelT;
 }

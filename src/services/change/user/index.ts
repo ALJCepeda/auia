@@ -1,5 +1,5 @@
-import { EntityChangeConstructor } from 'interfaces';
 import { User } from 'entities';
+import { EntityChangeConstructor } from '../../../abstract';
 import { Create } from './Create';
 import { Delete } from './Delete';
 

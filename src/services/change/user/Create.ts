@@ -1,6 +1,5 @@
-import { EntityChange } from 'interfaces';
 import { User } from 'entities';
-import { DBEntityChange } from 'abstract';
+import { DBEntityChange, EntityChange } from 'abstract';
 
 export class Create extends EntityChange<User> {
   public async check(configUser?:User, dbUser?:User): Promise<EntityChange<User>> {
@@ -13,7 +12,7 @@ export class Create extends EntityChange<User> {
   }
 
   public update(user:User | undefined, change:DBEntityChange): User {
-    const newUser = new User(change.payload);
+    const newUser = new User(change.payload, change.payload);
     newUser.created = true;
     newUser.deleted = false;
     newUser.createdAt = change.createdAt;

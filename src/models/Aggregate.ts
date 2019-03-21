@@ -1,20 +1,18 @@
 import { LessThanOrEqual, Repository } from 'typeorm';
 
-import { EntityChangeConstructor } from 'interfaces';
-import { BaseEntity, EntityChange } from 'abstract';
+import { BaseEntity, DBEntityChange, EntityChangeConstructor } from 'abstract';
 
 export class Aggregate<TModel extends BaseEntity> {
-  public model?: TModel;
-  public changes:Array<EntityChange<TModel>> = [];
+  public changes:DBEntityChange[] = [];
 
   constructor(
-    public target: string,
-    public repository: Repository<EntityChange<TModel>>,
+    public model: TModel,
+    public repository: Repository<DBEntityChange>,
     public changeMap: Map<string, EntityChangeConstructor<TModel>>
   ) { }
 
-  public async getChanges(before:Date = new Date()): Promise<Array<EntityChange<TModel>>> {
-    return this.repository.find( { target:this.target, createdAt: LessThanOrEqual(before) });
+  public async getChanges(before:Date = new Date()): Promise<Array<DBEntityChange>> {
+    return this.repository.find( { target:this.model.name, createdAt: LessThanOrEqual(before) });
   }
 
   public async build(before:Date = new Date()): Promise<TModel | undefined> {
@@ -23,15 +21,15 @@ export class Aggregate<TModel extends BaseEntity> {
     return this.model;
   }
 
-  public play(changes:EntityChange<TModel>[]): TModel | undefined {
-    let model: TModel | undefined = undefined;
+  public play(changes:DBEntityChange[]): TModel{
+    let model: TModel = this.model;
 
     changes.forEach((change) => {
-      if (!this.changeMap.has(change.type)) {
-        throw new Error(`Encountered unresolved User change ${change.type}`);
+      if (!this.changeMap.has(change.name)) {
+        throw new Error(`Encountered unresolved User change ${change.name}`);
       }
 
-      const ctr: EntityChangeConstructor<TModel> = this.changeMap.get(change.type) as EntityChangeConstructor<TModel>;
+      const ctr: EntityChangeConstructor<TModel> = this.changeMap.get(change.name) as EntityChangeConstructor<TModel>;
       const changeInst = new ctr();
       model = changeInst.update(model, change);
       this.changes.push(change);

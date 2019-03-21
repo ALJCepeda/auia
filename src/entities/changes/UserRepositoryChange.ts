@@ -4,4 +4,4 @@ import { EntityChange } from '../../abstract';
 import { UserRepository } from '../UserRepository';
 
 @Entity('user-repository-changes')
-export class UserRepositoryChange extends EntityChange<UserRepository> { }
+export abstract class UserRepositoryChange extends EntityChange<UserRepository> { }
