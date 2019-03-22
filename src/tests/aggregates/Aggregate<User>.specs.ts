@@ -1,8 +1,7 @@
 import { Repository } from 'typeorm';
 
 import { sinon } from 'tests/config';
-import { DBEntityChange } from 'abstract';
-import { UserChangeMap } from 'services';
+import { DBEntityChange, UserChangeMap } from 'services';
 import { User } from 'entities';
 import { Aggregate } from 'models';
 

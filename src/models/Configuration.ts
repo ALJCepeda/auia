@@ -1,5 +1,4 @@
-import { BaseEntity } from 'abstract';
-import { Group, Repository, User } from 'entities';
+import { BaseEntity, Group, Repository, User } from 'entities';
 
 export class Configuration {
   public get users() {
@@ -38,7 +37,7 @@ export class Configuration {
   }
 
   protected _add(model: BaseEntity): void {
-    const className = model.class();
+    const className = model.className;
 
     if(!this.maps.has(className)) {
       throw new Error(`There is no map for class: ${className}`);

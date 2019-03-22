@@ -1,4 +1,5 @@
-import { BaseEntity, EntityChange, EntityChangeConstructor } from 'abstract';
+import { BaseEntity } from 'entities';
+import { EntityChange, EntityChangeConstructor } from './change';
 
 export class EntityDiffer<ModelT extends BaseEntity> {
   constructor(

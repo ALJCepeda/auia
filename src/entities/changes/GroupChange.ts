@@ -1,6 +1,6 @@
 import { Entity } from 'typeorm';
+import { EntityChange } from 'services';
 
-import { EntityChange } from '../../abstract';
 import { Group } from '../Group';
 
 @Entity('group-changes')

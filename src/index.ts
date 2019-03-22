@@ -1,14 +1,14 @@
 import { Configuration } from 'models';
-import { checkChanges, generateConfiguration } from 'services';
-import { BaseEntity, EntityChange } from 'abstract';
+import { AppChanges, checkChanges, loadConfigModels } from 'services';
 import { AppConfig, configure } from './config';
+import { saveChanges } from './services/change';
 
 async function run() {
   const { dbConnection }:AppConfig = await configure();
-  const config:Configuration = generateConfiguration();
+  const config:Configuration = loadConfigModels();
 
-  const pendingChanges:Array<EntityChange<BaseEntity>> = await checkChanges(config, dbConnection);
-  console.log(JSON.stringify(pendingChanges));
+  const appChanges:AppChanges = await checkChanges(config, dbConnection);
+  await saveChanges(appChanges, dbConnection);
 }
 
 run().then(() => {

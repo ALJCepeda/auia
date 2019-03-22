@@ -1,5 +1,5 @@
 export * from './validate';
-export * from './checkChanges';
+export * from './change/checkChanges';
 export * from './handlers';
 export * from './config';
 export * from './change';

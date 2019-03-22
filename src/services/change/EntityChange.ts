@@ -1,5 +1,5 @@
 import { Column, PrimaryGeneratedColumn } from 'typeorm';
-import { BaseEntity } from './BaseEntity';
+import { BaseEntity } from 'entities';
 
 export interface EntityChangeConstructor<ModelT extends BaseEntity> {
   new (): EntityChange<ModelT>;

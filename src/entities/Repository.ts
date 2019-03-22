@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 
-import { BaseEntity } from '../abstract';
 import { Spec, Test } from 'models';
+import { BaseEntity } from './BaseEntity';
 import { UserRepository } from './UserRepository';
 
 @Entity('repositories')
@@ -11,10 +11,6 @@ export class Repository extends BaseEntity {
 
   @OneToMany(() => UserRepository, (repositoryInstance) => repositoryInstance.id)
   public repositoryInstances?:UserRepository[];
-
-  public class(): string {
-    return 'Repository';
-  }
 
   public getSpecs():Array<Spec<BaseEntity>> {
     return [

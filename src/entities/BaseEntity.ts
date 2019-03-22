@@ -1,22 +1,17 @@
-import { Column, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { Check, Column, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 import { Validatable } from 'interfaces';
 import { Spec } from 'models';
 
 @Unique(['name'])
+@Check('name <> ""')
+@Check('id <> -1')
 export abstract class BaseEntity implements Validatable<BaseEntity> {
   @PrimaryGeneratedColumn()
-  public id?:number;
-
-  protected _name:string = 'N/A';
+  public id:number = -1;
+  
   @Column()
-  public get name():string {
-    return this._name;
-  }
-
-  public set name(name:string) {
-    this._name = name;
-  }
+  public name:string = '';
 
   @Column()
   public createdAt:Date = new Date();
@@ -26,20 +21,12 @@ export abstract class BaseEntity implements Validatable<BaseEntity> {
 
   public created:boolean = false;
   public deleted:boolean = false;
-  public data?: any;
+  public data:any = {};
 
-  constructor(
-    name?:string,
-    data?:any
-  ) {
-    if(name) {
-      this.name = name;
-    }
-
-    this.data = data;
-  }
-
-  public abstract class(): string;
+  public get className():string {
+    return this.constructor.name;
+  };
+  
   public abstract getSpecs(): Array<Spec<BaseEntity>>;
 }
 

@@ -1,6 +1,6 @@
 import { Entity } from 'typeorm';
 
-import { EntityChange } from '../../abstract';
+import { EntityChange } from 'services';
 import { User } from '../User';
 
 @Entity('user-changes')

@@ -1,8 +1,7 @@
 import 'tests/config';
 
 import { User } from 'entities';
-import { EntityDiffer, UserChangeList } from 'services';
-import { EntityChange } from 'abstract';
+import { EntityChange, EntityDiffer, UserChangeList } from 'services';
 
 async function getPendingChanges(configObj?:Partial<User>, entityObj?:Partial<User>): Promise<EntityChange<User>[]> {
   const configUser = (configObj) ? Object.assign(new User(), configObj) : undefined;

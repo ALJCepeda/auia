@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 
-import { BaseEntity } from 'abstract';
 import { Spec } from 'models';
+import { BaseEntity } from './BaseEntity';
 import { GroupUser } from './GroupUser';
 import { UserRepository } from './UserRepository';
 
@@ -17,10 +17,6 @@ export class User extends BaseEntity {
 
   @Column()
   public isActive:boolean = false;
-
-  public class(): string {
-    return 'User';
-  }
 
   public getSpecs(): Array<Spec<BaseEntity>> {
     return [];

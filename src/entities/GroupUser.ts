@@ -1,7 +1,7 @@
+import { Spec } from 'models';
 import { Entity, ManyToOne } from 'typeorm';
 
-import { BaseEntity } from 'abstract';
-import { Spec } from 'models';
+import { BaseEntity } from './BaseEntity';
 import { Group } from './Group';
 import { User } from './User';
 
@@ -12,24 +12,10 @@ export class GroupUser extends BaseEntity {
   }
 
   @ManyToOne(() => User, (user) => user.id)
-  public user:User;
+  public user:User = new User();
 
   @ManyToOne(() => Group, (group) => group.id)
-  public group:Group;
-
-  constructor(
-    user:User,
-    group:Group,
-    public data?:any
-  ) {
-    super(undefined, data);
-    this.user = user;
-    this.group = group;
-  }
-
-  public class():string {
-    return 'GroupUser';
-  }
+  public group:Group = new Group();
 
   public getSpecs():Array<Spec<BaseEntity>> {
     return [];

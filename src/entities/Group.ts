@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 
-import { BaseEntity } from 'abstract';
 import { Spec } from 'models';
+import { BaseEntity } from './BaseEntity';
 import { GroupUser } from './GroupUser';
 
 @Entity('group')
@@ -11,10 +11,6 @@ export class Group extends BaseEntity {
 
   @Column()
   public isSudo:boolean = false;
-
-  public class(): string {
-    return 'Group';
-  }
 
   public getSpecs():Array<Spec<BaseEntity>> {
     return [];

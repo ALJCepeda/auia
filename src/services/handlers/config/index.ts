@@ -1,5 +1,5 @@
 import { ConfigHandler } from 'interfaces';
-import { BaseEntity, isEntityModel } from 'abstract';
+import { BaseEntity, isEntityModel } from 'entities';
 import { UserConfig } from './User';
 
 export * from '../../../interfaces/ConfigHandler';
@@ -13,7 +13,7 @@ const handlers:Map<string | Function, ConfigHandler> = new Map<string | Function
 export function getConfigHandler(key:string | BaseEntity): ConfigHandler {
   let _key:string | Function;
   if(isEntityModel(key)) {
-    _key = key.class();
+    _key = key.className;
   } else if(typeof key === 'string') {
     _key = key;
   } else {

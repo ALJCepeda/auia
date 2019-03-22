@@ -2,8 +2,8 @@ import * as path from 'path';
 import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { validateModel } from 'services';
-import { BaseEntity } from 'abstract';
 import { Spec, Test } from 'models';
+import { BaseEntity } from './BaseEntity';
 import { Repository } from './Repository';
 import { User } from './User';
 
@@ -20,20 +20,10 @@ export class UserRepository extends BaseEntity {
   public branch:string = `master`;
 
   @ManyToOne(() => User, (user) => user.id)
-  public user:User;
+  public user:User = new User();
 
   @ManyToOne(() => Repository, (repository) => repository.id)
-  public repository:Repository;
-
-  constructor(user:User, repository:Repository, data?:any) {
-    super(undefined, data);
-    this.user = user;
-    this.repository = repository;
-  }
-
-  public class(): string {
-    return 'UserRepository';
-  }
+  public repository:Repository = new Repository();
 
   public getSpecs(): Array<Spec<BaseEntity>> {
     return [

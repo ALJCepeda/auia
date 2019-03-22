@@ -1,5 +1,5 @@
-import { DBEntityChange } from 'abstract';
 import { User, UserChange } from 'entities';
+import { DBEntityChange } from '../EntityChange';
 
 export class Delete extends UserChange {
   public async check(configUser?:User, dbUser?:User): Promise<UserChange> {

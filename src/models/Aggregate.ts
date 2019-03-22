@@ -1,6 +1,7 @@
 import { LessThanOrEqual, Repository } from 'typeorm';
 
-import { BaseEntity, DBEntityChange, EntityChangeConstructor } from 'abstract';
+import { BaseEntity } from 'entities';
+import { DBEntityChange, EntityChangeConstructor } from 'services';
 
 export class Aggregate<TModel extends BaseEntity> {
   public changes:DBEntityChange[] = [];

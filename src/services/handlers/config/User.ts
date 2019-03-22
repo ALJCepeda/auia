@@ -1,10 +1,9 @@
 import { ConfigHandler } from 'interfaces';
-import { BaseEntity } from 'abstract';
-import { GroupUser, User, UserRepository } from 'entities';
+import { BaseEntity, GroupUser, User, UserRepository } from 'entities';
 import { Configuration } from 'models';
 
 function _build(model:BaseEntity, config:Configuration):BaseEntity {
-  if(model.class() !== 'User') {
+  if(model.className !== 'User') {
     throw new Error(`Model is not instance of User: ${model}`);
   }
 
@@ -23,7 +22,9 @@ function _build(model:BaseEntity, config:Configuration):BaseEntity {
         if (!repository) {
           console.warn(`Undefined repository encountered (${repositoryID}) for user (${user.id})`);
         } else {
-          const repositoryInstance = new UserRepository(user, repository, {});
+          const repositoryInstance = new UserRepository();
+          repositoryInstance.user = user;
+          repositoryInstance.repository = repository;
 
           // @ts-ignore
           user.repositories.push(repositoryInstance);
@@ -42,7 +43,9 @@ function _build(model:BaseEntity, config:Configuration):BaseEntity {
         if(!group) {
           console.warn(`Undefined group encountered (${groupID}) for user(${user.id})`);
         } else {
-          const groupMembership = new GroupUser(user, group, {});
+          const groupMembership = new GroupUser();
+          groupMembership.user = user;
+          groupMembership.group = group;
 
           // @ts-ignore
           user.groups.push(groupMembership);
@@ -61,6 +64,11 @@ export const UserConfig:ConfigHandler = {
   },
 
   create:(datum:any[]): BaseEntity[] => {
-    return datum.map((data) => new User(data.name, data));
+    return datum.map((data) => {
+      const user = new User();
+      user.name = data.name;
+      user.data = data;
+      return user;
+    });
   }
 };
