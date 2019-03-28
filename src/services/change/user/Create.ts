@@ -13,7 +13,7 @@ export class Create extends UserChange {
     return this;
   }
 
-  public update(user:User, change:DBResourceChange): User {
+  public update(change:DBResourceChange, user?:User): User {
     const newUser = new User();
     newUser.name = change.payload;
     newUser.created = true;

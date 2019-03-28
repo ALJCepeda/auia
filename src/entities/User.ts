@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany } from 'typeorm';
+import { Spec } from '../models/Test';
 
-import { Spec } from 'models';
 import { Resource } from './Resource';
 import { GroupUser } from './GroupUser';
 import { UserRepository } from './UserRepository';

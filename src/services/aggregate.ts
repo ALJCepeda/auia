@@ -2,10 +2,10 @@ import { DBResourceChange, ResourceChangeCTR } from '../entities/changes/Resourc
 import { Resource } from '../entities/Resource';
 import { ResourceChangeDict } from './change/ResourceChangeDict';
 
-export function aggregate<ResourceT extends Resource>(model: ResourceT, changes:DBResourceChange[]): ResourceT {
+export function aggregate(changes:DBResourceChange[], model?: Resource): Resource {
   return changes.reduce((result, change) => {
-    const ctr:ResourceChangeCTR<ResourceT> = ResourceChangeDict.byIndex('type', change.type).get(change.name) as ResourceChangeCTR<ResourceT>;
+    const ctr:ResourceChangeCTR = ResourceChangeDict.byIndex('type', change.type).get(change.name) as ResourceChangeCTR;
     const changeInst = new ctr();
-    return changeInst.update(model, change);
-  }, model);
+    return changeInst.update(change, model);
+  }, model) as Resource;
 }

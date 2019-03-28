@@ -1,5 +1,5 @@
 import { Check, Column, PrimaryGeneratedColumn, Unique } from 'typeorm';
-import { Validatable } from 'interfaces';
+import { Validatable } from '../interfaces/Validatable';
 import { Spec } from '../models/Test';
 
 export interface ResourceCTR<ResourceT extends Resource = Resource> {

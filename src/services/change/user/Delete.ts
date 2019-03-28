@@ -12,7 +12,7 @@ export class Delete extends UserChange {
     return this;
   }
 
-  public update(user:User, change:DBResourceChange): User {
+  public update(change:DBResourceChange, user?:User): User {
     return Object.assign(new User(), user, {
       created: false,
       deleted: true

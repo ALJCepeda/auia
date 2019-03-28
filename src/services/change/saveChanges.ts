@@ -1,36 +1,51 @@
-import { Connection, Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { ResourceChange } from '../../entities/changes/ResourceChange';
-import { UserChange } from '../../entities/changes/UserChange';
 import { Resource, ResourceCTR } from '../../entities/Resource';
 import { ResourceDict } from '../../entities/ResourceDict';
+import { aggregate } from '../aggregate';
+import { ResourceChangeCTRDict, ResourceChangeDict } from './ResourceChangeDict';
 
 type TargetMap = Map<string, ResourceChange<Resource>[]>
 type TypeTargetMap = Map<string, TargetMap>;
 
-export async function saveChanges(changes:ResourceChange<Resource>[], dbConnection:Connection) {
+export async function saveChanges(changes:ResourceChange<Resource>[], entityManager:EntityManager) {
   console.debug('Saving app changes');
   const typeMap:TypeTargetMap = mapChanges(changes);
-  
+  await saveTypeMap(typeMap, entityManager);
   console.debug('Saved app changes');
   return typeMap;
 }
 
-function saveTypeMap(typeMap:TypeTargetMap, dbConnection:Connection) {
-  return Array.from(typeMap.entries()).map((typeMapEntry) => {
-    const [ type, targetMap ] = typeMapEntry;
-    const ctr = ResourceDict.get(type) as ResourceCTR;
-    const repository = dbConnection.getRepository(ctr);
-    return saveTargetMap(targetMap, repository);
+async function saveTypeMap(typeMap:TypeTargetMap, entityManager:EntityManager) {
+  const typeSaves = Array.from(typeMap.entries()).map(async ([type, targetMap]) => {
+    console.debug(`Saving all ${type} changes`);
+    const resourceCTR = ResourceDict.get(type) as ResourceCTR;
+    
+    const targetSaves = await saveTargetMap(resourceCTR, targetMap, entityManager);
+    console.debug(`Saved all ${type} changes`);
+    return targetSaves;
   });
+  
+  return Promise.all(typeSaves);
 }
 
-function saveTargetMap(targetMap:TargetMap, repository:Repository<Resource>) {
-  return Array.from(targetMap.entries()).map((targetMapEntry) => {
-    const [ target, changes ] = targetMapEntry;
-    const model = repository.findOne({ where: { name:target }});
-    
+async function saveTargetMap(resourceCTR:ResourceCTR, targetMap:TargetMap, entityManager:EntityManager) {
+  const resourceRepository = entityManager.getRepository(resourceCTR);
+  const changeRepository = entityManager.getRepository(ResourceChange);
+  
+  const allSaves = Array.from(targetMap.entries()).map(async ([target, changes]) => {
+    console.debug(`Updating ${target} with ${changes.length} changes`);
+    const model = await resourceRepository.findOne({ where: { name:target }});
+    const updatedModel = aggregate(changes, model);
+    const saves = await Promise.all([
+      changeRepository.save(changes),
+      resourceRepository.save(updatedModel)
+    ]);
+    console.debug(`Finished updating ${target}`);
+    return saves;
   });
-  const model = repository.findOne()
+  
+  return Promise.all(allSaves);
 }
 
 function mapChanges(changes:ResourceChange<Resource>[]): TypeTargetMap {
@@ -50,16 +65,4 @@ function mapChanges(changes:ResourceChange<Resource>[]): TypeTargetMap {
     
     return typeMap;
   }, new Map() as TypeTargetMap);
-}
-
-async function saveUsers(changes:UserChange[], dbConnection:Connection) {
-  console.debug(`Saving ${changes.length} user changes`);
-  const insert = await dbConnection.createQueryBuilder()
-    .insert()
-    .into(UserChange)
-    .values(changes)
-    .execute();
-  
-  console.log(`Saved ${changes.length} user changes`);
-  return insert;
 }

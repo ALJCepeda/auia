@@ -46,5 +46,5 @@ export abstract class ResourceChange<ModelT extends Resource> {
   public pending: boolean = false;
 
   public abstract check(configModel?:ModelT, entityModel?: ModelT): Promise<ResourceChange<ModelT>>;
-  public abstract update(model:ModelT, change:DBResourceChange): ModelT;
+  public abstract update(change:DBResourceChange, model?:ModelT,): ModelT;
 }
