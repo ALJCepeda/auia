@@ -1,28 +1,23 @@
-import { Connection, Repository } from 'typeorm';
-
-import { Configuration } from 'models';
-import { User, UserChange } from 'entities';
-import { UserChangeList } from './user';
+import { ResourceChange } from '../../entities/changes/ResourceChange';
+import { UserChange } from '../../entities/changes/UserChange';
+import { Resource } from '../../entities/Resource';
+import { User } from '../../entities/User';
+import { Registry } from '../../models/Registry';
 import { EntityDiffer } from '../EntityDiffer';
+import { flatten } from '../utils/flatten';
+import { UserChanges } from './user/UserChangeDict';
 
-export interface AppChanges {
-  users: UserChange[]
+export async function checkChanges(configRegistry: Registry, dbRegistry: Registry): Promise<ResourceChange<Resource>[]> {
+  console.debug('Checking for changes to registry');
+  const userChanges = await checkUsers(configRegistry, dbRegistry);
+
+  console.debug('Finished checking for changes to registry');
+  return userChanges;
 }
 
-export async function checkChanges(config: Configuration, dbConnection: Connection): Promise<AppChanges> {
-  console.debug('Checking for changes to config');
-  const userChanges = await checkUsers(config, dbConnection);
-
-  console.debug('Finished checking for changes to config');
-  return {
-    users: userChanges
-  };
-}
-
-async function checkUser(configUser:User, repository:Repository<User>): Promise<UserChange[]> {
+async function checkUser(configUser:User, dbUser?:User): Promise<UserChange[]> {
   console.debug(`Diffing user ${configUser.name}`);
-  const dbUser:User | undefined = await repository.findOne(configUser.id);
-  const differ = new EntityDiffer<User>(UserChangeList);
+  const differ = new EntityDiffer<User>(UserChanges);
   const changes = await differ.diff(configUser, dbUser);
 
   const pendingChanges = changes.filter((change) => change.pending);
@@ -31,13 +26,14 @@ async function checkUser(configUser:User, repository:Repository<User>): Promise<
   return pendingChanges;
 }
 
-async function checkUsers(config:Configuration, dbConnection:Connection): Promise<UserChange[]> {
+async function checkUsers(configRegistry:Registry, dbRegistry:Registry): Promise<UserChange[]> {
   console.debug('Diffing changes to users');
-  const repository = dbConnection.getRepository(User);
 
-  const diffChecks:Array<Promise<UserChange[]>> = Array.from(config.users.values()).map((configUser) => checkUser(configUser, repository));
+  const diffChecks:Array<Promise<UserChange[]>> = Array.from(configRegistry.users.values()).map(async (configUser) => {
+    const dbUser:User | undefined = await dbRegistry.users.get(configUser.name);
+    return checkUser(configUser, dbUser)
+  });
   const checks = await Promise.all(diffChecks);
-  const flattenedChecks = checks.reduce((result, check) => [ ...result, ...check ], []);
   console.log(`Finished diffing users`);
-  return flattenedChecks;
+  return flatten(checks);
 }

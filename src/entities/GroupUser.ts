@@ -1,12 +1,11 @@
-import { Spec } from 'models';
 import { Entity, ManyToOne } from 'typeorm';
-
-import { BaseEntity } from './BaseEntity';
+import { Spec } from '../models/Test'
+import { Resource } from './Resource';
 import { Group } from './Group';
 import { User } from './User';
 
 @Entity('group-users')
-export class GroupUser extends BaseEntity {
+export class GroupUser extends Resource {
   public get name(): string {
     return `${this.group.id}::${this.user.id}`;
   }
@@ -17,7 +16,7 @@ export class GroupUser extends BaseEntity {
   @ManyToOne(() => Group, (group) => group.id)
   public group:Group = new Group();
 
-  public getSpecs():Array<Spec<BaseEntity>> {
+  public getSpecs():Array<Spec<Resource>> {
     return [];
   }
 }

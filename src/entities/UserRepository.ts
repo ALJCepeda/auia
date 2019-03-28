@@ -1,14 +1,13 @@
 import * as path from 'path';
 import { Column, Entity, ManyToOne } from 'typeorm';
-
-import { validateModel } from 'services';
-import { Spec, Test } from 'models';
-import { BaseEntity } from './BaseEntity';
+import { Spec, Test } from '../models/Test';
+import { validateModel } from '../services/validate';
+import { Resource } from './Resource';
 import { Repository } from './Repository';
 import { User } from './User';
 
 @Entity('user-repositories')
-export class UserRepository extends BaseEntity {
+export class UserRepository extends Resource {
   public get name(): string {
     return path.normalize(`${this.basePath}/${this.repository.id}`);
   }
@@ -25,7 +24,7 @@ export class UserRepository extends BaseEntity {
   @ManyToOne(() => Repository, (repository) => repository.id)
   public repository:Repository = new Repository();
 
-  public getSpecs(): Array<Spec<BaseEntity>> {
+  public getSpecs(): Array<Spec<Resource>> {
     return [
       new Test(() => validateModel(this.repository), 'Invalid repository provided to repository instance'),
       new Test(() => this.basePath.length > 0, 'Must provide a valid base path'),

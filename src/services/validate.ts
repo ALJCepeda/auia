@@ -1,5 +1,7 @@
-import { Validatable } from 'interfaces';
-import { isAssertion, Spec, Test, ValidateError, ValidateResult } from 'models';
+import { Validatable } from '../interfaces/Validatable';
+import { isAssertion, Spec, Test } from '../models/Test';
+import { ValidateError } from '../models/ValidateError';
+import { ValidateResult } from '../models/ValidateResult';
 
 export function validateModels<T extends Validatable<T>>(models: T[]): ValidateResult[] {
   return models.map((model) => validateModel(model));

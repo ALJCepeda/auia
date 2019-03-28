@@ -1,7 +1,12 @@
-import { Entity } from 'typeorm';
-
-import { EntityChange } from 'services';
+import { ResourceChange } from './ResourceChange';
 import { UserRepository } from '../UserRepository';
 
-@Entity('user-repository-changes')
-export abstract class UserRepositoryChange extends EntityChange<UserRepository> { }
+export abstract class UserRepositoryChange extends ResourceChange<UserRepository> {
+  public static get type():string {
+    return UserRepository.type
+  }
+  
+  public get type():string {
+    return UserRepository.type;
+  };
+}

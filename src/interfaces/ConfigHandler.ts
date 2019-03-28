@@ -1,7 +1,7 @@
-import { Configuration } from 'models';
-import { BaseEntity } from 'entities';
+import { Resource } from '../entities/Resource';
+import { Registry } from '../models/Registry';
 
 export interface ConfigHandler {
-  create:(data:any[]) => BaseEntity[];
-  build:(models:BaseEntity[], config:Configuration) => BaseEntity[];
+  create:(data:any[]) => Resource[];
+  build:(models:Resource[], config:Registry) => Resource[];
 }

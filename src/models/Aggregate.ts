@@ -1,18 +1,18 @@
 import { LessThanOrEqual, Repository } from 'typeorm';
+import { DBResourceChange, ResourceChangeCTR } from '../entities/changes/ResourceChange';
+import { Resource } from '../entities/Resource';
 
-import { BaseEntity } from 'entities';
-import { DBEntityChange, EntityChangeConstructor } from 'services';
 
-export class Aggregate<TModel extends BaseEntity> {
-  public changes:DBEntityChange[] = [];
+export class Aggregate<TModel extends Resource> {
+  public changes:DBResourceChange[] = [];
 
   constructor(
     public model: TModel,
-    public repository: Repository<DBEntityChange>,
-    public changeMap: Map<string, EntityChangeConstructor<TModel>>
+    public repository: Repository<DBResourceChange>,
+    public changeMap: Map<string, ResourceChangeCTR<TModel>>
   ) { }
 
-  public async getChanges(before:Date = new Date()): Promise<Array<DBEntityChange>> {
+  public async getChanges(before:Date = new Date()): Promise<Array<DBResourceChange>> {
     return this.repository.find( { target:this.model.name, createdAt: LessThanOrEqual(before) });
   }
 
@@ -22,7 +22,7 @@ export class Aggregate<TModel extends BaseEntity> {
     return this.model;
   }
 
-  public play(changes:DBEntityChange[]): TModel{
+  public play(changes:DBResourceChange[]): TModel{
     let model: TModel = this.model;
 
     changes.forEach((change) => {
@@ -30,7 +30,7 @@ export class Aggregate<TModel extends BaseEntity> {
         throw new Error(`Encountered unresolved User change ${change.name}`);
       }
 
-      const ctr: EntityChangeConstructor<TModel> = this.changeMap.get(change.name) as EntityChangeConstructor<TModel>;
+      const ctr: ResourceChangeCTR<TModel> = this.changeMap.get(change.name) as ResourceChangeCTR<TModel>;
       const changeInst = new ctr();
       model = changeInst.update(model, change);
       this.changes.push(change);

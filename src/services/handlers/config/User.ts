@@ -1,9 +1,12 @@
-import { ConfigHandler } from 'interfaces';
-import { BaseEntity, GroupUser, User, UserRepository } from 'entities';
-import { Configuration } from 'models';
+import { GroupUser } from '../../../entities/GroupUser';
+import { Resource } from '../../../entities/Resource';
+import { User } from '../../../entities/User';
+import { UserRepository } from '../../../entities/UserRepository';
+import { ConfigHandler } from '../../../interfaces/ConfigHandler';
+import { Registry } from '../../../models/Registry';
 
-function _build(model:BaseEntity, config:Configuration):BaseEntity {
-  if(model.className !== 'User') {
+function _build(model:Resource, config:Registry):Resource {
+  if(model.type !== User.type) {
     throw new Error(`Model is not instance of User: ${model}`);
   }
 
@@ -59,11 +62,11 @@ function _build(model:BaseEntity, config:Configuration):BaseEntity {
 }
 
 export const UserConfig:ConfigHandler = {
-  build:(models:BaseEntity[], config:Configuration): BaseEntity[] => {
+  build:(models:Resource[], config:Registry): Resource[] => {
     return models.map((model) => _build(model, config));
   },
 
-  create:(datum:any[]): BaseEntity[] => {
+  create:(datum:any[]): Resource[] => {
     return datum.map((data) => {
       const user = new User();
       user.name = data.name;

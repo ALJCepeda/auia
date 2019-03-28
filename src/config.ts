@@ -1,11 +1,11 @@
 import 'reflect-metadata';
-import { Connection, ConnectionOptions, createConnection } from 'typeorm';
-
-import * as entities from 'entities';
+import { Connection, ConnectionOptions, createConnection } from 'typeorm'
+import { ResourceChange } from './entities/changes/ResourceChange';
+import { Resources } from './entities/ResourceDict';
 
 const connectionOptions: ConnectionOptions = {
   database: `${__dirname}/../.auia/auia.db`,
-  entities: Object.values(entities),
+  entities: [ ...Resources, ResourceChange ],
   logging: true,
   synchronize: true,
   type: 'sqlite'

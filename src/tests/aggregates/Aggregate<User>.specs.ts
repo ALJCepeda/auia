@@ -1,33 +1,17 @@
-import { Repository } from 'typeorm';
-
-import { sinon } from 'tests/config';
-import { DBEntityChange, UserChangeMap } from 'services';
-import { User } from 'entities';
-import { Aggregate } from 'models';
+import { User } from '../../entities/User';
+import { aggregate } from '../../services/aggregate';
 
 describe('Aggregate<User>', () => {
-  function buildFromChanges(changes: DBEntityChange[], before?: Date) {
-    const user = new User();
-    const repository = new Repository<DBEntityChange>();
-    const stub = sinon.stub(repository, 'find');
-    stub.returns(Promise.resolve(changes));
-
-    const aggregate = new Aggregate<User>(user, repository, UserChangeMap);
-    const result = aggregate.build(before);
-    stub.reset();
-    return result;
-  }
-
-  it('should create new user', async () => {
-    const now = new Date();
-    const model = await buildFromChanges([
-      { name: 'Create', target: 'alfred', payload: 'alfred', createdAt: now }
-    ]) as User;
-
+  it('should create new user',() => {
+    const changes = [
+      {type: User.type, name: 'Create', target: 'alfred', payload: 'alfred', createdAt: new Date()}
+    ];
+    const model = aggregate(new User(), changes);
+  
     model.should.not.be.undefined();
     model.should.have.properties({
-      name:'alfred',
-      created:true
+      name: 'alfred',
+      created: true
     });
   });
 });

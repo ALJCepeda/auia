@@ -1,4 +1,4 @@
-import { Spec } from 'models';
+import { Spec } from '../models/Test';
 
 export interface Validatable<T = any> {
   getSpecs:() => Array<Spec<T>>;

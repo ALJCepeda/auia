@@ -1,22 +1,22 @@
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as AJV from 'AJV';
+import { Registry } from '../../models/Registry';
+import { getConfigHandler } from '../handlers/config/getConfigHandler';
 
-import { Configuration } from 'models';
-import { getConfigHandler } from '../handlers/config';
 
-export function loadConfigModels(): Configuration {
+export function loadConfigModels(): Registry {
   console.debug('Building model configurations');
   const config = readConfig();
   validateConfig(config);
   
-  const configuration = parseConfig(config);
-  buildModels(configuration);
-  console.debug('Configuration ready');
-  return configuration;
+  const configRegistry = parseConfig(config);
+  buildModels(configRegistry);
+  console.debug('Registry ready');
+  return configRegistry;
 }
 
-function validateConfig(config:Configuration) {
+function validateConfig(config:Registry) {
   const schema =  yaml.load(fs.readFileSync('src/schema.yaml', 'utf8'));
   console.debug('Loaded schema');
   const ajv = new AJV();
@@ -30,46 +30,46 @@ function validateConfig(config:Configuration) {
   return schema;
 }
 
-function addData(key:string, data:any,  configuration:Configuration):void {
+function addData(key:string, data:any,  configRegistry:Registry):void {
   const handler = getConfigHandler(key);
   if(!handler) {
     throw new Error(`No handler found for root key: ${key}`);
   }
   
   const result = handler.create(data[key]);
-  configuration.add(result);
+  configRegistry.add(result);
 }
 
-function parseConfig(data:any): Configuration {
-  console.debug('Loading data from config');
-  const configuration = new Configuration();
+function parseConfig(data:any): Registry {
+  console.debug('Loading data into registry');
+  const configRegistry = new Registry();
   
   for(const key in data) {
     if(data.hasOwnProperty(key)) {
-      addData(key, data, configuration);
+      addData(key, data, configRegistry);
     }
   }
   
-  return configuration;
+  return configRegistry;
 }
 
 function readConfig() {
   const configFile = process.argv[2];
   
   if(!configFile) {
-    throw new Error('Must include a config file');
+    throw new Error('Must include a registry file');
   }
   
   console.log(`Loaded config file: ${configFile}`);
   return yaml.load(fs.readFileSync(configFile, 'utf8'));
 }
 
-function buildModels(configuration:Configuration): Configuration {
-  console.debug('Building models from config');
+function buildModels(configuration:Registry): Registry {
+  console.debug('Building models from registry');
   configuration.models().forEach((model) => {
     const handler = getConfigHandler(model);
     handler.build([ model ], configuration);
   });
-  console.log('Models built from config');
+  console.log('Models built from registry');
   return configuration;
 }

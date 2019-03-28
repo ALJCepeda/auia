@@ -1,8 +1,9 @@
-import { User } from 'entities';
-import { DBEntityChange, EntityChange } from '../EntityChange';
+import { DBResourceChange } from '../../../entities/changes/ResourceChange';
+import { UserChange } from '../../../entities/changes/UserChange';
+import { User } from '../../../entities/User';
 
-export class Create extends EntityChange<User> {
-  public async check(configUser?:User, dbUser?:User): Promise<EntityChange<User>> {
+export class Create extends UserChange {
+  public async check(configUser?:User, dbUser?:User): Promise<UserChange> {
     if(configUser && !dbUser) {
       this.target = configUser.name;
       this.payload = configUser.name;
@@ -12,7 +13,7 @@ export class Create extends EntityChange<User> {
     return this;
   }
 
-  public update(user:User | undefined, change:DBEntityChange): User {
+  public update(user:User, change:DBResourceChange): User {
     const newUser = new User();
     newUser.name = change.payload;
     newUser.created = true;

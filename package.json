@@ -15,9 +15,9 @@
   "scripts": {
     "build": "tsc",
     "start": "./bin/auia",
-    "dev": "node $NODE_DEBUG_OPTION ./node_modules/.bin/ts-node -r tsconfig-paths/register src/index.ts src/tests/config.yaml",
+    "dev": "node $NODE_DEBUG_OPTION ./node_modules/.bin/ts-node src/index.ts src/tests/config.yaml",
     "dev:watch": "nodemon --exec npm run dev",
-    "test": "node $NODE_DEBUG_OPTION ./node_modules/.bin/ts-mocha -p tsconfig.json -r tsconfig-paths/register **/*.specs.*",
+    "test": "node $NODE_DEBUG_OPTION ./node_modules/.bin/ts-mocha -p tsconfig.json **/*.specs.*",
     "test:watch": "nodemon --exec npm run test",
     "db": "sqlite3 ./.auia/auia.db"
   },

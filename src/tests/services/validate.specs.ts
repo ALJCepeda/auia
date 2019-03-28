@@ -1,8 +1,9 @@
 import 'should';
-
-import { anyobject, Validatable } from 'interfaces';
-import { Spec, Test, Validator } from 'models';
-import { validateModel } from 'services';
+import { anyobject } from '../../interfaces/types';
+import { Validatable } from '../../interfaces/Validatable';
+import { Spec, Test } from '../../models/Test';
+import { Validator } from '../../models/Validator';
+import { validateModel } from '../../services/validate';
 
 describe('Validator', () => {
   it('should validate any object by adding an array of specs', () => {
@@ -61,7 +62,7 @@ describe('Validator', () => {
   });
 });
 
-describe('Validate<BaseEntity>', () => {
+describe('Validate<Resource>', () => {
   class UserModel implements Validatable {
     public name = '';
     public age = 5;

@@ -1,4 +1,4 @@
-import { ValidateResult } from 'models';
+import { ValidateResult } from '../../../models/ValidateResult';
 import { handleValidateResult } from './validateResult';
 
 function _handle(obj:any) {
@@ -13,5 +13,3 @@ export function handle(obj:any): void {
     _handle(obj);
   }
 }
-
-export * from '../config';

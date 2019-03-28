@@ -1,12 +1,12 @@
 $schema: http://json-schema.org/draft-07/schema
 $id: http://ajcepeda.com/schemas/auia.jso
 title: Auia Schema
-description:  Schema for Auia config
+description:  Schema for Auia registry
 type: object
 $defs:
   path:
     type: object
-    definition: Configuration for a path on the system
+    definition: Registry for a path on the system
     required:
       - url
     properties:
@@ -19,7 +19,7 @@ $defs:
         definition: Permissions for the path, default is whatever the software chooses
       owner:
         type: string
-        definition: Must be the name of a user defined in this config or root, default is wahtever the software chooses
+        definition: Must be the name of a user defined in this registry or root, default is wahtever the software chooses
 properties:
   defaults:
     type: object

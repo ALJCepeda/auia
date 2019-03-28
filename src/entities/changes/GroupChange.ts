@@ -1,7 +1,12 @@
-import { Entity } from 'typeorm';
-import { EntityChange } from 'services';
-
+import { ResourceChange } from './ResourceChange';
 import { Group } from '../Group';
 
-@Entity('group-changes')
-export abstract class GroupChange extends EntityChange<Group> { }
+export abstract class GroupChange extends ResourceChange<Group> {
+  public static get type():string {
+    return Group.type;
+  }
+  
+  public get type():string {
+    return Group.type;
+  };
+}

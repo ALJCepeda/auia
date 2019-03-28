@@ -1,4 +1,4 @@
-import { validate } from 'services';
+import { validate } from '../services/validate';
 import { Spec } from './Test';
 import { ValidateResult } from './ValidateResult';
 

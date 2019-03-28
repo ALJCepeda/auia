@@ -1,4 +1,5 @@
-import { ValidateResult, ValidateError } from "models";
+import { ValidateError } from '../../../models/ValidateError';
+import { ValidateResult } from '../../../models/ValidateResult';
 
 export const allInvalids:ValidateResult[] = [];
 

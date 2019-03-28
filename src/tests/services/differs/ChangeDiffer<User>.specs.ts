@@ -1,12 +1,13 @@
-import 'tests/config';
+import '../../config';
+import { ResourceChange } from '../../../entities/changes/ResourceChange';
+import { User } from '../../../entities/User';
+import { UserChanges } from '../../../services/change/user/UserChangeDict';
+import { EntityDiffer } from '../../../services/EntityDiffer';
 
-import { User } from 'entities';
-import { EntityChange, EntityDiffer, UserChangeList } from 'services';
-
-async function getPendingChanges(configObj?:Partial<User>, entityObj?:Partial<User>): Promise<EntityChange<User>[]> {
+async function getPendingChanges(configObj?:Partial<User>, entityObj?:Partial<User>): Promise<ResourceChange<User>[]> {
   const configUser = (configObj) ? Object.assign(new User(), configObj) : undefined;
   const entityUser = (entityObj) ? Object.assign(new User(), entityObj) : undefined;
-  const differ = new EntityDiffer<User>(UserChangeList);
+  const differ = new EntityDiffer<User>(UserChanges);
   const changes = await differ.diff(configUser, entityUser);
   return changes.filter((change) => change.pending);
 }

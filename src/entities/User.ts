@@ -1,12 +1,12 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 
 import { Spec } from 'models';
-import { BaseEntity } from './BaseEntity';
+import { Resource } from './Resource';
 import { GroupUser } from './GroupUser';
 import { UserRepository } from './UserRepository';
 
 @Entity('users')
-export class User extends BaseEntity {
+export class User extends Resource {
   @OneToMany(() => UserRepository, (repositoryInstance) => repositoryInstance.id)
   public repositories?:UserRepository[];
   public repositoryMap:Map<string, UserRepository> = new Map();
@@ -18,7 +18,7 @@ export class User extends BaseEntity {
   @Column()
   public isActive:boolean = false;
 
-  public getSpecs(): Array<Spec<BaseEntity>> {
+  public getSpecs(): Array<Spec<Resource>> {
     return [];
   }
 }
