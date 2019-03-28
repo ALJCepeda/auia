@@ -6,7 +6,7 @@ describe('Aggregate<User>', () => {
     const changes = [
       {type: User.type, name: 'Create', target: 'alfred', payload: 'alfred', createdAt: new Date()}
     ];
-    const model = aggregate(new User(), changes);
+    const model = aggregate(changes, new User());
   
     model.should.not.be.undefined();
     model.should.have.properties({

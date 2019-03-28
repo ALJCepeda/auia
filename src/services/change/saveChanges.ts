@@ -1,9 +1,8 @@
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { ResourceChange } from '../../entities/changes/ResourceChange';
 import { Resource, ResourceCTR } from '../../entities/Resource';
 import { ResourceDict } from '../../entities/ResourceDict';
 import { aggregate } from '../aggregate';
-import { ResourceChangeCTRDict, ResourceChangeDict } from './ResourceChangeDict';
 
 type TargetMap = Map<string, ResourceChange<Resource>[]>
 type TypeTargetMap = Map<string, TargetMap>;
