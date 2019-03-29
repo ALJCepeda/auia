@@ -1,4 +1,3 @@
-import { EntityManager } from 'typeorm';
 import { AppConfig, configure } from './config';
 import { ResourceChange } from './entities/changes/ResourceChange';
 import { Resource } from './entities/Resource';
@@ -15,9 +14,13 @@ async function run() {
   const dbRegistry:Registry = await loadDBModels(dbConnection);
   
   const appChanges:ResourceChange<Resource>[] = await checkChanges(configRegistry, dbRegistry);
-  return dbConnection.transaction((entityManager) => {
+  const updatedModels = await dbConnection.transaction((entityManager) => {
     return saveChanges(appChanges, entityManager);
   });
+  
+  console.debug('Updating db registry');
+  dbRegistry.upsert(updatedModels);
+  debugger;
 }
 
 run().then(() => {

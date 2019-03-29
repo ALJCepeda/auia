@@ -1,25 +1,25 @@
 import { Group } from '../entities/Group';
 import { Repository } from '../entities/Repository';
-import { Resource, ResourceCTR } from '../entities/Resource';
+import { Resource } from '../entities/Resource';
 import { User } from '../entities/User';
 
 export class Registry {
   public get users() {
-    return this.maps.get(User) as Map<string, User>;
+    return this.maps.get(User.type) as Map<string, User>;
   }
 
   public get groups() {
-    return this.maps.get(User) as Map<string, Group>;
+    return this.maps.get(Group.type) as Map<string, Group>;
   }
 
   public get repositories() {
-    return this.maps.get(Repository) as Map<string, Repository>;
+    return this.maps.get(Repository.type) as Map<string, Repository>;
   }
 
-  private maps:Map<ResourceCTR, Map<string, Resource>> = new Map<ResourceCTR, Map<string, Resource>>([
-    [ Group, new Map<string, Group>() ],
-    [ Repository, new Map<string, Repository>() ],
-    [ User, new Map<string, User>() ]
+  private maps:Map<string, Map<string, Resource>> = new Map<string, Map<string, Resource>>([
+    [ Group.type, new Map<string, Group>() ],
+    [ Repository.type, new Map<string, Repository>() ],
+    [ User.type, new Map<string, User>() ]
   ]);
 
   public models():Resource[] {
@@ -38,24 +38,29 @@ export class Registry {
     models.forEach((model) => this._add(model));
     return this;
   }
-
-  protected _add(model: Resource): void {
-    const ctr = model.constructor as ResourceCTR;
-
-    if(!this.maps.has(ctr)) {
-      throw new Error(`There is no map for class: ${ctr}`);
-    } else {
-      const map = this.maps.get(ctr);
-
-      if(!map) {
-        throw new Error(`Invalid class provided to configuration: ${ctr}`);
-      }
-
-      if(map.has(model.name)) {
-        throw new Error(`Duplicate model (${ctr}) encountered for: ${model.name}`);
-      }
-
-      map.set(model.name, model);
+  
+  public getMap(type:string) {
+    if(!this.maps.has(type)) {
+      throw new Error(`There is no map for class: ${type}`);
     }
+    
+    return this.maps.get(type) as Map<string, Resource>;
+  }
+
+  protected _add(model: Resource):void {
+    const map = this.getMap(model.type);
+
+    if(map.has(model.name)) {
+      throw new Error(`Duplicate model (${model.type}) encountered for: ${model.name}`);
+    }
+
+    map.set(model.name, model);
+  }
+  
+  public upsert(models: Resource[]):void {
+    models.forEach((model) => this._upsert(model));
+  }
+  protected _upsert(model: Resource):void {
+    this.getMap(model.type).set(model.name, model);
   }
 }

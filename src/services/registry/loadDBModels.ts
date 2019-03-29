@@ -5,14 +5,18 @@ import { Registry } from '../../models/Registry';
 import { flatten } from '../utils/flatten';
 
 export async function loadDBModels(dbConnection:Connection): Promise<Registry> {
-  const finds = Resources.map(async (ctr:ResourceCTR) => {
-    const repository = dbConnection.getRepository(ctr);
+  console.debug(`Loading database models`);
+  const finds = Resources.map(async (resourceCTR:ResourceCTR) => {
+    const repository = dbConnection.getRepository(resourceCTR);
     return repository.find();
   });
   
   const entities = await Promise.all(finds);
-  const dbRegistry = new Registry();
-  dbRegistry.add(flatten(entities));
+  const dbResources = flatten(entities);
   
+  console.debug(`Loaded ${dbResources.length} resources`);
+  const dbRegistry = new Registry();
+  dbRegistry.add(dbResources);
+  console.debug(`Added ${dbResources.length} resources to registry`);
   return dbRegistry;
 }

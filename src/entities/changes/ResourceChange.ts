@@ -16,7 +16,7 @@ export interface DBResourceChange {
 }
 
 @Entity('entity-changes')
-export abstract class ResourceChange<ModelT extends Resource> {
+export abstract class ResourceChange<ModelT extends Resource = Resource> {
   public static get type():string {
     return Resource.type;
   }
@@ -45,6 +45,6 @@ export abstract class ResourceChange<ModelT extends Resource> {
 
   public pending: boolean = false;
 
-  public abstract check(configModel?:ModelT, entityModel?: ModelT): Promise<ResourceChange<ModelT>>;
+  public abstract check(configModel?:ModelT, dbModel?:ModelT): ResourceChange<ModelT>;
   public abstract update(change:DBResourceChange, model?:ModelT,): ModelT;
 }

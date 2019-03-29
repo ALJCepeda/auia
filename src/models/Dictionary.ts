@@ -35,6 +35,10 @@ export class Dictionary<K, V> {
 		return Array.from(this._entries.entries());
 	}
 	
+	public get values():V[] {
+		return Array.from(this._entries.values());
+	}
+	
 	constructor(entries:Array<[K, V]> = [], dictionary?:Dictionary<K, V>) {
 		if(dictionary) {
 			const dictEntries = dictionary.entries;

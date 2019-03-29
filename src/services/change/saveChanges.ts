@@ -3,32 +3,34 @@ import { ResourceChange } from '../../entities/changes/ResourceChange';
 import { Resource, ResourceCTR } from '../../entities/Resource';
 import { ResourceDict } from '../../entities/ResourceDict';
 import { aggregate } from '../aggregate';
+import { flatten } from '../utils/flatten';
 
 type TargetMap = Map<string, ResourceChange<Resource>[]>
 type TypeTargetMap = Map<string, TargetMap>;
 
-export async function saveChanges(changes:ResourceChange<Resource>[], entityManager:EntityManager) {
+export async function saveChanges(changes:ResourceChange<Resource>[], entityManager:EntityManager): Promise<Resource[]> {
   console.debug('Saving app changes');
   const typeMap:TypeTargetMap = mapChanges(changes);
-  await saveTypeMap(typeMap, entityManager);
+  const models = await saveTypeMap(typeMap, entityManager);
   console.debug('Saved app changes');
-  return typeMap;
+  return models;
 }
 
-async function saveTypeMap(typeMap:TypeTargetMap, entityManager:EntityManager) {
-  const typeSaves = Array.from(typeMap.entries()).map(async ([type, targetMap]) => {
+async function saveTypeMap(typeMap:TypeTargetMap, entityManager:EntityManager): Promise<Resource[]> {
+  const saves = Array.from(typeMap.entries()).map(async ([type, targetMap]) => {
     console.debug(`Saving all ${type} changes`);
     const resourceCTR = ResourceDict.get(type) as ResourceCTR;
     
-    const targetSaves = await saveTargetMap(resourceCTR, targetMap, entityManager);
+    const updatedModels = await saveTargetMap(resourceCTR, targetMap, entityManager);
     console.debug(`Saved all ${type} changes`);
-    return targetSaves;
+    return updatedModels;
   });
   
-  return Promise.all(typeSaves);
+  const models = await Promise.all(saves);
+  return flatten(models);
 }
 
-async function saveTargetMap(resourceCTR:ResourceCTR, targetMap:TargetMap, entityManager:EntityManager) {
+async function saveTargetMap(resourceCTR:ResourceCTR, targetMap:TargetMap, entityManager:EntityManager): Promise<Resource[]> {
   const resourceRepository = entityManager.getRepository(resourceCTR);
   const changeRepository = entityManager.getRepository(ResourceChange);
   
@@ -36,12 +38,12 @@ async function saveTargetMap(resourceCTR:ResourceCTR, targetMap:TargetMap, entit
     console.debug(`Updating ${target} with ${changes.length} changes`);
     const model = await resourceRepository.findOne({ where: { name:target }});
     const updatedModel = aggregate(changes, model);
-    const saves = await Promise.all([
+    await Promise.all([
       changeRepository.save(changes),
       resourceRepository.save(updatedModel)
     ]);
     console.debug(`Finished updating ${target}`);
-    return saves;
+    return updatedModel;
   });
   
   return Promise.all(allSaves);
