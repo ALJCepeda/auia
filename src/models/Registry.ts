@@ -4,24 +4,36 @@ import { Resource } from '../entities/Resource';
 import { User } from '../entities/User';
 
 export class Registry {
-  public get users() {
-    return this.maps.get(User.type) as Map<string, User>;
+  public get users(): User[] {
+    return Array.from(this.userMap.values());
   }
 
-  public get groups() {
-    return this.maps.get(Group.type) as Map<string, Group>;
+  public get groups(): Group[] {
+    return Array.from(this.groupMap.values());
+  }
+  
+  public get repositories(): Repository[] {
+    return Array.from(this.repositoryMap.values());
   }
 
-  public get repositories() {
-    return this.maps.get(Repository.type) as Map<string, Repository>;
-  }
-
-  private maps:Map<string, Map<string, Resource>> = new Map<string, Map<string, Resource>>([
+  public maps:Map<string, Map<string, Resource>> = new Map<string, Map<string, Resource>>([
     [ Group.type, new Map<string, Group>() ],
     [ Repository.type, new Map<string, Repository>() ],
     [ User.type, new Map<string, User>() ]
   ]);
-
+  
+  public get repositoryMap() {
+    return this.maps.get(Repository.type) as Map<string, Repository>;
+  }
+  
+  public get groupMap() {
+    return this.maps.get(Group.type) as Map<string, Group>;
+  }
+  
+  public get userMap() {
+    return this.maps.get(User.type) as Map<string, User>;
+  }
+  
   public models():Resource[] {
     const result:Resource[] = [];
 

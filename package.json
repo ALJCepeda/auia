@@ -26,11 +26,14 @@
     "@types/es6-shim": "^0.31.39",
     "@types/js-yaml": "^3.12.0",
     "@types/node": "^10.12.18",
+    "@types/rimraf": "^2.0.2",
     "@types/sinon": "^7.0.10",
     "ajv": "^6.9.1",
-    "js-yaml": "^3.12.1",
+    "js-yaml": "^3.13.0",
+    "rimraf": "^2.6.3",
     "sqlite3": "^4.0.6",
-    "typeorm": "^0.2.14"
+    "typeorm": "^0.2.14",
+    "write-yaml": "^1.0.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.119",

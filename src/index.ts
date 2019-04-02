@@ -4,8 +4,10 @@ import { Resource } from './entities/Resource';
 import { Registry } from './models/Registry';
 import { checkChanges } from './services/change/checkChanges';
 import { saveChanges } from './services/change/saveChanges';
+import { generatePlaybook } from './services/generateTasks';
 import { loadConfigModels } from './services/registry/loadConfigModels';
 import { loadDBModels } from './services/registry/loadDBModels';
+import { writePlaybook } from './services/writePlaybook';
 
 async function run() {
   console.debug('Running application');
@@ -20,6 +22,8 @@ async function run() {
   
   console.debug('Updating db registry');
   dbRegistry.upsert(updatedModels);
+  const playbook = generatePlaybook(dbRegistry);
+  await writePlaybook(playbook);
 }
 
 run().then(() => {

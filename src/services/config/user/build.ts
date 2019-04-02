@@ -24,7 +24,7 @@ function _build(model:Resource, config:Registry):Resource {
       throw new Error(`Repositories for user (${user.id} must be an array of repository ids or UserRepository objects`);
     } else {
       repositories.forEach((repositoryID: string) => {
-        const repository = config.repositories.get(repositoryID);
+        const repository = config.repositoryMap.get(repositoryID) ;
         if (!repository) {
           console.warn(`Undefined repository encountered (${repositoryID}) for user (${user.id})`);
         } else {
@@ -45,7 +45,7 @@ function _build(model:Resource, config:Registry):Resource {
       throw new Error(`Groups for user (${user.id}) must be an array of repository ids or UserGroup objects`);
     } else {
       groups.forEach((groupID:string) => {
-        const group = config.groups.get(groupID);
+        const group = config.groupMap.get(groupID);
         if(!group) {
           console.warn(`Undefined group encountered (${groupID}) for user(${user.id})`);
         } else {
