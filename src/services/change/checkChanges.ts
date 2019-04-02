@@ -19,7 +19,7 @@ export function checkChanges(configRegistry: Registry, dbRegistry: Registry): Re
 
 function checkResource(configModel:Resource, dbModel?:Resource) {
   console.debug(`Diffing resource ${configModel.name}`);
-  const resourceChangeCTRs:ResourceChangeCTR[] = ResourceChangeDict.byIndex('type', configModel.type).values;
+  const resourceChangeCTRs:ResourceChangeCTR[] = ResourceChangeDict.get(configModel.type).values;
   const differ = new EntityDiffer(resourceChangeCTRs);
   const changes = differ.diff(configModel, dbModel);
   

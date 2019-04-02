@@ -3,7 +3,7 @@ import { UserChange } from '../../../entities/changes/UserChange';
 import { User } from '../../../entities/User';
 
 export class Delete extends UserChange {
-  public async check(configUser?:User, dbUser?:User): Promise<UserChange> {
+  public check(configUser?:User, dbUser?:User): UserChange {
     if(dbUser && !configUser) {
       this.target = dbUser.name;
       this.pending = true;

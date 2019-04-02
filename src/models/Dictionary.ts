@@ -1,12 +1,24 @@
+import { flatten } from '../services/utils/flatten';
+
 export type DictionaryIndexer<K, V, I> = (key:K, value:V) => I;
 export type DictionaryMatcher<K, V, M> = (key:M, dictionary:Dictionary<K, V>) => V;
 
 export class Dictionary<K, V> {
-	public static from<K, V>(values:V[], indexer:(value:V) => K):Dictionary<K, V> {
-		const entries = values.map((value:V) => {
+	public static from<K, V>(values:V[], indexer:(value:V) => K | K[]):Dictionary<K, V> {
+		const entries = values.reduce((entries:Array<[K, V]>, value:V) => {
 			const key = indexer(value);
-			return [key, value];
-		}) as Array<[K, V]>;
+			
+			if(Array.isArray(key)) {
+				entries = entries.concat(key.reduce((entry:Array<[K, V]>, k:K) => {
+					entry.push([k, value]);
+					return entry;
+				}, []));
+			} else {
+				entries.push([key, value]);
+			}
+			
+			return entries;
+		}, []);
 		
 		return new Dictionary<K, V>(entries);
 	}

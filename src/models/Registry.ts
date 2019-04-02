@@ -60,6 +60,7 @@ export class Registry {
   public upsert(models: Resource[]):void {
     models.forEach((model) => this._upsert(model));
   }
+  
   protected _upsert(model: Resource):void {
     this.getMap(model.type).set(model.name, model);
   }

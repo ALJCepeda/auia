@@ -6,7 +6,7 @@ export class EntityDiffer<ModelT extends Resource = Resource> {
     public changeList: ResourceChangeCTR<ModelT>[]
   ) { }
 
-  public diff(configModel?: ModelT, entityModel?:ModelT): ResourceChange[] {
+  public diff(configModel?: ModelT, entityModel?:ModelT): ResourceChange<ModelT>[] {
     return this.changeList.map((changeCTR) => new changeCTR())
                           .map((change) => change.check(configModel, entityModel));
   }

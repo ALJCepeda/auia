@@ -20,7 +20,6 @@ async function run() {
   
   console.debug('Updating db registry');
   dbRegistry.upsert(updatedModels);
-  debugger;
 }
 
 run().then(() => {

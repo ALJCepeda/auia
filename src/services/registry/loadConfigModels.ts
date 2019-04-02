@@ -2,8 +2,7 @@ import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as AJV from 'AJV';
 import { Registry } from '../../models/Registry';
-import { getConfigHandler } from '../handlers/config/getConfigHandler';
-
+import { HandlerDict } from '../config/HandlerDict';
 
 export function loadConfigModels(): Registry {
   console.debug('Building model configurations');
@@ -31,7 +30,7 @@ function validateConfig(config:Registry) {
 }
 
 function addData(key:string, data:any,  configRegistry:Registry):void {
-  const handler = getConfigHandler(key);
+  const handler = HandlerDict.get(key);
   if(!handler) {
     throw new Error(`No handler found for root key: ${key}`);
   }
@@ -67,7 +66,7 @@ function readConfig() {
 function buildModels(configuration:Registry): Registry {
   console.debug('Building models from registry');
   configuration.models().forEach((model) => {
-    const handler = getConfigHandler(model);
+    const handler = HandlerDict.get(model.type);
     handler.build([ model ], configuration);
   });
   console.log('Models built from registry');
