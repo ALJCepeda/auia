@@ -15,9 +15,6 @@ export class User extends Resource {
   public groups?:GroupUser[];
   public groupMap:Map<string, GroupUser> = new Map();
 
-  @Column()
-  public isActive:boolean = true;
-
   public getSpecs(): Array<Spec<Resource>> {
     return [];
   }

@@ -13,7 +13,8 @@ export function task(config:Registry): UserTask[] {
     return {
       name:`User ${user.name}`,
       user: {
-        name: user.name
+        name: user.name,
+        state: user.active ? 'present' : 'absent'
       }
     };
   });

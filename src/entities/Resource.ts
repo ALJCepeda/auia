@@ -36,9 +36,10 @@ export abstract class Resource implements Validatable<Resource> {
 
   @Column()
   public lastModifiedAt:Date = new Date();
-
-  public created:boolean = false;
-  public deleted:boolean = false;
+  
+  @Column()
+  public active:boolean = true;
+  
   public data:any = {};
   
   public abstract getSpecs(): Array<Spec<Resource>>;

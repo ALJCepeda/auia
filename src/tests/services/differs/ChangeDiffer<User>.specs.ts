@@ -24,6 +24,6 @@ describe('EntityDiffer<User>', () => {
     const changes = await getPendingChanges(undefined, { name:'alfred' });
 
     changes.length.should.eql(1);
-    changes[0].should.have.properties({ name:'Delete', target:'alfred', payload:'', pending:true });
+    changes[0].should.have.properties({ name:'Active', target:'alfred', payload:'', pending:true });
   });
 });
