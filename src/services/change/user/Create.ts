@@ -1,19 +1,13 @@
-import { DBResourceChange } from '../../../entities/changes/ResourceChange';
+import { IDBResourceChange } from '../../../entities/changes/ResourceChange';
 import { UserChange } from '../../../entities/changes/UserChange';
 import { User } from '../../../entities/User';
 
 export class Create extends UserChange {
-  public check(configUser?:User, dbUser?:User): UserChange {
-    if(configUser && !dbUser) {
-      this.target = configUser.name;
-      this.payload = configUser.name;
-      this.pending = true;
-    }
-
+  public check(configUser:User, dbUser:User): UserChange {
     return this;
   }
 
-  public update(change:DBResourceChange, user?:User): User {
+  public update(change:IDBResourceChange, user:User): User {
     const newUser = new User();
     newUser.name = change.payload;
     newUser.createdAt = change.createdAt;

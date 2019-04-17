@@ -36,7 +36,7 @@ async function saveTargetMap(resourceCTR:ResourceCTR, targetMap:TargetMap, entit
   
   const allSaves = Array.from(targetMap.entries()).map(async ([target, changes]) => {
     console.debug(`Updating ${target} with ${changes.length} changes`);
-    const model = await resourceRepository.findOne({ where: { name:target }});
+    const model = await resourceRepository.findOne({ where: { name:target }}) || new resourceCTR();
     const updatedModel = aggregate(changes, model);
     await Promise.all([
       changeRepository.save(changes),

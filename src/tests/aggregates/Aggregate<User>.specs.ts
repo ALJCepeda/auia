@@ -10,8 +10,7 @@ describe('Aggregate<User>', () => {
   
     model.should.not.be.undefined();
     model.should.have.properties({
-      name: 'alfred',
-      created: true
+      name: 'alfred'
     });
   });
 });
