@@ -4,6 +4,7 @@ import { User } from '../../../entities/User';
 
 export class Active extends UserChange {
   public check(configUser:User, dbUser:User): UserChange {
+    debugger;
     if(configUser.active !== dbUser.active) {
       this.target = configUser.name;
       this.payload = String(configUser.active);
@@ -15,7 +16,7 @@ export class Active extends UserChange {
 
   public update(change:IDBResourceChange, user:User): User {
     return Object.assign(new User(), user, {
-      active: Boolean(change.payload),
+      active: change.payload === 'true',
       lastModifiedAt: change.createdAt
     });
   }

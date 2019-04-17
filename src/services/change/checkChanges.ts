@@ -14,16 +14,21 @@ export function checkChanges(configRegistry: Registry, dbRegistry: Registry): Re
   
   const diffChanges = configModels.map((configModel) => {
     const dbModel: Resource | undefined = dbRegistry.getMap(configModel.type).get(configModel.name);
+    let diffChanges;
     
     if(!dbModel) {
       const create = newCreateChange(configModel);
       const ctr = ResourceDict.get(configModel.type);
       const resource = create.update(create, new ctr());
       const changes = checkResource(configModel, resource);
-      return [ create, ...changes ];
+      diffChanges = [ create, ...changes ];
+    } else {
+      diffChanges = checkResource(configModel, dbModel);
     }
   
-    return checkResource(configModel, dbModel);
+    console.log(diffChanges);
+    console.debug(`Found ${ diffChanges.length } change(s) for ${configModel.name}`);
+    return diffChanges;
   });
   
   const deactivateChanges = dbModels.filter((dbModel) => !configRegistry.getMap(dbModel.type).has(dbModel.name))
@@ -39,10 +44,7 @@ function checkResource(configModel:Resource, dbModel:Resource): ResourceChange[]
   const differ = new EntityDiffer(resourceChangeCTRs);
   const changes = differ.diff(configModel, dbModel);
   
-  const pendingChanges = changes.filter((change) => change.pending);
-  console.debug(`Found ${ pendingChanges.length } change(s) for ${configModel.name}`);
-  
-  return pendingChanges;
+  return changes.filter((change) => change.pending);
 }
 
 function newCreateChange(configModel:Resource): ResourceChange {

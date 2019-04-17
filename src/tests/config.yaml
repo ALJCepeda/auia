@@ -1,3 +1,4 @@
 users:
   - name: alfred
   - name: dana
+    active: false
