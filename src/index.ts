@@ -1,18 +1,20 @@
-import { AppConfig, configure } from './config';
+import { AppConfig, configure } from './configure';
 import { ResourceChange } from './entities/changes/ResourceChange';
 import { Resource } from './entities/Resource';
 import { Registry } from './models/Registry';
 import { checkChanges } from './services/change/checkChanges';
 import { saveChanges } from './services/change/saveChanges';
 import { generatePlaybook } from './services/generateTasks';
-import { loadConfigModels } from './services/registry/loadConfigModels';
+import { loadConfigModals } from './services/registry/loadConfigModels';
 import { loadDBModels } from './services/registry/loadDBModels';
 import { writePlaybook } from './services/writePlaybook';
 
 async function run() {
   console.debug('Running application');
-  const { dbConnection }:AppConfig = await configure();
-  const configRegistry:Registry = loadConfigModels();
+  const { dbConnection, configFile }:AppConfig = await configure();
+  
+  
+  const configRegistry:Registry = loadConfigModals(configFile);
   const dbRegistry:Registry = await loadDBModels(dbConnection);
   
   const appChanges:ResourceChange<Resource>[] = await checkChanges(configRegistry, dbRegistry);

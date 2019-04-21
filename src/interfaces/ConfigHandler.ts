@@ -6,7 +6,7 @@ import { AnsibleTask } from './AnsibleTask';
 export interface ConfigHandler {
   key:keyof AnsiblePlaybook;
   type:string;
-  create:(data:any[]) => Resource[];
+  create:(data:Resource[]) => Resource[];
   build:(models:Resource[], config:Registry) => Resource[];
   task:(config:Registry) => AnsibleTask[];
 }
