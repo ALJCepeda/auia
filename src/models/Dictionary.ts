@@ -1,5 +1,3 @@
-import { flatten } from '../services/utils/flatten';
-
 export type DictionaryIndexer<K, V, I> = (key:K, value:V) => I;
 export type DictionaryMatcher<K, V, M> = (key:M, dictionary:Dictionary<K, V>) => V;
 
@@ -62,7 +60,7 @@ export class Dictionary<K, V> {
 	
 	get(key:K):V {
 		if(!this._entries.has(key)) {
-			throw new Error(`Unable to find entry`);
+			throw new Error(`Unable to find entry for: ${key}`);
 		}
 		
 		return this._entries.get(key) as V;

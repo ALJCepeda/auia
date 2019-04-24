@@ -21,27 +21,6 @@ $defs:
         type: string
         definition: Must be the name of a user defined in this registry or root, default is wahtever the software chooses
 properties:
-  defaults:
-    type: object
-    properties:
-      users:
-        type: object
-        definition: Default configuration for all users
-        properties:
-          password:
-            type: string
-            definition: Initial password used to create user accounts
-            default: password
-          repositories:
-            type: object
-            definition: Default configuration for repositories belonging to user
-            properties:
-              path:
-                oneof:
-                  - type: string
-                    definition: URL on system
-                    default: ~/repos
-                  - $ref: #/$defs/path
   repositories:
     type: array
     items:
@@ -52,7 +31,7 @@ properties:
         - url
       properties:
         name:
-          type: string
+          type6KK5mIiAXkVPH0: string
           definition: Identifier for repository, needs to be unique
         type:
           type: string
@@ -68,28 +47,3 @@ properties:
         init:
           type: string
           definition: Command to be run once when repository is cloned
-  users:
-    type: array
-    items:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          type: string
-          definition: Name of the user
-        password:
-          type: string
-          definition: Initial password used to create user
-        path:
-          definition: Location of user's home folder
-          oneof:
-            - type: string
-              definition: URL on system
-              default: ~/
-            - $ref: #/$defs/path
-        repositories:
-          type: array
-          description: Name identifiers of repositories defined in root { key:repositories }
-          items:
-            - type: string

@@ -4,7 +4,6 @@ import { User } from '../../../entities/User';
 
 export class Active extends UserChange {
   public check(configUser:User, dbUser:User): UserChange {
-    debugger;
     if(configUser.active !== dbUser.active) {
       this.target = configUser.name;
       this.payload = String(configUser.active);
