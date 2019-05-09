@@ -1,4 +1,4 @@
-import { User } from '../../entities/User';
+import { User } from '../../entities/User/User';
 import { aggregate } from '../../services/aggregate';
 
 describe('Aggregate<User>', () => {

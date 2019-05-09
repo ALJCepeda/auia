@@ -1,12 +1,12 @@
 import { AppConfig, configure } from './configure';
-import { ResourceChange } from './entities/changes/ResourceChange';
+import { ResourceChange } from './entities/ResourceChange';
 import { Resource } from './entities/Resource';
 import { Registry } from './models/Registry';
-import { checkChanges } from './services/change/checkChanges';
-import { saveChanges } from './services/change/saveChanges';
+import { checkChanges } from './services/checkChanges';
+import { saveChanges } from './services/saveChanges';
 import { generatePlaybook } from './services/generateTasks';
-import { loadConfigModals } from './services/registry/loadConfigModels';
-import { loadDBModels } from './services/registry/loadDBModels';
+import { loadConfigModals } from './services/loadConfigModels';
+import { loadDBModels } from './services/loadDBModels';
 import { writePlaybook } from './services/writePlaybook';
 
 async function run() {

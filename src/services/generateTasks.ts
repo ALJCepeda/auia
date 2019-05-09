@@ -1,6 +1,6 @@
 import { AnsiblePlaybook } from '../interfaces/AnsiblePlaybook';
 import { Registry } from '../models/Registry';
-import { HandlerDict } from './config/HandlerDict';
+import { HandlerDict } from './dictionaries/HandlerDict';
 
 export function generatePlaybook(dbRegistry:Registry): AnsiblePlaybook {
   console.debug('Generating ansible tasks');

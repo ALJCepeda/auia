@@ -1,3 +1,7 @@
+groups:
+  - name: developers
+  - name: admins
+    sudo: true
 users:
   - name: alfred
     groups:

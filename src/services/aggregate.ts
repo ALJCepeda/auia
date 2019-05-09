@@ -1,6 +1,6 @@
-import { IDBResourceChange, ResourceChangeCTR } from '../entities/changes/ResourceChange';
+import { IDBResourceChange, ResourceChangeCTR } from '../entities/ResourceChange';
 import { Resource } from '../entities/Resource';
-import { ResourceChangeDict } from './change/ResourceChangeDict';
+import { ResourceChangeDict } from './dictionaries/ResourceChangeDict';
 
 export function aggregate(changes:IDBResourceChange[], model:Resource): Resource {
   return changes.reduce((result, change) => {

@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { Connection, ConnectionOptions, createConnection } from 'typeorm'
-import { ResourceChange } from './entities/changes/ResourceChange';
-import { Resources } from './entities/ResourceDict';
+import { ResourceChange } from './entities/ResourceChange';
+import { Resources } from './services/dictionaries/ResourceDict';
 
 const connectionOptions: ConnectionOptions = {
   database: `${__dirname}/../.auia/auia.db`,

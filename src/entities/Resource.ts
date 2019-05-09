@@ -40,7 +40,7 @@ export abstract class Resource implements Validatable<Resource> {
   @Column()
   public active:boolean = true;
   
-  public data:any = {};
+  public data?:any;
   
   public abstract getSpecs(): Array<Spec<Resource>>;
 }

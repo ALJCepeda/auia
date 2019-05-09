@@ -1,7 +1,7 @@
-import { Group } from '../entities/Group';
-import { Repository } from '../entities/Repository';
+import { Group } from '../entities/group/Group';
+import { Repository } from '../entities/Repository/Repository';
 import { Resource } from '../entities/Resource';
-import { User } from '../entities/User';
+import { User } from '../entities/User/User';
 
 export class Registry {
   public get users(): User[] {
