@@ -1,12 +1,15 @@
-import { Resource } from '../Resource';
+import { Resource, ResourceSchemaModel } from '../Resource';
 import { User, UserSchemaModel } from './User';
 
-export function create(datum:any[]): Resource[] {
-  return datum.map((data:UserSchemaModel) => {
+export function create(datum:ResourceSchemaModel[]): Resource[] {
+  return datum.map((data) => {
+    const model = data as UserSchemaModel;
     const user = new User();
-    user.name = data.name;
-    user.active = data.active !== false;
-    user.data = data;
+  
+    user.data = model;
+    user.name = model.name;
+    user.active = model.active !== false;
+    
     return user;
   });
 }

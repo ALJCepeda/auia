@@ -2,7 +2,7 @@ import * as path from 'path';
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { Spec, Test } from '../../models/Test';
 import { validateModel } from '../../services/validate';
-import { Resource } from '../Resource';
+import { Resource, ResourceAssociationCTR } from '../Resource';
 import { Repository } from '../Repository/Repository';
 import { User } from '../User/User';
 
@@ -30,5 +30,15 @@ export class UserRepository extends Resource {
       new Test(() => this.basePath.length > 0, 'Must provide a valid base path'),
       new Test(() => this.branch.length > 0, 'Must provide a valid branch')
     ];
+  }
+  
+  static associate(user:User, repository:Repository): UserRepository {
+    const userRepository = new UserRepository();
+    userRepository.user = user;
+    userRepository.repository = repository;
+  
+    (user.repositories as UserRepository[]).push(userRepository);
+    user.repositoryMap.set(repository.name, userRepository);
+    return userRepository;
   }
 }

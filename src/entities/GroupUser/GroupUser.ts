@@ -19,4 +19,14 @@ export class GroupUser extends Resource {
   public getSpecs():Array<Spec<Resource>> {
     return [];
   }
+  
+  static associate(user:User, group:Group): GroupUser {
+    const groupUser = new GroupUser();
+    groupUser.user = user;
+    groupUser.group = group;
+    
+    (user.groups as GroupUser[]).push(groupUser);
+    user.groupMap.set(group.name, groupUser);
+    return groupUser;
+  }
 }

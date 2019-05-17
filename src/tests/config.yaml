@@ -1,11 +1,4 @@
-groups:
-  - name: developers
-  - name: admins
-    sudo: true
 users:
   - name: alfred
-    groups:
-      - developers
-      - admins
   - name: dana
     active: false

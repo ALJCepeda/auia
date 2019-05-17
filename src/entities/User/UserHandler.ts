@@ -9,6 +9,6 @@ export const UserHandler:ResourceHandler = {
   class:User,
   type:User.type,
   create,
-  build,
+  associate: build,
   task
 };

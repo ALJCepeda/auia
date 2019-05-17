@@ -10,7 +10,7 @@ export interface UserTask extends AnsibleTask {
 }
 
 export function task(config: Registry): UserTask[] {
-  return Array.from(config.users.values()).map((user) => {
+  return config.users.map((user) => {
     return {
       name: `User ${user.name}`,
       user: {

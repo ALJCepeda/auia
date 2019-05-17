@@ -13,7 +13,6 @@ async function run() {
   console.debug('Running application');
   const { dbConnection, configFile }:AppConfig = await configure();
   
-  
   const configRegistry:Registry = loadConfigModals(configFile);
   const dbRegistry:Registry = await loadDBModels(dbConnection);
   

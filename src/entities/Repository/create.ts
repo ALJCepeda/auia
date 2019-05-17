@@ -1,16 +1,17 @@
-import { Resource } from '../Resource';
-import { Repository } from './Repository';
+import { Resource, ResourceSchemaModel } from '../Resource';
+import { Repository, RepositorySchemaModel } from './Repository';
 
-export function create(datum:Resource[]): Resource[] {
+export function create(datum:ResourceSchemaModel[]): Resource[] {
   return datum.map((data) => {
     const repository = new Repository();
-    
-    repository.name = data.name;
-    repository.active = data.active !== false;
-    repository.data = data;
+    const model = data as RepositorySchemaModel;
   
-    if(data.branch) {
-      repository.branch = data.branch;
+    repository.data = model;
+    repository.name = model.name;
+    repository.active = model.active !== false;
+  
+    if(model.branch) {
+      repository.branch = model.branch;
     }
     
     return repository;

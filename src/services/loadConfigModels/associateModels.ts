@@ -1,12 +1,12 @@
 import { Registry } from '../../models/Registry';
 import { HandlerDict } from '../dictionaries/HandlerDict';
 
-export function buildModels(configuration:Registry): Registry {
-  console.debug('Building models from registry');
+export function associateModels(configuration:Registry): Registry {
+  console.debug('Associating models in registry');
   configuration.models().forEach((model) => {
     const handler = HandlerDict.get(model.type);
-    handler.build([ model ], configuration);
+    handler.associate([ model ], configuration);
   });
-  console.log('Models built from registry');
+  console.log('All models associated');
   return configuration;
 }

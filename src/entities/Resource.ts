@@ -1,4 +1,5 @@
 import { Check, Column, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { ResourceSchema } from '../interfaces/ResourceSchema';
 import { Validatable } from '../interfaces/Validatable';
 import { Spec } from '../models/Test';
 
@@ -7,10 +8,18 @@ export interface ResourceCTR<ResourceT extends Resource = Resource> {
   type:string;
 }
 
+export interface ResourceAssociationCTR <
+  ResourceMaster extends Resource = Resource,
+  ResourceSlave extends Resource = Resource,
+  ResourceRelation extends Resource = Resource
+> extends ResourceCTR<ResourceMaster> {
+  associate(master:ResourceMaster, slave:ResourceSlave):ResourceRelation;
+}
+
 @Unique(['name'])
 @Check('name <> ""')
 @Check('id <> -1')
-export abstract class Resource implements Validatable<Resource> {
+export class Resource implements Validatable<Resource> {
   public static get type():string {
     return this.name;
   }
@@ -42,5 +51,34 @@ export abstract class Resource implements Validatable<Resource> {
   
   public data?:any;
   
-  public abstract getSpecs(): Array<Spec<Resource>>;
+  public getSpecs(): Array<Spec<Resource>> {
+    return []
+  }
+  
+  static schemaKey:string = 'resources';
+  static getSchema():ResourceSchema {
+    return {
+      type:'array',
+      items: {
+        type: 'object',
+        definition: 'Base properties shared by all Resources',
+        required: ['name'],
+        properties: {
+          name: {
+            type: 'string',
+            definition: `Name of the ${this.type}`
+          },
+          active: {
+            type: 'boolean',
+            definition: `Is this ${this.type} active?`
+          }
+        }
+      }
+    };
+  }
+}
+
+export interface ResourceSchemaModel {
+  name:string;
+  active:boolean;
 }

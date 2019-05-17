@@ -1,7 +1,7 @@
 import { Registry } from '../../models/Registry';
 import { addData } from './addData';
 
-export function parseConfig(data:any): Registry {
+export function registryFrom(data:any): Registry {
   console.debug('Loading data into registry');
   const configRegistry = new Registry();
   

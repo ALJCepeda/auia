@@ -1,6 +1,6 @@
 import { Registry } from '../../models/Registry';
-import { buildModels } from './buildModels';
-import { parseConfig } from './parseConfig';
+import { associateModels } from './associateModels';
+import { registryFrom } from './registryFrom';
 import { readConfig } from './readConfig';
 import { validateConfig } from './validateConfig';
 
@@ -9,8 +9,8 @@ export function loadConfigModals(configFile:string): Registry {
   const config = readConfig(configFile);
   validateConfig(config);
   
-  const configRegistry = parseConfig(config);
-  buildModels(configRegistry);
+  const configRegistry = registryFrom(config);
+  associateModels(configRegistry);
   console.debug('Registry ready');
   return configRegistry;
 }
