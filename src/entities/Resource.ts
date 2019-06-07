@@ -6,6 +6,7 @@ import { Spec } from '../models/Test';
 export interface ResourceCTR<ResourceT extends Resource = Resource> {
   new():ResourceT;
   type:string;
+  schemaKey:string;
 }
 
 export interface ResourceAssociationCTR <

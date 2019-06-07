@@ -1,9 +1,9 @@
 import { Resource } from '../entities/Resource';
 import { AssociationOptions } from '../interfaces/AssociateOptions';
 
-export function associate(resource: Resource, idModelMap: Map<string, Resource>, opts: AssociationOptions) {
+export function associateResources(resource: Resource, idModelMap: Map<string, Resource>, opts: AssociationOptions) {
   if (!resource.data) {
-    throw new Error('Resource must have a data object to build relations from');
+    throw new Error('Resource must have a data object to associate relations from');
   }
   
   const modelNames = resource.data[opts.dataKey];

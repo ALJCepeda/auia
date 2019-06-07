@@ -61,7 +61,6 @@ export class User extends Resource {
 }
 
 export interface UserSchemaModel extends ResourceSchemaModel {
-  password?: string;
   path?: string;
   repositories?: string[];
   groups?: string[];

@@ -4,4 +4,4 @@ import { Dictionary } from '../../models/Dictionary';
 
 export const HandlerDict:Dictionary<string, ResourceHandler> = Dictionary.from([
   UserHandler
-], (configHandler) => [configHandler.key, configHandler.type]);
+], (configHandler) => [configHandler.class.schemaKey, configHandler.type]);

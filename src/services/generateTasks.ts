@@ -6,7 +6,7 @@ export function generatePlaybook(dbRegistry:Registry): AnsiblePlaybook {
   console.debug('Generating ansible tasks');
   return dbRegistry.models().reduce((playbook, model) => {
     const handler = HandlerDict.get(model.type);
-    playbook[handler.key] = handler.task(dbRegistry);
+    playbook[handler.class.schemaKey] = handler.task(dbRegistry);
     return playbook;
   }, {} as AnsiblePlaybook);
 }
