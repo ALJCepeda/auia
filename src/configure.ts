@@ -4,7 +4,7 @@ import { ResourceChange } from './entities/ResourceChange';
 import { Resources } from './services/dictionaries/ResourceDict';
 
 const connectionOptions: ConnectionOptions = {
-  database: `${__dirname}/../.auia/auia.db`,
+  database: `${__dirname}/../.auia/data.db`,
   entities: [ ...Resources, ResourceChange ],
   logging: true,
   synchronize: true,
@@ -29,11 +29,11 @@ export interface AppConfig {
 export async function configure(): Promise<AppConfig> {
   const dbConnection = await createConnection(connectionOptions);
   const configFile = process.argv[2];
-  
+
   if(!configFile) {
     throw new Error('Must include a config file');
   }
-  
+
   console.debug('App Configured');
   return { dbConnection, configFile };
 }

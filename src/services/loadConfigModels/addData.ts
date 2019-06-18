@@ -7,7 +7,7 @@ export function addData(key:string, data:{ [key:string]: Resource[] }, configReg
   if(!handler) {
     throw new Error(`No handler found for root key: ${key}`);
   }
-  
+
   const result = handler.create(data[key]);
   configRegistry.add(result);
 }

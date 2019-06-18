@@ -24,14 +24,14 @@ export class Resource implements Validatable<Resource> {
   public static get type():string {
     return this.name;
   }
-  
+
   public get type():string {
     return this.constructor.name;
   };
-  
+
   @PrimaryGeneratedColumn()
   public id:number = -1;
-  
+
   private _name = '';
   @Column()
   public get name():string {
@@ -46,16 +46,16 @@ export class Resource implements Validatable<Resource> {
 
   @Column()
   public lastModifiedAt:Date = new Date();
-  
+
   @Column()
   public active:boolean = true;
-  
+
   public data?:any;
-  
+
   public getSpecs(): Array<Spec<Resource>> {
     return []
   }
-  
+
   static schemaKey:string = 'resources';
   static getSchema():ResourceSchema {
     return {

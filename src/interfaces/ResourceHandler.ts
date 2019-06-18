@@ -6,7 +6,7 @@ export class ResourceHandler {
   create:(data:ResourceSchemaModel[]) => Resource[];
   associate:(models:Resource[], config:Registry) => Resource[];
   task:(config:Registry) => AnsibleTask[];
-  
+
   constructor(public ctr:ResourceCTR, methods:{
     create:(data:ResourceSchemaModel[]) => Resource[],
     associate:(models:Resource[], config:Registry) => Resource[],
@@ -16,8 +16,12 @@ export class ResourceHandler {
     this.associate = methods.associate;
     this.task = methods.task;
   }
-  
+
   get type():string {
     return this.ctr.type;
+  }
+
+  get schemaKey():string {
+    return this.ctr.schemaKey
   }
 }
