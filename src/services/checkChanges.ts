@@ -10,26 +10,26 @@ export function checkChanges(configRegistry: Registry, dbRegistry: Registry): Re
   console.debug('Checking for changes to registry');
   const configModels:Resource[] = configRegistry.models();
   const dbModels:Resource[] = dbRegistry.models();
-  
+
   const diffChanges = configModels.map((configModel) => {
     const dbModel: Resource | undefined = dbRegistry.getMap(configModel.type).get(configModel.name);
     let diffChanges;
-    
+
     if(!dbModel) {
       const create = newCreateChange(configModel);
       const ctr = ResourceDict.get(configModel.type);
-      const resource = create.update(create, new ctr());
+      const resource = create.update(new ctr());
       const changes = checkResource(configModel, resource);
       diffChanges = [ create, ...changes ];
     } else {
       diffChanges = checkResource(configModel, dbModel);
     }
-  
+
     console.log(diffChanges);
     console.debug(`Found ${ diffChanges.length } change(s) for ${configModel.name}`);
     return diffChanges;
   });
-  
+
   const deactivateChanges = dbModels.filter((dbModel) => !configRegistry.getMap(dbModel.type).has(dbModel.name))
     .map((dbModel) => newDeactivateChange(dbModel));
 
@@ -40,7 +40,7 @@ export function checkChanges(configRegistry: Registry, dbRegistry: Registry): Re
 function checkResource(configModel:Resource, dbModel:Resource): ResourceChange[] {
   console.debug(`Diffing resource ${configModel.name}`);
   const resourceChangeCTRs:ResourceChangeCTR[] = ResourceChangeDict.get(configModel.type).values;
-  return diffChanges(resourceChangeCTRs, configModel, dbModel).filter((change) => change.pending);
+  return diffChanges(resourceChangeCTRs, configModel, dbModel).filter((change) => change.hasPayload);
 }
 
 function newCreateChange(configModel:Resource): ResourceChange {
@@ -48,15 +48,14 @@ function newCreateChange(configModel:Resource): ResourceChange {
   const change = new ctr();
   change.target = configModel.name;
   change.payload = configModel.name;
-  change.pending = true;
   return change;
 }
 
 function newDeactivateChange(dbModel:Resource): ResourceChange {
   const ctr = ResourceChangeDict.get(dbModel.type).get('Active');
-  const change = new ctr();
-  change.target = dbModel.name;
-  change.payload = String(false);
-  change.pending = true;
+  const change = new ctr({
+    target:dbModel.name,
+    payload:String(false)
+  });
   return change;
 }

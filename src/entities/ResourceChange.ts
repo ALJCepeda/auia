@@ -2,33 +2,25 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Resource } from './Resource';
 
 export interface ResourceChangeCTR<ModelT extends Resource = Resource> {
-  new (): ResourceChange<ModelT>;
+  new (data?:Partial<ResourceChange<ModelT>>): ResourceChange<ModelT>;
   type:string;
-}
-
-export interface IResourceChange {
-  name:string;
-  type:string;
-  target:string;
-  payload:string;
-}
-
-export interface IDBResourceChange extends IResourceChange {
-  id?:number;
-  createdAt:Date;
 }
 
 @Entity('entity-changes')
-export abstract class ResourceChange<ModelT extends Resource = Resource> implements IResourceChange {
+export abstract class ResourceChange<ModelT extends Resource = Resource> {
+  constructor(data?:Partial<ResourceChange<ModelT>>) {
+    Object.assign(this, data);
+  }
+
   public static get type():string {
     return Resource.type;
   }
-  
+
   @Column()
   public get type():string {
     return Resource.type;
   };
-  
+
   @PrimaryGeneratedColumn()
   public id?:number;
 
@@ -36,7 +28,7 @@ export abstract class ResourceChange<ModelT extends Resource = Resource> impleme
   public get name(): string {
     return this.constructor.name;
   }
-  
+
   @Column()
   public target:string = '';
 
@@ -46,8 +38,14 @@ export abstract class ResourceChange<ModelT extends Resource = Resource> impleme
   @Column()
   public createdAt:Date = new Date();
 
-  public pending: boolean = false;
+  public get hasPayload(): boolean {
+    return this.payload !== '';
+  }
 
   public abstract check(configModel:ModelT, dbModel:ModelT): ResourceChange<ModelT>;
-  public abstract update(change:IDBResourceChange, model:ModelT): ModelT;
+  public update(model:ModelT): ModelT {
+    return Object.assign(model, {
+      lastModifiedAt:new Date()
+    });
+  }
 }
