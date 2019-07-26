@@ -53,7 +53,10 @@ function newCreateChange(configModel:Resource): ResourceChange {
 function newDeactivateChange(dbModel:Resource): ResourceChange {
   const ctr = ResourceChangeDict.get(dbModel.type).get('Active');
   return new ctr({
+    type:dbModel.type,
+    name:ctr.name,
     target:dbModel.name,
-    payload:String(false)
+    payload:String(false),
+    createdAt:new Date()
   });
 }

@@ -1,13 +1,14 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ResourceChangePayload } from '../interfaces/ResourceChangePayload';
 import { Resource } from './Resource';
 
 export interface ResourceChangeCTR<ModelT extends Resource = Resource> {
   type:string;
-  new (...args:any[]): ResourceChange<ModelT>;
+  new (data?:ResourceChangePayload): ResourceChange<ModelT>;
 }
 
 @Entity('entity-changes')
-export abstract class ResourceChange<ModelT extends Resource = Resource> {
+export abstract class ResourceChange<ModelT extends Resource = Resource> implements ResourceChangePayload {
   public static get type():string {
     return Resource.type;
   }
@@ -37,8 +38,13 @@ export abstract class ResourceChange<ModelT extends Resource = Resource> {
 
   @Column()
   public createdAt:Date = new Date();
-  constructor(data?:Partial<ResourceChange<ModelT>>) {
-    Object.assign(this, data);
+  constructor(data?:ResourceChangePayload) {
+    if(data) {
+      this.id = data.id;
+      this.target = data.target;
+      this.payload = data.payload;
+      this.createdAt = data.createdAt;
+    }
   }
 
   public abstract check(configModel:ModelT, dbModel:ModelT): ResourceChange<ModelT>;

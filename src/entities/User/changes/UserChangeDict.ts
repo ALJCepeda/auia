@@ -3,7 +3,7 @@ import { ResourceChangeCTR } from '../../ResourceChange';
 import { Active } from './Active';
 import { Create } from './Create';
 
-export const UserChanges:ResourceChangeCTR[] = [
+export const UserChanges = [
   Create,
   Active
 ];
