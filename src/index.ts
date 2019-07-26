@@ -30,3 +30,23 @@ async function run() {
 run().then(() => {
   console.log('Completed');
 });
+
+interface Row {
+  name: string;
+  age: number;
+  address: string;
+  data: JSON;
+}
+
+class CSVWriter {
+  addRow(row:Row) {
+
+  }
+
+  setColumnOrder(columns:(keyof Row)[]) {
+
+  }
+}
+
+const writer = new CSVWriter();
+writer.setColumnOrder(['name', 'age', 'address', 'data']);
