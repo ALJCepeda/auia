@@ -58,15 +58,15 @@ export class Dictionary<K, V> {
 		this._entries = new Map(entries.concat(entries));
 	}
 
-	get(key:K):V {
+	public get(key:K):V {
 		if(!this._entries.has(key)) {
 			throw new Error(`Unable to find entry for: ${key}`);
 		}
-		
+
 		return this._entries.get(key) as V;
 	}
 
-	createIndex<I>(name:string, indexer:DictionaryIndexer<K, V, I>) {
+	public createIndex<I>(name:string, indexer:DictionaryIndexer<K, V, I>) {
 		const indexed = Array.from(this._entries.entries()).map(([k, v]) => [indexer(k, v), v]) as Array<[I, V]>;
 		const indexedDict = new Dictionary<I, V>(indexed);
 		this._indexes = new Dictionary([
@@ -74,17 +74,17 @@ export class Dictionary<K, V> {
 		], this._indexes);
 	}
 
-	createMatcher<M>(name:string, matcher:DictionaryMatcher<K, V, M>) {
+	public createMatcher<M>(name:string, matcher:DictionaryMatcher<K, V, M>) {
 		this._matchers = new Dictionary<string, DictionaryMatcher<K, V, any>>([
 			[name, matcher]
 		], this._matchers);
 	}
 
-	byIndex<I>(name:string, key:I):V {
+	public byIndex<I>(name:string, key:I):V {
 		return this.indexes.get(name).get(key);
 	}
 
-	byMatcher<M>(name:string, key:M):V {
+	public byMatcher<M>(name:string, key:M):V {
 		const matcher = this.matchers.get(name);
 		return matcher(key, this);
 	}

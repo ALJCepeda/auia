@@ -19,7 +19,7 @@
     "dev:watch": "nodemon --exec npm run dev",
     "test": "node $NODE_DEBUG_OPTION ./node_modules/.bin/ts-mocha -p tsconfig.json **/*.specs.*",
     "test:watch": "nodemon --exec npm run test",
-    "db": "sqlite3 ./.auia/auia.db"
+    "db": "sqlite3 ./.auia/tsliauia.db"
   },
   "dependencies": {
     "@types/core-js": "^2.5.0",

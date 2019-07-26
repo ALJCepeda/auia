@@ -2,10 +2,10 @@ import { AnsibleTask } from '../../interfaces/AnsibleTask';
 import { Registry } from '../../models/Registry';
 
 export interface RepositoryTask extends AnsibleTask {
-  name: string,
+  name: string;
   user: {
     name: string
-  }
+  };
 }
 
 export function task(config:Registry): RepositoryTask[] {

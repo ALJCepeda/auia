@@ -1,6 +1,6 @@
-import { Repository } from './Repository';
-import { Resource } from '../Resource';
 import { Registry } from '../../models/Registry';
+import { Resource } from '../Resource';
+import { Repository } from './Repository';
 
 export function build(models:Resource[], config:Registry): Repository[] {
   return models.map((model) => _build(model, config));

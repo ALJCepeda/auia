@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Connection, ConnectionOptions, createConnection } from 'typeorm'
+import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 import { ResourceChange } from './entities/ResourceChange';
 import { Resources } from './services/dictionaries/ResourceDict';
 
@@ -13,10 +13,10 @@ const connectionOptions: ConnectionOptions = {
 
 process.on('uncaughtException', function(error) {
   console.error(error);
-  process.exit(1)
+  process.exit(1);
 });
 
-process.on('unhandledRejection', function(error){
+process.on('unhandledRejection', function(error) {
   console.error(error);
   process.exit(1);
 });

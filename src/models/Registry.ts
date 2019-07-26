@@ -11,9 +11,21 @@ export class Registry {
   public get groups(): Group[] {
     return Array.from(this.groupMap.values());
   }
-  
+
   public get repositories(): Repository[] {
     return Array.from(this.repositoryMap.values());
+  }
+
+  public get repositoryMap() {
+    return this.maps.get(Repository.type) as Map<string, Repository>;
+  }
+
+  public get groupMap() {
+    return this.maps.get(Group.type) as Map<string, Group>;
+  }
+
+  public get userMap() {
+    return this.maps.get(User.type) as Map<string, User>;
   }
 
   public maps:Map<string, Map<string, Resource>> = new Map<string, Map<string, Resource>>([
@@ -21,19 +33,7 @@ export class Registry {
     [ Repository.type, new Map<string, Repository>() ],
     [ User.type, new Map<string, User>() ]
   ]);
-  
-  public get repositoryMap() {
-    return this.maps.get(Repository.type) as Map<string, Repository>;
-  }
-  
-  public get groupMap() {
-    return this.maps.get(Group.type) as Map<string, Group>;
-  }
-  
-  public get userMap() {
-    return this.maps.get(User.type) as Map<string, User>;
-  }
-  
+
   public models():Resource[] {
     const result:Resource[] = [];
 
@@ -50,13 +50,17 @@ export class Registry {
     models.forEach((model) => this._add(model));
     return this;
   }
-  
+
   public getMap(type:string) {
     if(!this.maps.has(type)) {
       throw new Error(`There is no map for class: ${type}`);
     }
-    
+
     return this.maps.get(type) as Map<string, Resource>;
+  }
+
+  public upsert(models: Resource[]):void {
+    models.forEach((model) => this._upsert(model));
   }
 
   protected _add(model: Resource):void {
@@ -68,11 +72,7 @@ export class Registry {
 
     map.set(model.name, model);
   }
-  
-  public upsert(models: Resource[]):void {
-    models.forEach((model) => this._upsert(model));
-  }
-  
+
   protected _upsert(model: Resource):void {
     this.getMap(model.type).set(model.name, model);
   }

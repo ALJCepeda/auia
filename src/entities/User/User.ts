@@ -8,22 +8,9 @@ import { UserRepository } from '../UserRepository/UserRepository';
 
 @Entity('users')
 export class User extends Resource {
-  @OneToMany(() => UserRepository, (repositoryInstance) => repositoryInstance.id)
-  public repositories?: UserRepository[];
-  public repositoryMap: Map<string, UserRepository> = new Map();
-  
-  @OneToMany(() => GroupUser, (groupMembership) => groupMembership.id)
-  public groups?: GroupUser[];
-  public groupMap: Map<string, GroupUser> = new Map();
-  
-  public getSpecs(): Array<Spec<Resource>> {
-    return [];
-  }
-  
-  public data?:UserSchemaModel;
-  
-  static schemaKey = 'users';
-  static getSchema():ResourceSchema {
+
+  public static schemaKey = 'users';
+  public static getSchema():ResourceSchema {
     const superSchema = super.getSchema();
     return {
       type:'array',
@@ -57,6 +44,19 @@ export class User extends Resource {
         }
       }
     };
+  }
+  @OneToMany(() => UserRepository, (repositoryInstance) => repositoryInstance.id)
+  public repositories?: UserRepository[];
+  public repositoryMap: Map<string, UserRepository> = new Map();
+
+  @OneToMany(() => GroupUser, (groupMembership) => groupMembership.id)
+  public groups?: GroupUser[];
+  public groupMap: Map<string, GroupUser> = new Map();
+
+  public data?:UserSchemaModel;
+
+  public getSpecs(): Array<Spec<Resource>> {
+    return [];
   }
 }
 

@@ -1,10 +1,10 @@
-import { ResourceChange, ResourceChangeCTR } from '../entities/ResourceChange';
 import { Resource } from '../entities/Resource';
-import { ResourceDict } from './dictionaries/ResourceDict';
+import { ResourceChange, ResourceChangeCTR } from '../entities/ResourceChange';
 import { Registry } from '../models/Registry';
+import { ResourceChangeDict } from './dictionaries/ResourceChangeDict';
+import { ResourceDict } from './dictionaries/ResourceDict';
 import { diffChanges } from './diffChanges';
 import { flatten } from './utils/flatten';
-import { ResourceChangeDict } from './dictionaries/ResourceChangeDict';
 
 export function checkChanges(configRegistry: Registry, dbRegistry: Registry): ResourceChange[] {
   console.debug('Checking for changes to registry');

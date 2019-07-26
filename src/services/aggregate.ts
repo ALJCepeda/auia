@@ -1,5 +1,5 @@
-import { ResourceChange, ResourceChangeCTR } from '../entities/ResourceChange';
 import { Resource } from '../entities/Resource';
+import { ResourceChange, ResourceChangeCTR } from '../entities/ResourceChange';
 import { ResourceChangeDict } from './dictionaries/ResourceChangeDict';
 
 export function aggregate(changes:ResourceChange[], model:Resource): Resource {

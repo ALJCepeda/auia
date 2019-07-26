@@ -6,24 +6,7 @@ import { UserRepository } from '../UserRepository/UserRepository';
 
 @Entity('repositories')
 export class Repository extends Resource {
-  @Column()
-  public brand:string = 'git';
-  
-  @Column()
-  public branch:string = 'master';
-  
-  @Column()
-  public url:string = '';
 
-  @OneToMany(() => UserRepository, (repositoryInstance) => repositoryInstance.id)
-  public repositoryInstances?:UserRepository[];
-  
-  public getSpecs():Array<Spec<Resource>> {
-    return [
-      new Test(() => this.name.length >= 1, 'Repository needs a name in order to be registered')
-    ];
-  }
-  
   public static schemaKey:string = 'repositories';
   public static getSchema():ResourceSchema {
     const superSchema = super.getSchema();
@@ -55,6 +38,23 @@ export class Repository extends Resource {
         }
       }
     };
+  }
+  @Column()
+  public brand:string = 'git';
+
+  @Column()
+  public branch:string = 'master';
+
+  @Column()
+  public url:string = '';
+
+  @OneToMany(() => UserRepository, (repositoryInstance) => repositoryInstance.id)
+  public repositoryInstances?:UserRepository[];
+
+  public getSpecs():Array<Spec<Resource>> {
+    return [
+      new Test(() => this.name.length >= 1, 'Repository needs a name in order to be registered')
+    ];
   }
 }
 

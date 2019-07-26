@@ -1,5 +1,5 @@
-import { UserChange } from './UserChange';
 import { User } from '../User';
+import { UserChange } from './UserChange';
 
 export class Create extends UserChange {
   public check(configUser:User, dbUser:User): UserChange {

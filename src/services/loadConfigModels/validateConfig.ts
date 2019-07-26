@@ -7,7 +7,7 @@ export function validateConfig(config:Registry) {
   console.debug('Loaded schema');
   const ajv = new AJV();
   const validate = ajv.compile(schema);
-  
+
   if (!validate(config)) {
     console.error('Config invalid!');
     throw validate.errors;

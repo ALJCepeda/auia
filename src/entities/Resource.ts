@@ -4,9 +4,9 @@ import { Validatable } from '../interfaces/Validatable';
 import { Spec } from '../models/Test';
 
 export interface ResourceCTR<ResourceT extends Resource = Resource> {
-  new():ResourceT;
   type:string;
   schemaKey:string;
+  new():ResourceT;
 }
 
 export interface ResourceAssociationCTR <
@@ -27,12 +27,7 @@ export class Resource implements Validatable<Resource> {
 
   public get type():string {
     return this.constructor.name;
-  };
-
-  @PrimaryGeneratedColumn()
-  public id:number = -1;
-
-  private _name = '';
+  }
   @Column()
   public get name():string {
     return this._name;
@@ -41,23 +36,8 @@ export class Resource implements Validatable<Resource> {
     this._name = name;
   }
 
-  @Column()
-  public createdAt:Date = new Date();
-
-  @Column()
-  public lastModifiedAt:Date = new Date();
-
-  @Column()
-  public active:boolean = true;
-
-  public data?:any;
-
-  public getSpecs(): Array<Spec<Resource>> {
-    return []
-  }
-
-  static schemaKey:string = 'resources';
-  static getSchema():ResourceSchema {
+  public static schemaKey:string = 'resources';
+  public static getSchema():ResourceSchema {
     return {
       type:'array',
       items: {
@@ -76,6 +56,26 @@ export class Resource implements Validatable<Resource> {
         }
       }
     };
+  }
+
+  @PrimaryGeneratedColumn()
+  public id:number = -1;
+
+  @Column()
+  public createdAt:Date = new Date();
+
+  @Column()
+  public lastModifiedAt:Date = new Date();
+
+  @Column()
+  public active:boolean = true;
+
+  public data?:any;
+
+  private _name = '';
+
+  public getSpecs(): Array<Spec<Resource>> {
+    return [];
   }
 }
 

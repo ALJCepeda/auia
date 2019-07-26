@@ -1,7 +1,7 @@
-import { ResourceChangeCTR } from '../../ResourceChange';
 import { Dictionary } from '../../../models/Dictionary';
-import { Create } from './Create';
+import { ResourceChangeCTR } from '../../ResourceChange';
 import { Active } from './Active';
+import { Create } from './Create';
 
 export const UserChanges = [
   Create,

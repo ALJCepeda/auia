@@ -10,9 +10,9 @@ export function associate(models:Resource[], config:Registry): User[] {
     if(model.type !== User.type) {
       throw new Error(`Model is not instance of User: ${model}`);
     }
-  
+
     const user:User = model as User;
-  
+
     associateResources(user, config.repositoryMap, {
       dataKey:'repositories',
       associateClass: UserRepository
@@ -21,7 +21,7 @@ export function associate(models:Resource[], config:Registry): User[] {
       dataKey: 'repositories',
       associateClass: GroupUser
     });
-  
+
     return user;
   });
 }

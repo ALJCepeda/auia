@@ -5,10 +5,10 @@ export function associateResources(resource: Resource, idModelMap: Map<string, R
   if (!resource.data) {
     throw new Error('Resource must have a data object to associate relations from');
   }
-  
+
   const modelNames = resource.data[opts.dataKey];
   (resource as any)[opts.dataKey] = [];
-  
+
   if (modelNames) {
     if (!Array.isArray(modelNames)) {
       throw new Error(`${opts.dataKey} must be an array of resource IDs`);

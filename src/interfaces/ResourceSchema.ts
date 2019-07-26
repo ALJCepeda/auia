@@ -1,5 +1,5 @@
 export interface ResourceSchema {
-  type:string,
+  type:string;
   items: {
     type:string,
     definition:string,
@@ -7,5 +7,5 @@ export interface ResourceSchema {
     properties: {
       [key:string]: { [key:string]:any }
     }
-  }
+  };
 }

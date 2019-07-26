@@ -2,11 +2,11 @@ import { AnsibleTask } from '../../interfaces/AnsibleTask';
 import { Registry } from '../../models/Registry';
 
 export interface UserTask extends AnsibleTask {
-  name: string,
+  name: string;
   user: {
     name: string,
     state: string
-  }
+  };
 }
 
 export function task(config: Registry): UserTask[] {

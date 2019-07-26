@@ -1,7 +1,7 @@
 import { ResourceChangeCTR } from '../../entities/ResourceChange';
+import { UserChangeDict } from '../../entities/User/changes/UserChangeDict';
 import { User } from '../../entities/User/User';
 import { Dictionary } from '../../models/Dictionary';
-import { UserChangeDict } from '../../entities/User/changes/UserChangeDict';
 
 export type ResourceChangeCTRDict = Dictionary<string, ResourceChangeCTR>;
 

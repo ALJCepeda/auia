@@ -1,26 +1,15 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 import { ResourceSchema } from '../../interfaces/ResourceSchema';
 import { Spec } from '../../models/Test';
-import { Resource, ResourceSchemaModel } from '../Resource';
 import { GroupUser } from '../GroupUser/GroupUser';
+import { Resource, ResourceSchemaModel } from '../Resource';
 import { User } from '../User/User';
 
 @Entity('group')
 export class Group extends Resource {
-  @OneToMany(() => GroupUser, (groupMembership) => groupMembership.id)
-  public users?:GroupUser[];
 
-  @Column()
-  public isSudo:boolean = false;
-
-  public getSpecs():Array<Spec<Resource>> {
-    return [];
-  }
-  
-  public data?:GroupSchemaModel;
-  
-  static schemaKey = 'groups';
-  static getSchema():ResourceSchema {
+  public static schemaKey = 'groups';
+  public static getSchema():ResourceSchema {
     const superSchema = super.getSchema();
     return {
       type:'array',
@@ -44,6 +33,17 @@ export class Group extends Resource {
         }
       }
     };
+  }
+  @OneToMany(() => GroupUser, (groupMembership) => groupMembership.id)
+  public users?:GroupUser[];
+
+  @Column()
+  public isSudo:boolean = false;
+
+  public data?:GroupSchemaModel;
+
+  public getSpecs():Array<Spec<Resource>> {
+    return [];
   }
 }
 

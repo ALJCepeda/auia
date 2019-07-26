@@ -1,7 +1,7 @@
 import { Connection } from 'typeorm';
 import { ResourceCTR } from '../entities/Resource';
-import { Resources } from './dictionaries/ResourceDict';
 import { Registry } from '../models/Registry';
+import { Resources } from './dictionaries/ResourceDict';
 import { flatten } from './utils/flatten';
 
 export async function loadDBModels(dbConnection:Connection): Promise<Registry> {
@@ -10,10 +10,10 @@ export async function loadDBModels(dbConnection:Connection): Promise<Registry> {
     const repository = dbConnection.getRepository(resourceCTR);
     return repository.find();
   });
-  
+
   const entities = await Promise.all(finds);
   const dbResources = flatten(entities);
-  
+
   console.debug(`Loaded ${dbResources.length} resources`);
   const dbRegistry = new Registry();
   dbRegistry.add(dbResources);
