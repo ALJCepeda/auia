@@ -16,7 +16,8 @@
     "whitespace": [true, "check-decl", "check-module", "check-operator", "check-preblock", "check-rest-spread", "check-separator", "check-type-operator", "check-typecast"],
     "variable-name": false,
     "no-shadowed-variable": false,
-    "no-empty": false
+    "no-empty": false,
+    "object-literal-sort-keys": false
   },
   "rulesDirectory": []
 }

@@ -8,7 +8,6 @@ import { UserRepository } from '../UserRepository/UserRepository';
 
 @Entity('users')
 export class User extends Resource {
-
   public static schemaKey = 'users';
   public static getSchema():ResourceSchema {
     const superSchema = super.getSchema();

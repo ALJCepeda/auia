@@ -3,12 +3,11 @@ import { Resource } from './Resource';
 
 export interface ResourceChangeCTR<ModelT extends Resource = Resource> {
   type:string;
-  new (data?:Partial<ResourceChange<ModelT>>): ResourceChange<ModelT>;
+  new (...args:any[]): ResourceChange<ModelT>;
 }
 
 @Entity('entity-changes')
 export abstract class ResourceChange<ModelT extends Resource = Resource> {
-
   public static get type():string {
     return Resource.type;
   }

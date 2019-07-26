@@ -25,7 +25,6 @@ export function checkChanges(configRegistry: Registry, dbRegistry: Registry): Re
       diffChanges = checkResource(configModel, dbModel);
     }
 
-    console.log(diffChanges);
     console.debug(`Found ${ diffChanges.length } change(s) for ${configModel.name}`);
     return diffChanges;
   });
@@ -53,9 +52,8 @@ function newCreateChange(configModel:Resource): ResourceChange {
 
 function newDeactivateChange(dbModel:Resource): ResourceChange {
   const ctr = ResourceChangeDict.get(dbModel.type).get('Active');
-  const change = new ctr({
+  return new ctr({
     target:dbModel.name,
     payload:String(false)
   });
-  return change;
 }
