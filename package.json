@@ -32,7 +32,7 @@
     "js-yaml": "^3.13.1",
     "rimraf": "^2.6.3",
     "sqlite3": "^4.0.8",
-    "typeorm": "^0.2.14",
+    "typeorm": "^0.2.25",
     "write-yaml": "^1.0.0"
   },
   "devDependencies": {
